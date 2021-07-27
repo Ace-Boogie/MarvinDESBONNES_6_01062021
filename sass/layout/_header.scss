@@ -1,0 +1,45 @@
+.header_photograph {
+  //width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &_article {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    background-color: $fc-grey-secondary;
+
+    &_info {
+      > h2 {
+        color: $fc-light-red-primary;
+      }
+
+      &_from {
+        color: $fc-red-secondary;
+        line-height: 0;
+      }
+
+      &_tagline {
+        // vide pour le moment
+      }
+    }
+  }
+  &_article_img{
+    > .photographer_img {
+      height: 200px;
+      width: 200px;
+      image-rendering: auto;
+      border-radius: 50%;
+    }
+  }
+}
+.btn-contact-me {
+  color:#fff;
+  font-size:21px;
+  margin:auto;
+  height: 75px;
+  border-radius: 0;
+  background-color: $fc-red-secondary;
+}
+

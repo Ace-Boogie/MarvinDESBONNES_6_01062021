@@ -1,0 +1,18 @@
+Importer homepage --> les fichiers nécessaires
+
+Function async "getData" ---> récupère les info json {
+
+const dataFile = await fetch ....
+
+const data = dataFile.json
+ return data
+ }
+
+ getData().then((data) =>{
+ const link = window.location.href;
+ if(link === 'photographer.html'){
+ createPhotographers(data) ---> à créer
+ } else {
+ createHomepage(data) ---> à créer
+ }
+ })

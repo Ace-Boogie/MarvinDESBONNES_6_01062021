@@ -1,0 +1,43 @@
+#mainAccueil {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.spanTag {
+  color: $bgc-red-primary;
+  //background-color: $fc-grey-secondary;
+  border: 2px $fc-grey-secondary solid;
+  //border-radius: 15px;
+  border-radius:100px;
+  //padding: 0.3em;
+  padding:5px 10px;
+  margin-right: 0.5em;
+  margin-top: 1em;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $bgc-red-primary;
+    color: white;
+  }
+}
+.spanTagFocus{
+  background-color: $bgc-red-primary;
+  color: white;
+}
+
+.header_photographers {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  > h1 {
+    color: $bgc-red-primary;
+  }
+}
+
+.photographer_img {
+  height: 200px;
+  width: 200px;
+  image-rendering: auto;
+  border-radius: 50%;
+}

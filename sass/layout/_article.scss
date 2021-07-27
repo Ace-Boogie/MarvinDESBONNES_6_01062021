@@ -1,0 +1,36 @@
+.main_photographers {
+  display: flex;
+  flex-direction: column;
+  width: 33%;
+  text-align: center;
+  margin-bottom: 2%;
+
+  > figure {
+    > .photographer_img {
+      height: 200px;
+      width: 200px;
+      image-rendering: auto;
+      border-radius: 50%;
+    }
+
+    > figcaption {
+      > h2 {
+        color: $fc-light-red-primary;
+      }
+    }
+  }
+
+  > .infoPhotographer {
+    &:first-line {
+      color: $fc-light-red-primary;
+    }
+
+    &:last-child {
+      color: $fc-default-secondary;
+    }
+  }
+
+  > .tagsPhotographer {
+
+  }
+}

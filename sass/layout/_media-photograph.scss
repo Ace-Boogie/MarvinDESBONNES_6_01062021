@@ -1,0 +1,38 @@
+
+.media_figcaption {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  color: $fc-red-secondary;
+}
+
+#mainPhotograph {
+  display: flex;
+  flex-wrap: wrap;
+
+  > article {
+    width: 33%;
+    height: 320px;
+    text-align: center;
+
+    > figure {
+      > img {
+        width: 70%;
+        height: 200px;
+        image-rendering: auto;
+      }
+    }
+  }
+}
+
+.footer_page {
+  display: flex;
+  justify-content: space-around;
+  position: fixed;
+  bottom: 0;
+  right: 3%;
+  width: 15%;
+  //background-color: $bgc-light-red-secondary;
+  background-color: #db8876;
+  font-size: large;
+}
