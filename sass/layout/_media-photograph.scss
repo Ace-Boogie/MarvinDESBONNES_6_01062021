@@ -1,38 +1,255 @@
-
-.media_figcaption {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  color: $fc-red-secondary;
+#photographer-page {
+  > main {
+    margin: auto;
+  }
 }
 
-#mainPhotograph {
+.header-logo-profil {
+  width: 335px;
   display: flex;
-  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin: auto;
+  @media (min-width: 427px) {
+    width: 86%;
+    margin: 0 auto;
+  }
+}
 
-  > article {
-    width: 33%;
-    height: 320px;
-    text-align: center;
+// header du main
+.header_photograph {
+  width: 100%;
 
-    > figure {
-      > img {
-        width: 70%;
-        height: 200px;
-        image-rendering: auto;
+  //version desktop
+  @media (min-width: 427px) {
+    width: 86%;
+    margin: 0 auto;
+  }
+
+  &_article {
+    display: flex;
+    flex-wrap: wrap;
+    //justify-content: space-around;
+    align-items: center;
+
+    //version desktop
+    @media (min-width: 427px) {
+      justify-content: space-between;
+    }
+
+    &_info {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      //margin-left: 5%;
+
+      > h2 {
+        @include h2-propriete;
+      }
+
+      &_from {
+        @include infoPhotographer-from;
+      }
+
+      &_tagline {
+        @include infoPhotographer-tagline;
+      }
+
+      > h2, &_from, &_tagline {
+        text-align: left;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+
+      &_tags {
+        display: flex;
+        //flex-wrap: wrap;
       }
     }
   }
 }
 
-.footer_page {
+.media_figcaption {
+  width: 335px;
   display: flex;
-  justify-content: space-around;
-  position: fixed;
-  bottom: 0;
-  right: 3%;
-  width: 15%;
-  //background-color: $bgc-light-red-secondary;
-  background-color: #db8876;
-  font-size: large;
+  justify-content: space-between;
+  align-items: center;
+  font-family: $fontDM;
+  font-style: normal;
+  color: #911C1C;
+
+  > h2 {
+    display: flex;
+    justify-content: flex-start;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 18px;
+
+  }
+
+  > p {
+    display: flex;
+    justify-content: flex-end;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
+    text-align: right;
+
+
+  }
+
+  //version desktop
+  @media (min-width: 427px) {
+    width: 100%;
+  }
+}
+
+.footer_like_page {
+  display: none;
+
+  //version desktop
+  @media (min-width: 427px) {
+    display: flex;
+    justify-content: space-around;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 15%;
+    //background-color: $bgc-light-red-secondary;
+    background-color: #db8876;
+    font-size: large;
+  }
+}
+
+
+//Hide contact-me et trierPar du profil photograph
+#trierPar {
+  display: none;
+  @media (min-width: 427px) {
+    display: flex;
+  }
+}
+
+//Trier par popularité, date, titre
+.trierPar {
+  width: 86%;
+  display: flex;
+  align-items: center;
+  //max-width: 1240px;
+  margin: 0 auto;
+
+  > label {
+    width: 74px;
+    height: 23px;
+
+    font-family: $fontDM;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 23px;
+    margin-right: 2%;
+  }
+}
+
+#chooseBy {
+  width: 170px;
+  height: 56px;
+
+  position: relative;
+  display: flex;
+  overflow: hidden;
+
+  font-family: $fontDM;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 23px;
+
+  color: #FFFFFF;
+  background: #911C1C;
+  border-radius: 5px;
+
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+
+  > option {
+    color: #fff;
+    background-color: #92b6d5;
+    width: 20px;
+  }
+
+  &::after {
+    position: absolute;
+    content: "\f106";
+    font-family: 'Font Awesome 5 Free', serif;
+    font-weight: 600;
+    //margin-left: 15%;
+    color: white;
+    top: 0;
+    right: 0;
+    padding: 1em;
+    background-color: #911C1C;
+    transition: .25s all ease;
+    pointer-events: none;
+  }
+}
+
+//Photo et vidéo photographer-page.html
+#sectionPhotograph {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  //width: 94%;
+  //max-width: 1240px;
+  //margin: 0 auto;
+
+  //version desktop
+  @media (min-width: 427px) {
+    flex-direction: row;
+    margin: 0 auto;
+  }
+
+  > article {
+    //text-align: center;
+
+
+    //version desktop
+    @media (min-width: 427px) {
+      width: 33%;
+    }
+
+    > figure {
+      margin-left: 0;
+      margin-right: 0;
+
+      > img {
+        width: 100%;
+        max-width: 335px;
+        height: 190px;
+        object-fit: cover;
+        //image-rendering: auto;
+        background: #C4C4C4;
+        border-radius: 5px;
+
+        //version desktop
+        @media (min-width: 427px) {
+          width: 89%;
+          height: 300px;
+        }
+      }
+
+      > video {
+        width: 100%;
+        max-width: 335px;
+        height: 190px;
+        border-radius: 5px;
+        object-fit: cover;
+
+        //version desktop
+        @media (min-width: 427px) {
+          width: 89%;
+          height: 300px;
+          background: #C4C4C4;
+        }
+      }
+    }
+  }
 }

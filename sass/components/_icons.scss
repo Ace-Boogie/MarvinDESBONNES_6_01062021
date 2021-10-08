@@ -1,0 +1,6 @@
+.likes_heart::after, .result_heart::after {
+  content: "\f004";
+  font-family: 'Font Awesome 5 Free', serif;
+  font-weight: 600;
+  margin-left: 15%;
+}

@@ -1,228 +1,320 @@
-const main = document.getElementById("mainpage");
-// create <section>, <h2>, <p>, and <img> elements
-const sectionPhotographers = document.createElement("section");
-// sectionPhotographers.appendChild(main);
-
-// Autres variables
-let allPhotographers;
-let photographer;
-let dataLastOfIndex;
-let _id = [];
-let spanTarget;
-let profilPhotograph;
-let photograph;
-let medias;
-let tag;
-
-// Variable Media Photographers
-let paraTitle;
-let myPictures;
-let myVideos;
-let profilPhotographerInfo;
-let urlPicture;
-let srcPicture;
-
-//Photographers variables
-
-let myArticle;
-let myImage;
-let myH2;
-let divInfo;
-let divTags;
-let paraFrom;
-let paraTagline;
-let paraPrice;
-let spanTags;
-let a;
-let myFigure;
-let myFigcaption;
-
-let testSpan;
-
-function createVariables() {
-
-    photographer = profilPhotograph[photograph].name;
-
-    //Photographers variables
-    myArticle = document.createElement('article');
-    myFigure = document.createElement("figure");
-    myFigcaption = document.createElement("figcaption");
-    myImage = document.createElement('img');
-    myH2 = document.createElement('h2');
-    divInfo = document.createElement('div');
-    divInfo.classList.add("infoPhotographer");
-    divTags = document.createElement('div');
-    divTags.classList.add("tagsPhotographer");
-    paraFrom = document.createElement('p');
-    paraTagline = document.createElement('p');
-    paraPrice = document.createElement('p');
-    // spanTags = document.createElement('span');
-    a = document.createElement('a');
-
-    // Media variables
-    paraTitle = document.createElement('p');
-    myPictures = document.createElement("img");
-    myVideos = document.createElement("video");
-    profilPhotographerInfo = document.createElement("article");
-    // profilPhotographerInfo = document.querySelector("section");
-    urlPicture = document.querySelector("h2");
-    srcPicture;
-
-    spanTarget = document.querySelector("span");
+// import * as  from '/public/js/accesibility.js';
 
 
+/* Création des balises HTML pour le body, le header et le main */
+const bodyAccueil = document.querySelector("body");
+const headerAccueil = document.createElement("header");
+const mainAccueil = document.createElement("main");
+
+
+/*Lier les HTML via appendChild */
+bodyAccueil.appendChild(headerAccueil);
+bodyAccueil.appendChild(mainAccueil);
+
+
+/* Ajout des classes et d'Id */
+mainAccueil.id = "mainAccueil";
+headerAccueil.classList.add("header_photographers");
+
+/* Création des variables dataJson */
+let dataJson;
+let showData;
+
+/* API request */
+const fetchPhotographers = async () => {
+    dataJson = await fetch('./photographers.json')
+        .then(res => (res.json())
+            .catch(err => {
+                console.log('Fetch problem: ' + err.message)
+            }));
 }
 
-const initializeData = async () => {
-    await fetch('./photographers.json').then(function (response) {
-        return response.json();
-    }).then(function (json) {
-        allPhotographers = json;
-        console.log(allPhotographers);
-        if (location.pathname === "/MarvinDESBONNES_6_01062021/index.html") {
-            showPhotographers(allPhotographers);
-        } else if (location.pathname === "/MarvinDESBONNES_6_01062021/photographer-page.html") {
-            console.log("ce n'est pas possible");
-            // console.log(idProfil);
-            showMedia(allPhotographers);
+/* Array tagsline pour le header */
+let spanNavsX = [
+    {
+        "logo": "Logo_Fisheye.png",
+        "altLogo": "Fisheye Home page",
+        "tags": ["portrait", "art", "fashion", "architecture", "travel", "sport", "animals", "events"]
+    }];
+
+//TODO essayer de filter avec ça
+// <li>
+//     <a href="index.html?tags=architecture" aria-label="Tag Architecture" className="tag__li"
+//        id="architecture">#Architecture</a>
+// </li>
+
+
+/* Affichage du header de la page */
+const showHeaderPage = async () => {
+    console.log(window.innerWidth);
+    /* Création du bouton Passer au contenu si la window est supérieur à 434px */
+    const goToContent = document.createElement("a");
+    goToContent.textContent = "Passer au contenu";
+    goToContent.classList.add("scroll-hide");
+    goToContent.style.display = "none";
+    /* Renvoi au main du contenu lorsque l'on clique dessus */
+    goToContent.href="#mainAccueil";
+
+    /* Apparition du bouton lorsque l'on scroll */
+    window.addEventListener('scroll', function () {
+        if (window.innerWidth > 434){
+            headerAccueil.appendChild(goToContent);
+        } else {
+            headerAccueil.removeChild(goToContent);
         }
-    }).catch(function (err) {
-        console.log('Fetch problem: ' + err.message);
+        if (window.scrollY >= 30) {
+            goToContent.style.display = "flex";
+        } else {
+            goToContent.style.display = "none";
+        }
     });
+
+
+
+
+    const myA = document.createElement("a");
+    myA.id = "aImg";
+    headerAccueil.appendChild(myA);
+    myA.href = "index.html";
+    myA.tabIndex = 0;
+    myA.classList.add("tabIndex");
+    console.log(myA.tabIndex);
+    const myLogo = document.createElement("img");
+
+    myLogo.classList.add("header_photographers_logo");
+    myA.appendChild(myLogo);
+
+    const myNav = document.createElement("nav");
+    headerAccueil.appendChild(myNav);
+    // a voir comment ajouter le role et le aria-label
+    myNav.role = "navigation";
+    myNav.arialabel = "photographer categories";
+    // mettre les tags onclick="showFilterTag(this)">${tag}
+
+    const myH1 = document.createElement("h1");
+    headerAccueil.appendChild(myH1)
+    myH1.id = "titlePhotographers";
+    myH1.textContent = "Nos Photographes";
+
+    spanNavsX.map((getValue) => {
+
+        myLogo.src = "public/img/" + getValue.logo;
+        myLogo.alt = getValue.altLogo;
+        getValue.tags.map((tag, index) => {
+            const mySpanHeader = document.createElement("span");
+            myNav.appendChild(mySpanHeader);
+            mySpanHeader.classList.add("spanTagHeader", "beforeTag", "tabIndex");
+            mySpanHeader.textContent = tag;
+            mySpanHeader.href = "#"+tag;
+            mySpanHeader.onclick = searchTag;
+            mySpanHeader.tabIndex = index + 1;
+            console.log(mySpanHeader.tabIndex);
+        }).join(" ");
+    }).join(" ")
+
+    await fetchPhotographers();
+    showPhotographers();
 }
 
-const datasProfilPhotograph = () => {
 
-    myImage.src = "./public/img/Photographers_ID_Photos/" + profilPhotograph[photograph].portrait;
-    myImage.alt = "portrait " + photographer;
-    myImage.classList.add("photographer_img");
-    myH2.textContent = profilPhotograph[photograph].name;
-    paraFrom.textContent = profilPhotograph[photograph].city + ', ' + profilPhotograph[photograph].country;
-    paraTagline.textContent = profilPhotograph[photograph].tagline;
-    paraPrice.textContent = profilPhotograph[photograph].price + "€/jour";
-    //Récupération des tagline dans le tableau
-    for (tag of profilPhotograph[photograph].tags) {
-        spanTags = document.createElement('span');
-        spanTags.classList.add("spanTag");
-        // console.log(spanTags);
-        spanTags.textContent = "#" + tag;
-        // spanTags.setAttribute("onclick", "getTag(this.innerHTML)");
-        divTags.appendChild(spanTags);
+/* Affichage des photographers */
+const showPhotographers = async () => {
+    // await fetchPhotographers();
 
-    }
-    _id = profilPhotograph[photograph].id;
-    a.href = "photographer-page.html?" + _id;
+    showData = dataJson["photographers"];
+    showData.map((photograph, index) => {
+
+        /* Création des balises HTML pour afficher les photographers */
+        const articlePhotograph = document.createElement("article");
+        articlePhotograph.classList.add("main_photographers", "tabIndex");
+        console.log(articlePhotograph.tabIndex);
+        const figurePhotograph = document.createElement("figure");
+        figurePhotograph.tabIndex = index + 9;
+        const imgPhotograph = document.createElement("img");
+        const figcaptionPhotograph = document.createElement("figcaption");
+        const h2Photograph = document.createElement("h2");
+        const divPhotograph = document.createElement("div");
+        divPhotograph.classList.add("infoPhotographer");
+        const pInfoPhotographerFrom = document.createElement("p");
+        pInfoPhotographerFrom.classList.add("infoPhotographer_from");
+        const pInfoPhotographerTagline = document.createElement("p");
+        pInfoPhotographerTagline.classList.add("infoPhotographer_tagline");
+        const pInfoPhotographerPrice = document.createElement("p");
+        pInfoPhotographerPrice.classList.add("infoPhotographer_price");
+        const divTags = document.createElement("div");
+
+        //Ajout de appenchild
+        mainAccueil.appendChild(articlePhotograph);
+
+        articlePhotograph.appendChild(figurePhotograph);
+        figurePhotograph.appendChild(imgPhotograph);
+        figurePhotograph.appendChild(figcaptionPhotograph);
+        figcaptionPhotograph.appendChild(h2Photograph);
+
+        articlePhotograph.appendChild(divPhotograph);
+        divPhotograph.appendChild(pInfoPhotographerFrom);
+        divPhotograph.appendChild(pInfoPhotographerTagline);
+        divPhotograph.appendChild(pInfoPhotographerPrice);
+
+        articlePhotograph.appendChild(divTags);
 
 
-    myArticle.setAttribute("id", _id);
-    myArticle.setAttribute("data-id", _id);
-    myArticle.appendChild(a);
-    myFigure.appendChild(myImage);
-    myFigure.appendChild(myFigcaption);
-    myFigcaption.appendChild(myH2);
-    a.appendChild(myFigure);
-    divInfo.appendChild(paraFrom);
-    divInfo.appendChild(paraTagline);
-    divInfo.appendChild(paraPrice);
+        /* Ajout des classes et d'Id */
+        figurePhotograph.id = photograph.id;
+        figurePhotograph.onclick = redirectionPhotograph;
+
+        imgPhotograph.classList.add("photographer_img");
+        imgPhotograph.src = "./public/img/Photographers_ID_Photos/" + photograph.portrait;
+        imgPhotograph.alt = "portrait de " + photograph.name;
+
+        h2Photograph.textContent = photograph.name;
+        pInfoPhotographerFrom.textContent = photograph.city + ", " + photograph.country;
+        pInfoPhotographerTagline.textContent = photograph.tagline;
+        pInfoPhotographerPrice.textContent = photograph.price + "€ / jour";
 
 
-    myArticle.appendChild(divInfo);
-    myArticle.appendChild(divTags);
-    main.appendChild(myArticle);
-
-    // spanTarget.addEventListener("click", (event) => {
-    //     console.log(event);
-    // })
+        photograph.tags.map((tag) => {
+            const spanTags = document.createElement("span");
+            spanTags.classList.add("spanTag");
+            // spanTags.onclick = addTagUrl;
+            spanTags.onclick = searchTag;
+            spanTags.textContent = tag;
+            divTags.appendChild(spanTags);
+        }).join(" ");
+    }).join(" ")
 }
 
-const datasMediaPhotographer = () => {
-    paraTitle.textContent = medias.title;
-    srcPicture = urlPicture.textContent.replace(" ", "_");
-    // console.log(urlPicture.textContent.replace(" ", "_"));
+/* Redirect url profil photograph page with ID */
+const redirectionPhotograph = (idProfil) => {
+    console.log(idProfil.path[1].id);
+    location.assign("photographer-page.html?id=" + idProfil.path[1].id);
 
-    myPictures.alt = medias.title;
-    myPictures.style.width = "320px";
-    myPictures.src = "./public/img/" + srcPicture + "/" + medias.image;
-    myVideos.src = "./public/img/" + srcPicture + "/" + medias.video;
-    myVideos.alt = medias.title;
-    myVideos.style.width = "320px";
-    profilPhotographerInfo.appendChild(myFigure);
-    // if (myFigure.src.endsWith("jpg")) {
-    myFigure.appendChild(myPictures);
-    // }
-    if (myVideos.src.endsWith("mp4")) {
-        myFigure.appendChild(myVideos);
-    }
-    myFigure.appendChild(myFigcaption);
-    myFigcaption.appendChild(paraTitle);
-    main.appendChild(profilPhotographerInfo)
 }
 
-const getTag = (tagtexte) => {
-    testSpan = tagtexte;
-    let urlBase = location.href
-    let idSpan = document.querySelector("#" + testSpan);
-    idSpan.classList.toggle("spanTagFocus");
-    if (idSpan.classList.contains("spanTagFocus")) {
-        // location.assign("#" + testSpan);
-        location.replace(urlBase + "#" + testSpan);
-        // showPhotographers(allPhotographers);
+/* Add tag profil photograph */
+const addTagUrl = (tagUrl) => {
+    console.log(tagUrl.path[0].textContent);
+    tagUrl.path[0].classList.toggle("spanTagFocus");
+    if (tagUrl.path[0].classList.contains("spanTagFocus")) {
+        location.assign(location.href + "#" + tagUrl.path[0].textContent);
+        //TODO Faire le filtre pour les tags
     } else {
-        location.replace(location.href.replace("#" + testSpan, ""));
+        location.replace(location.href.replace("#" + tagUrl.path[0].textContent, ""));
         // showPhotographers(allPhotographers);
     }
-    console.log("hash: " + location.hash);
+
 }
 
-function showPhotographers(jsonObj) {
-    profilPhotograph = jsonObj['photographers'];
-    for (photograph in profilPhotograph) {
-        createVariables();
-        const results = () => {
-            if (location.hash === "#" + testSpan) {
-                return datasProfilPhotograph();
-            } else if (location.hash === "") {
-                return datasProfilPhotograph();
-            }
-        }
-        console.log(results);
-        // if (location.hash === "#" + testSpan) {
-        //     for (tag of profilPhotograph[photograph].tags) {
-        //         if (tag === testSpan) {
-        //             datasProfilPhotograph();
-        //         }
-        //     }
-        // } else
-        // if (location.hash === "") {
-        //     datasProfilPhotograph();
-        // }
-    }
+/* Filtre en fonction du tag du header choisi */
+const searchTag = async (tagContent) => {
+    await fetchPhotographers();
+    mainAccueil.innerHTML = "";
+    showData
+        .filter(photograph => photograph.tags.includes(tagContent.target.textContent))
+        .map((photograph, index) => {
+
+            /* Création des balises HTML pour afficher les photographers */
+            const articlePhotograph = document.createElement("article");
+            articlePhotograph.classList.add("main_photographers", "tabIndex");
+            console.log(articlePhotograph.tabIndex);
+            const figurePhotograph = document.createElement("figure");
+            figurePhotograph.tabIndex = index + 9;
+            const imgPhotograph = document.createElement("img");
+            const figcaptionPhotograph = document.createElement("figcaption");
+            const h2Photograph = document.createElement("h2");
+            const divPhotograph = document.createElement("div");
+            divPhotograph.classList.add("infoPhotographer");
+            const pInfoPhotographerFrom = document.createElement("p");
+            pInfoPhotographerFrom.classList.add("infoPhotographer_from");
+            const pInfoPhotographerTagline = document.createElement("p");
+            pInfoPhotographerTagline.classList.add("infoPhotographer_tagline");
+            const pInfoPhotographerPrice = document.createElement("p");
+            pInfoPhotographerPrice.classList.add("infoPhotographer_price");
+            const divTags = document.createElement("div");
+
+            //Ajout de appenchild
+            mainAccueil.appendChild(articlePhotograph);
+
+            articlePhotograph.appendChild(figurePhotograph);
+            figurePhotograph.appendChild(imgPhotograph);
+            figurePhotograph.appendChild(figcaptionPhotograph);
+            figcaptionPhotograph.appendChild(h2Photograph);
+
+            articlePhotograph.appendChild(divPhotograph);
+            divPhotograph.appendChild(pInfoPhotographerFrom);
+            divPhotograph.appendChild(pInfoPhotographerTagline);
+            divPhotograph.appendChild(pInfoPhotographerPrice);
+
+            articlePhotograph.appendChild(divTags);
+
+
+            /* Ajout des classes et d'Id */
+            figurePhotograph.id = photograph.id;
+            figurePhotograph.onclick = redirectionPhotograph;
+
+            imgPhotograph.classList.add("photographer_img");
+            imgPhotograph.src = "./public/img/Photographers_ID_Photos/" + photograph.portrait;
+            imgPhotograph.alt = "portrait de " + photograph.name;
+
+            h2Photograph.textContent = photograph.name;
+            pInfoPhotographerFrom.textContent = photograph.city + ", " + photograph.country;
+            pInfoPhotographerTagline.textContent = photograph.tagline;
+            pInfoPhotographerPrice.textContent = photograph.price + "€ / jour";
+
+
+            photograph.tags.map((tag) => {
+                const spanTags = document.createElement("span");
+                spanTags.classList.add("spanTag");
+                spanTags.onclick = searchTag;
+                spanTags.textContent = tag;
+                divTags.appendChild(spanTags);
+            }).join(" ");
+        }).join(" ")
+    // console.log(tagContent.target.textContent);
 }
 
-function showMedia(jsonObj) {
-    dataLastOfIndex = location.href.substring(location.href.lastIndexOf("?") + 1);
-    console.log(dataLastOfIndex);
 
-    profilPhotograph = jsonObj['photographers'];
-    for (photograph in profilPhotograph) {
-        createVariables();
+/* Touche accessibilité */
 
-        if (profilPhotograph[photograph].id == dataLastOfIndex) {
-            datasProfilPhotograph();
-        }
-    }
 
-    mediaPhotograph = jsonObj['media'];
+// window.addEventListener("keydown", function (event) {
+//     if (event.defaultPrevented) {
+//         return; // Ne devrait rien faire si l'événement de la touche était déjà consommé.
+//     }
+//
+//     switch (event.key) {
+//         case "ArrowLeft":
+//             console.log(event.key);
+//             if (event.target.tabIndex < 0){
+//                 console.log("-1 "+event.target.tabIndex);
+//                 return event.target.tabIndex - 1;
+//             }
+//             // if ()
+//             // Faire quelque chose pour la touche "left arrow" pressée.
+//             break;
+//         case "ArrowRight":
+//             console.log(event.key);
+//             if (event.target.tabIndex > 0){
+//                 console.log("+1 "+event.target.tabIndex);
+//                 return event.target.tabIndex + 1;
+//             }
+//             // Faire quelque chose pour la touche "right arrow" pressée.
+//             break;
+//         case "Enter":
+//             // Faire quelque chose pour les touches "enter" ou "return" pressées.
+//             if (event.target.tabIndex == 0){
+//                 return event.target.href = "index.html";
+//             }
+//             if (event.target.tabIndex > 0){
+//                 console.log("spanTag");
+//             }
+//             break;
+//         default:
+//             return; // Quitter lorsque cela ne gère pas l'événement touche.
+//     }
+//
+//     // Annuler l'action par défaut pour éviter qu'elle ne soit traitée deux fois.
+//     event.preventDefault();
+// }, true);
 
-    for (medias of mediaPhotograph) {
-        //Media variables
-        createVariables();
-
-        if (medias.photographerId == dataLastOfIndex) {
-            datasMediaPhotographer();
-        }
-    }
-}
-
-initializeData();
-
+showHeaderPage();

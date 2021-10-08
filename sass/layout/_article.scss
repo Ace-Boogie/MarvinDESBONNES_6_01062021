@@ -1,36 +1,42 @@
 .main_photographers {
   display: flex;
   flex-direction: column;
-  width: 33%;
   text-align: center;
   margin-bottom: 2%;
+  width: 100%;
+
+  //version desktop
+  @media (min-width: 427px) {
+    width: 33%;
+  }
 
   > figure {
-    > .photographer_img {
-      height: 200px;
-      width: 200px;
-      image-rendering: auto;
-      border-radius: 50%;
+    margin-bottom: 0;
+    &:focus {
+      outline: 1px solid grey;
     }
 
     > figcaption {
       > h2 {
-        color: $fc-light-red-primary;
+        @include h2-propriete;
       }
     }
   }
+}
 
-  > .infoPhotographer {
-    &:first-line {
-      color: $fc-light-red-primary;
-    }
 
-    &:last-child {
-      color: $fc-default-secondary;
-    }
+.infoPhotographer {
+  padding: 0;
+
+  &_from {
+    @include infoPhotographer-from;
   }
 
-  > .tagsPhotographer {
+  &_tagline {
+    @include infoPhotographer-tagline;
+  }
 
+  &_price {
+    @include infoPhotographer-price;
   }
 }

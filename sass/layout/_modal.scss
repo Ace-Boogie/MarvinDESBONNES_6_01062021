@@ -1,0 +1,299 @@
+//div contact-me
+#contact-me {
+  position: fixed;
+  bottom: 5%;
+  left: 30%;
+
+  //version desktop
+  @media (min-width: 427px) {
+    position: relative;
+  }
+}
+/* button de la div contact-me */
+.btn-contact-me {
+  margin: auto;
+  width: 170px;
+  height: 35px;
+
+  font-style: normal;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 23px;
+  text-align: center;
+  color: #fff;
+  background: #911C1C;
+  border-radius: 5px;
+
+  //version desktop
+  @media (min-width: 427px) {
+    height: 69px;
+    font-size: 20px;
+    line-height: 26px;
+  }
+
+  &:hover {
+    background-color: #DB8876;
+  }
+}
+
+// formulaire Contact
+
+.bground, .contain-modal-body {
+  display: none;
+  //margin: 5% 25%;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  background-color: rgba(196, 196, 196, 0.4);
+  z-index: 2;
+
+  //version desktop
+  @media (min-width: 427px) {
+    z-index: 0;
+  }
+
+}
+
+
+.content-modal-body {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  //top: 0;
+  //left: 0;
+  height: 812px;
+  overflow: auto;
+  border-radius: 5px;
+  margin: 0 auto;
+
+  font-family: $fontDM;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 31px;
+  background-color: #DB8876;
+
+  //version desktop
+  @media (min-width: 427px) {
+    width: 46%;
+    //left: 21%;
+    top: 1%;
+    height: 1024px;
+    font-size: 36px;
+    line-height: 47px;
+  }
+
+
+  > .modal-body {
+    margin: 1% 6% 0 6%;
+  }
+}
+
+#contact-modal-h1 {
+  font-size: 36px;
+  line-height: 47px;
+  text-align: left;
+  font-style: normal;
+  font-weight: normal;
+  margin: 0;
+
+  //version desktop
+  @media (min-width: 427px) {
+    font-size: 64px;
+    line-height: 83px;
+  }
+}
+
+.text-control {
+  width: 90%;
+  height: 52px;
+  background: #FFFFFF;
+  border-radius: 5px;
+  margin-top: 3%;
+  margin-bottom: 5%;
+  //version desktop
+  @media (min-width: 427px) {
+    height: 68px;
+  }
+}
+
+.text-area {
+  height: 184px;
+
+  //version desktop
+  @media (min-width: 427px) {
+    height: 170px;
+  }
+}
+
+#divBtnPostData {
+  text-align: center;
+}
+
+#btnPostData {
+  width: 170px;
+  height: 35px;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 23px;
+  text-align: center;
+
+  color: #FFFFFF;
+  background-color: #911C1C;
+  border-radius: 5px;
+
+  //version desktop
+  @media (min-width: 427px) {
+    height: 69px;
+  }
+}
+
+.close {
+  position: absolute;
+  right: 11%;
+  top: 3%;
+  width: 18px;
+  height: 18px;
+  opacity: 1;
+  cursor: pointer;
+  transform: scale(0.7);
+  margin: 0;
+
+  //version desktop
+  @media (min-width: 427px) {
+    right: 9%;
+    top: 5%;
+    width: 42px;
+    height: 42px;
+  }
+}
+
+.close:before,
+.close:after {
+  position: absolute;
+  left: 15px;
+  content: " ";
+  height: 45px;
+  width: 7px;
+  background-color: #fff;
+
+  //version desktop
+  @media (min-width: 427px) {
+    height: 65px;
+    width: 10px;
+  }
+}
+
+.close:before {
+  transform: rotate(45deg);
+}
+
+.close:after {
+  transform: rotate(-45deg);
+}
+
+
+/* LightBox */
+
+//#photographer-page {
+//  background : red;
+//  padding-top: 40px;
+//  @media screen and (min-width: 991px) {
+//    padding: 60px 30px 0 30px;
+//  }
+//}
+
+//.img-wrapper {
+//  position: relative;
+//  margin-top: 15px;
+//  img {
+//    width: 100%;
+//  }
+//}
+//.img-overlay {
+//  background: rgba(0,0,0,0.7);
+//  width: 100%;
+//  height: 100%;
+//  position: absolute;
+//  top: 0;
+//  left: 0;
+//  display: flex;
+//  justify-content: center;
+//  align-items: center;
+//  opacity: 0;
+//  i {
+//    color: #fff;
+//    font-size: 3em;
+//  }
+//}
+
+#overlay {
+  background: white;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  //display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  // Removes blue highlight
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+   > img, video {
+    margin: 0;
+     width: 290px;
+     height: 248px;
+     object-fit: cover;
+    padding: 5%;
+    @media screen and (min-width:768px) {
+      width: 60%;
+    }
+    @media screen and (min-width:1200px) {
+      width: 50%;
+    }
+  }
+}
+
+#nextButton {
+  color: #901C1C;
+  font-size: 2em;
+  transition: opacity 0.8s;
+  &:hover {
+    opacity: 0.7;
+  }
+  @media screen and (min-width:768px) {
+    font-size: 3em;
+  }
+}
+
+#prevButton {
+  color: #901C1C;
+  font-size: 2em;
+  transition: opacity 0.8s;
+  &:hover {
+    opacity: 0.7;
+  }
+  @media screen and (min-width:768px) {
+    font-size: 3em;
+  }
+}
+
+#exitButton {
+  color: #901C1C;
+  font-size: 2em;
+  transition: opacity 0.8s;
+  position: absolute;
+  top: 34%;
+  right: 4%;
+  &:hover {
+    opacity: 0.7;
+  }
+  @media screen and (min-width:768px) {
+    font-size: 3em;
+  }
+}

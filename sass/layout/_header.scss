@@ -1,7 +1,103 @@
-.header_photograph {
-  //width: 100%;
+/*Button pour passer au contenu */
+.scroll-hide {
+  // version desktop
+  @media (min-width: 427px) {
+    display: none;
+    position: fixed;
+    justify-content: center;
+    z-index: 5;
+    top: 5%;
+    text-decoration: none;
+
+    width: 182px;
+    height: 30px;
+    background: #DB8876;
+    border-radius: 5px;
+    border: none;
+
+    font-family: $fontDM;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 23px;
+    text-align: center;
+
+    color: #000000;
+
+    &:focus {
+      outline: 1px solid grey;
+    }
+  }
+}
+
+.header_photographers {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 100%;
+  margin-top: 8%;
+
+  // version desktop
+  @media (min-width: 427px) {
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: nowrap;
+    margin-top: 0;
+    margin-bottom: 8%;
+  }
+
+  // mettre un order
+  > #aImg {
+    order: 1;
+  }
+
+  > nav {
+    order: 3;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 84%;
+
+    // version desktop
+    @media (min-width: 427px) {
+      order: 2;
+      width: 47%;
+    }
+  }
+
+  &_logo {
+    height: 37.5px;
+    // version desktop
+    @media (min-width: 427px) {
+      height: 50px;
+    }
+  }
+
+  // Pour modifier les tags voir .spanTag dans le fichier _base.scss
+
+  > h1 {
+    //width: 306px;
+    order: 2;
+    font-size: 14px;
+    line-height: 18px;
+    margin-bottom: 0;
+    height: 47px;
+
+    font-family: $fontDM;
+    font-style: normal;
+    font-weight: normal;
+
+    /* identical to box height */
+    color: $bgc-red-primary;
+
+    // version desktop
+    @media (min-width: 427px) {
+      font-size: 36px;
+      line-height: 47px;
+      order: 3;
+    }
+
+  }
 
   &_article {
     width: 100%;
@@ -25,21 +121,39 @@
       }
     }
   }
-  &_article_img{
-    > .photographer_img {
-      height: 200px;
-      width: 200px;
-      image-rendering: auto;
-      border-radius: 50%;
-    }
+
+  &_article_img {
   }
 }
-.btn-contact-me {
-  color:#fff;
-  font-size:21px;
-  margin:auto;
-  height: 75px;
-  border-radius: 0;
-  background-color: $fc-red-secondary;
+
+//Photo profil photographers
+.photographer_img {
+  height: 200px;
+  width: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+
+  // version desktop
+  @media (min-width: 427px) {
+    height: 200px;
+    width: 200px;
+    image-rendering: auto;
+    border-radius: 50%;
+  }
 }
 
+.photographer_img_page_header {
+  height: 100px;
+  width: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: 10%;
+
+  // version desktop
+  @media (min-width: 427px) {
+    height: 200px;
+    width: 200px;
+    image-rendering: auto;
+    border-radius: 50%;
+  }
+}

@@ -1,0 +1,11 @@
+#mainAccueil {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  // version desktop
+  @media screen and (min-width: 427px) {
+    flex-direction: row;
+    //width: 100%;
+  }
+}
+
