@@ -186,14 +186,15 @@ const showPhotographers = async () => {
 
 /* Redirect url profil photograph page with ID */
 const redirectionPhotograph = (idProfil) => {
-    console.log(idProfil.path[1].id);
-    location.assign("photographer-page.html?id=" + idProfil.path[1].id);
+    console.log(idProfil.target.id);
+    location.assign("photographer-page.html?id=" + idProfil.target.id);
 
 }
 
 /* Add tag profil photograph */
 const addTagUrl = (tagUrl) => {
     console.log(tagUrl.path[0].textContent);
+    console.log(tagUrl.target.textContent);
     tagUrl.path[0].classList.toggle("spanTagFocus");
     if (tagUrl.path[0].classList.contains("spanTagFocus")) {
         location.assign(location.href + "#" + tagUrl.path[0].textContent);
