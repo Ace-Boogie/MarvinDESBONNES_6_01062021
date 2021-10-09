@@ -163,6 +163,7 @@ const showPhotographers = async () => {
         figurePhotograph.id = photograph.id;
         figurePhotograph.onclick = redirectionPhotograph;
 
+        imgPhotograph.id = photograph.id;
         imgPhotograph.classList.add("photographer_img");
         imgPhotograph.src = "./public/img/Photographers_ID_Photos/" + photograph.portrait;
         imgPhotograph.alt = "portrait de " + photograph.name;
@@ -191,24 +192,17 @@ const redirectionPhotograph = (idProfil) => {
 
 }
 
-/* Add tag profil photograph */
-const addTagUrl = (tagUrl) => {
-    console.log(tagUrl.path[0].textContent);
-    console.log(tagUrl.target.textContent);
-    tagUrl.path[0].classList.toggle("spanTagFocus");
-    if (tagUrl.path[0].classList.contains("spanTagFocus")) {
-        location.assign(location.href + "#" + tagUrl.path[0].textContent);
-        //TODO Faire le filtre pour les tags
-    } else {
-        location.replace(location.href.replace("#" + tagUrl.path[0].textContent, ""));
-        // showPhotographers(allPhotographers);
-    }
-
-}
 
 /* Filtre en fonction du tag du header choisi */
 const searchTag = async (tagContent) => {
     await fetchPhotographers();
+    console.log(tagContent.target);
+    if (location.hash){
+        location.hash = "";
+    }
+    // tagContent.target.classList.add("spanTagFocus");
+    location.hash = "#"+tagContent.target.textContent;
+
     mainAccueil.innerHTML = "";
     showData
         .filter(photograph => photograph.tags.includes(tagContent.target.textContent))
