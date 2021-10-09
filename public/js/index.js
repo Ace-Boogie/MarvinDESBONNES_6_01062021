@@ -186,9 +186,9 @@ const showPhotographers = async () => {
 }
 
 /* Redirect url profil photograph page with ID */
-const redirectionPhotograph = (idProfil) => {
+const redirectionPhotograph = (idPhotograph) => {
     console.log(idProfil.target.id);
-    location.assign("photographer-page.html?id=" + idProfil.target.id);
+    location.assign("photographer-page.html?id=" + idPhotograph.target.id);
 
 }
 
