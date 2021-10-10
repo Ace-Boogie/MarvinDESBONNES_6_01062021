@@ -21,8 +21,11 @@
 
   //version desktop
   @media (min-width: 427px) {
-    width: 86%;
-    margin: 0 auto;
+    width: 90%;
+    height: 313px;
+    background: #fafafa;
+    border-radius: 5px;
+    margin: auto;
   }
 
   &_article {
@@ -33,7 +36,8 @@
 
     //version desktop
     @media (min-width: 427px) {
-      justify-content: space-between;
+      height: 313px;
+      justify-content: space-around;
     }
 
     &_info {
@@ -112,45 +116,49 @@
     justify-content: space-around;
     position: fixed;
     bottom: 0;
-    right: 0;
-    width: 15%;
-    //background-color: $bgc-light-red-secondary;
+    right: 3%;
+    width: 26%;
+    height: 9%;
     background-color: #db8876;
     font-size: large;
+    > p {
+      font-family: $fontDM;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 24px;
+      line-height: 31px;
+    }
   }
 }
 
 
-//Hide contact-me et trierPar du profil photograph
+/* Affichage desktop du Tri par */
 #trierPar {
   display: none;
   @media (min-width: 427px) {
     display: flex;
+    width: 86%;
+    align-items: center;
+    margin: 0 auto;
+
+    > label {
+      width: 74px;
+      height: 23px;
+
+      font-family: $fontDM;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 18px;
+      line-height: 23px;
+      margin-right: 2%;
+    }
   }
 }
 
-//Trier par popularité, date, titre
-.trierPar {
-  width: 86%;
-  display: flex;
-  align-items: center;
-  //max-width: 1240px;
-  margin: 0 auto;
-
-  > label {
-    width: 74px;
-    height: 23px;
-
-    font-family: $fontDM;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 18px;
-    line-height: 23px;
-    margin-right: 2%;
-  }
-}
-
+/* Tri par -> select avec option */
 #chooseBy {
+  cursor: pointer;
+  //display: inline-block;
   width: 170px;
   height: 56px;
 
@@ -170,9 +178,12 @@
 
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 
+
   > option {
     color: #fff;
-    background-color: #92b6d5;
+    background-color: #911C1C;
+    border: none;
+    border-bottom: 1px white solid;
     width: 20px;
   }
 
@@ -190,6 +201,77 @@
     transition: .25s all ease;
     pointer-events: none;
   }
+
+  .select {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    font-size: 16px;
+    //color: $select-color;
+    //width: $select-width;
+    //height: $select-height;
+  }
+
+  .select-styled {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    //background-color: $select-background;
+    padding: 8px 15px;
+    //@include transition(all 0.2s ease-in);
+    &:after {
+      content: "";
+      width: 0;
+      height: 0;
+      border: 7px solid transparent;
+      //border-color: $select-color transparent transparent transparent;
+      position: absolute;
+      top: 16px;
+      right: 10px;
+    }
+
+    &:hover {
+      //background-color: darken($select-background, 2);
+    }
+
+    &:active, &.active {
+      //background-color: darken($select-background, 5);
+      &:after {
+        top: 9px;
+        //border-color: transparent transparent $select-color transparent;
+      }
+    }
+  }
+
+  .select-options {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    z-index: 999;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    //background-color: darken($select-background, 5);
+    li {
+      margin: 0;
+      padding: 12px 0;
+      text-indent: 15px;
+      //border-top: 1px solid darken($select-background, 10);
+      //@include transition(all 0.15s ease-in);
+      &:hover {
+        //color: $select-background;
+        //background: $select-color;
+      }
+
+      &[rel="hide"] {
+        display: none;
+      }
+    }
+  }
 }
 
 //Photo et vidéo photographer-page.html
@@ -205,6 +287,7 @@
   @media (min-width: 427px) {
     flex-direction: row;
     margin: 0 auto;
+    text-align: center;
   }
 
   > article {
@@ -248,6 +331,13 @@
           width: 89%;
           height: 300px;
           background: #C4C4C4;
+        }
+      }
+
+      > figcaption {
+        @media (min-width: 427px) {
+          width: 70%;
+          margin: auto;
         }
       }
     }

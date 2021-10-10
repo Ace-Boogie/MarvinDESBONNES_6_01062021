@@ -17,6 +17,7 @@ const divNextBtn = document.createElement("div");
 const iNext = document.createElement("i");
 const divExitBtn = document.createElement("div");
 const iExit = document.createElement("i");
+const h2Overlay = document.createElement("h2");
 const numberOfImages = document.querySelectorAll(".lightBoxMedia").length;
 
 /*Lier les HTML via appendChild */
@@ -130,6 +131,9 @@ const showHeaderMain = async () => {
                 myFormContain.appendChild(myContentModalBody);
 
                 const myCloseModal = document.createElement("span");
+                const iMyCloseModal = document.createElement("i");
+                myCloseModal.appendChild(iMyCloseModal);
+                iMyCloseModal.classList.add("fa", "fa-times");
                 myCloseModal.id = "closeModal";
                 myCloseModal.classList.add("close");
                 myCloseModal.onclick = closeModal;
@@ -214,15 +218,14 @@ const showHeaderMain = async () => {
                 myTextareaMessage.required = true;
                 myFormDataMessage.appendChild(myTextareaMessage);
 
-                const myDivBtnPostData = document.createElement("div");
-                myDivBtnPostData.id = "divBtnPostData";
-                myForm.appendChild(myDivBtnPostData);
-                const myInputBtnPostData = document.createElement("input");
+                const myInputBtnPostData = document.createElement("button");
                 myInputBtnPostData.id = "btnPostData";
                 myInputBtnPostData.classList.add("btn-submit", "button");
                 myInputBtnPostData.type = "submit";
                 myInputBtnPostData.value = "Envoyer";
-                myDivBtnPostData.appendChild(myInputBtnPostData);
+                myInputBtnPostData.textContent = "Envoyer";
+                // myDivBtnPostData.appendChild(myInputBtnPostData);
+                myForm.appendChild(myInputBtnPostData);
 
                 /* Affichage de la photo du profil */
                 const myDivPhotoProfil = document.createElement("div");
@@ -317,12 +320,14 @@ const showMediaOfPhotograph = async () => {
             imgMedia.setAttribute("data-slide-to", index);
             imgMedia.onclick = lightBox;
             imgMedia.alt = media.image;
+            imgMedia.title = media.title;
 
             const videoMedia = document.createElement("video");
             videoMedia.id = media.id;
             videoMedia.classList.add("nbMedia");
             videoMedia.setAttribute("data-slide-to", index);
             videoMedia.onclick = lightBox;
+            videoMedia.title = media.title;
 
             const figcaptionMedia = document.createElement("figcaption");
             figcaptionMedia.classList.add("media_figcaption");
@@ -563,11 +568,12 @@ const showLikePrice = async () => {
 
 /* Ajouter ou Retirer un like */
 const addLike = (event) => {
-    if (event.path[0].id === event.path[0].textContent) {
-        event.path[0].textContent = parseInt(event.path[0].textContent, 10) + 1;
+    //changement target effectué path
+    if (event.target.id === event.target.textContent) {
+        event.target.textContent = parseInt(event.target.textContent, 10) + 1;
         resultHearts.textContent = parseInt(resultHearts.textContent, 10) + 1;
-    } else if (event.path[0].id !== event.path[0].textContent) {
-        event.path[0].textContent = parseInt(event.path[0].textContent, 10) - 1;
+    } else if (event.target.id !== event.target.textContent) {
+        event.target.textContent = parseInt(event.target.textContent, 10) - 1;
         resultHearts.textContent = parseInt(resultHearts.textContent, 10) - 1;
     }
 }
@@ -590,7 +596,7 @@ const closeModal = () => {
 const lightBox = (val) => {
 
     const nbMedia = document.querySelectorAll(".nbMedia");
-    let indexMedia = val.path[0].getAttribute("data-slide-to");
+    let indexMedia = val.target.getAttribute("data-slide-to");
 
     overlay.id = "overlay";
     overlay.style.display = "flex";
@@ -623,43 +629,51 @@ const lightBox = (val) => {
     divExitBtn.appendChild(iExit);
     divExitBtn.addEventListener("click", closeLightBox);
 
+    h2Overlay.textContent = val.target.title;
+    h2Overlay.id = "titleOverlay";
 
-    let resultVideo = val.path[0].src;
+
+    let resultVideo = val.target.src;
     console.log(resultVideo.endsWith(".mp4"));
     let isVideo = resultVideo.endsWith(".mp4");
     if (isVideo) {
         overlay.appendChild(divPrevBtn);
         overlay.appendChild(videoOverlay);
         videoOverlay.setAttribute("data-slide-to", indexMedia);
+        //TODO voir comment le placer en dessous de l'image voir peut être div
+        overlay.appendChild(h2Overlay);
         overlay.appendChild(divNextBtn);
         overlay.appendChild(divExitBtn);
         if (overlay.appendChild(imgOverlay)) {
             overlay.removeChild(imgOverlay);
         }
-        return videoOverlay.src = val.path[0].src;
+        return videoOverlay.src = val.target.src;
     } else {
         overlay.appendChild(divPrevBtn);
         overlay.appendChild(imgOverlay);
         imgOverlay.setAttribute("data-slide-to", indexMedia);
+        overlay.appendChild(h2Overlay);
         overlay.appendChild(divNextBtn);
         overlay.appendChild(divExitBtn);
         if (overlay.appendChild(videoOverlay)) {
             overlay.removeChild(videoOverlay);
         }
-        return imgOverlay.src = val.path[0].src;
+        return imgOverlay.src = val.target.src;
     }
 
     /* Au clic sur la flèche droite sur la lightBox */
     function nextMediaLightBox(valueIndex) {
-        let nbDataSlide = parseInt(valueIndex.path[1].getAttribute("data-slide-to"));
-        console.log(valueIndex.path[2].childNodes[1].src);
+        let nbDataSlide = parseInt(valueIndex.target.parentElement.getAttribute("data-slide-to"));
+        // console.log(valueIndex.target.parentElement.getAttribute("data-slide-to"));
+        // console.log(valueIndex.target.parentElement.parentNode.childNodes[1].src);
         if (nbDataSlide < nbMedia.length) {
-            if (valueIndex.path[2].childNodes[1].src.endsWith(".mp4")) {
+            if (valueIndex.target.parentElement.parentNode.childNodes[1].src.endsWith(".mp4")) {
                 console.log(!nbMedia[nbDataSlide + 1].src.endsWith(".mp4"));
                 if (nbMedia[nbDataSlide + 1].src.endsWith(".mp4")) {
                     overlay.appendChild(divPrevBtn);
                     overlay.appendChild(videoOverlay);
                     videoOverlay.setAttribute("data-slide-to", nbDataSlide + 1);
+                    overlay.appendChild(h2Overlay);
                     if (overlay.appendChild(imgOverlay)) {
                         overlay.removeChild(imgOverlay);
                     }
@@ -667,11 +681,13 @@ const lightBox = (val) => {
                     overlay.appendChild(divExitBtn);
                     divNextBtn.setAttribute("data-slide-to", nbDataSlide + 1);
                     divPrevBtn.setAttribute("data-slide-to", nbDataSlide + 1);
+                    h2Overlay.textContent = nbMedia[nbDataSlide + 1].title
                     return videoOverlay.src = nbMedia[nbDataSlide + 1].src;
                 } else {
                     overlay.appendChild(divPrevBtn);
                     overlay.appendChild(imgOverlay);
                     imgOverlay.setAttribute("data-slide-to", nbDataSlide + 1);
+                    overlay.appendChild(h2Overlay);
                     if (overlay.appendChild(videoOverlay)) {
                         overlay.removeChild(videoOverlay);
                     }
@@ -679,6 +695,7 @@ const lightBox = (val) => {
                     overlay.appendChild(divExitBtn);
                     divNextBtn.setAttribute("data-slide-to", nbDataSlide + 1);
                     divPrevBtn.setAttribute("data-slide-to", nbDataSlide + 1);
+                    h2Overlay.textContent = nbMedia[nbDataSlide + 1].title
                     return imgOverlay.src = nbMedia[nbDataSlide + 1].src;
                 }
             } else {
@@ -686,6 +703,7 @@ const lightBox = (val) => {
                     overlay.appendChild(divPrevBtn);
                     overlay.appendChild(imgOverlay);
                     imgOverlay.setAttribute("data-slide-to", nbDataSlide + 1);
+                    overlay.appendChild(h2Overlay);
                     if (overlay.appendChild(videoOverlay)) {
                         overlay.removeChild(videoOverlay);
                     }
@@ -693,12 +711,14 @@ const lightBox = (val) => {
                     overlay.appendChild(divExitBtn);
                     divNextBtn.setAttribute("data-slide-to", nbDataSlide + 1);
                     divPrevBtn.setAttribute("data-slide-to", nbDataSlide + 1);
+                    h2Overlay.textContent = nbMedia[nbDataSlide + 1].title
                     return imgOverlay.src = nbMedia[nbDataSlide + 1].src;
 
                 } else {
                     overlay.appendChild(divPrevBtn);
                     overlay.appendChild(videoOverlay);
                     videoOverlay.setAttribute("data-slide-to", nbDataSlide + 1);
+                    overlay.appendChild(h2Overlay);
                     if (overlay.appendChild(imgOverlay)) {
                         overlay.removeChild(imgOverlay);
                     }
@@ -706,6 +726,7 @@ const lightBox = (val) => {
                     overlay.appendChild(divExitBtn);
                     divNextBtn.setAttribute("data-slide-to", nbDataSlide + 1);
                     divPrevBtn.setAttribute("data-slide-to", nbDataSlide + 1);
+                    h2Overlay.textContent = nbMedia[nbDataSlide + 1].title
                     return videoOverlay.src = nbMedia[nbDataSlide + 1].src;
                 }
             }
@@ -714,15 +735,16 @@ const lightBox = (val) => {
 
     /* Au clic sur la flèche gauche de la lightBox */
     function prevMediaLightBox(valueIndex) {
-        let nbDataSlide = parseInt(valueIndex.path[1].getAttribute("data-slide-to"));
-        console.log(valueIndex.path[2].childNodes[1].src);
+        let nbDataSlide = parseInt(valueIndex.target.parentElement.getAttribute("data-slide-to"));
+        // console.log(valueIndex.target.parentElement.parentNode.childNodes[1].src.endsWith(".mp4"));
         if (nbDataSlide > 0) {
-            if (valueIndex.path[2].childNodes[1].src.endsWith(".mp4")) {
+            if (valueIndex.target.parentElement.parentNode.childNodes[1].src.endsWith(".mp4")) {
                 console.log(!nbMedia[nbDataSlide - 1].src.endsWith(".mp4"));
                 if (nbMedia[nbDataSlide - 1].src.endsWith(".mp4")) {
                     overlay.appendChild(divPrevBtn);
                     overlay.appendChild(videoOverlay);
                     videoOverlay.setAttribute("data-slide-to", nbDataSlide - 1);
+                    overlay.appendChild(h2Overlay);
                     if (overlay.appendChild(imgOverlay)) {
                         overlay.removeChild(imgOverlay);
                     }
@@ -730,11 +752,13 @@ const lightBox = (val) => {
                     overlay.appendChild(divExitBtn);
                     divNextBtn.setAttribute("data-slide-to", nbDataSlide - 1);
                     divPrevBtn.setAttribute("data-slide-to", nbDataSlide - 1);
+                    h2Overlay.textContent = nbMedia[nbDataSlide - 1].title
                     return videoOverlay.src = nbMedia[nbDataSlide - 1].src;
                 } else {
                     overlay.appendChild(divPrevBtn);
                     overlay.appendChild(imgOverlay);
                     imgOverlay.setAttribute("data-slide-to", nbDataSlide - 1);
+                    overlay.appendChild(h2Overlay);
                     if (overlay.appendChild(videoOverlay)) {
                         overlay.removeChild(videoOverlay);
                     }
@@ -742,6 +766,7 @@ const lightBox = (val) => {
                     overlay.appendChild(divExitBtn);
                     divNextBtn.setAttribute("data-slide-to", nbDataSlide - 1);
                     divPrevBtn.setAttribute("data-slide-to", nbDataSlide - 1);
+                    h2Overlay.textContent = nbMedia[nbDataSlide - 1].title
                     return imgOverlay.src = nbMedia[nbDataSlide - 1].src;
                 }
             } else {
@@ -749,6 +774,7 @@ const lightBox = (val) => {
                     overlay.appendChild(divPrevBtn);
                     overlay.appendChild(videoOverlay);
                     videoOverlay.setAttribute("data-slide-to", nbDataSlide - 1);
+                    overlay.appendChild(h2Overlay);
                     if (overlay.appendChild(imgOverlay)) {
                         overlay.removeChild(imgOverlay);
                     }
@@ -756,11 +782,13 @@ const lightBox = (val) => {
                     overlay.appendChild(divExitBtn);
                     divNextBtn.setAttribute("data-slide-to", nbDataSlide - 1);
                     divPrevBtn.setAttribute("data-slide-to", nbDataSlide - 1);
+                    h2Overlay.textContent = nbMedia[nbDataSlide - 1].title
                     return videoOverlay.src = nbMedia[nbDataSlide - 1].src;
                 } else {
                     overlay.appendChild(divPrevBtn);
                     overlay.appendChild(imgOverlay);
                     imgOverlay.setAttribute("data-slide-to", nbDataSlide - 1);
+                    overlay.appendChild(h2Overlay);
                     if (overlay.appendChild(videoOverlay)) {
                         overlay.removeChild(videoOverlay);
                     }
@@ -768,6 +796,7 @@ const lightBox = (val) => {
                     overlay.appendChild(divExitBtn);
                     divNextBtn.setAttribute("data-slide-to", nbDataSlide - 1);
                     divPrevBtn.setAttribute("data-slide-to", nbDataSlide - 1);
+                    h2Overlay.textContent = nbMedia[nbDataSlide - 1].title
                     return imgOverlay.src = nbMedia[nbDataSlide - 1].src;
                 }
             }
