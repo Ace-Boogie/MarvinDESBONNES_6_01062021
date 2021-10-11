@@ -48,14 +48,20 @@
 
       > h2 {
         @include h2-propriete;
+        font-size: 64px;
+        line-height: 83px;
       }
 
       &_from {
         @include infoPhotographer-from;
+        font-size: 24px;
+        line-height: 31px;
       }
 
       &_tagline {
         @include infoPhotographer-tagline;
+        font-size: 18px;
+        line-height: 23px;
       }
 
       > h2, &_from, &_tagline {

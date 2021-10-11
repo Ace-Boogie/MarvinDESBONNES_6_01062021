@@ -9,11 +9,6 @@
   text-align: center;
   color: $fc-light-red-primary;
   margin-bottom: 0;
-
-  @media (min-width: 427px) {
-    font-size: 64px;
-    line-height: 83px;
-  }
 }
 
 @mixin infoPhotographer-from {
@@ -27,10 +22,6 @@
   text-align: center;
   color: #901C1C;
 
-  @media (min-width: 427px) {
-    font-size: 24px;
-    line-height: 31px;
-  }
 }
 @mixin infoPhotographer-tagline {
   font-family: $fontDM;
@@ -43,11 +34,7 @@
   text-align: center;
   color: #525252;
 
-  @media (min-width: 427px) {
-    font-size: 18px;
-    line-height: 23px;
-  }
-}
+ }
 @mixin infoPhotographer-price {
   font-family: $fontDM;
   font-style: normal;

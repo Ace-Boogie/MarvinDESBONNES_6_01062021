@@ -37,12 +37,6 @@ let spanNavsX = [
         "tags": ["portrait", "art", "fashion", "architecture", "travel", "sport", "animals", "events"]
     }];
 
-//TODO essayer de filter avec ça
-// <li>
-//     <a href="index.html?tags=architecture" aria-label="Tag Architecture" className="tag__li"
-//        id="architecture">#Architecture</a>
-// </li>
-
 
 /* Affichage du header de la page */
 const showHeaderPage = async () => {
