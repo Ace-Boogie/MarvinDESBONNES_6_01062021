@@ -1,19 +1,9 @@
-//div contact-me
+/* button contact-me */
 #contact-me {
   position: fixed;
   bottom: 5%;
   left: 30%;
 
-  //version desktop
-  @media (min-width: 427px) {
-    position: relative;
-    left: 0;
-    bottom: 0;
-  }
-}
-
-/* button de la div contact-me */
-.btn-contact-me {
   margin: auto;
   width: 170px;
   height: 35px;
@@ -29,13 +19,18 @@
 
   //version desktop
   @media (min-width: 427px) {
+    position: relative;
+    left: -10%;
+    bottom: 13%;
+
     height: 69px;
     font-size: 20px;
     line-height: 26px;
-  }
 
-  &:hover {
-    background-color: #DB8876;
+    &:hover {
+      background-color: #DB8876;
+      color: #000000;
+    }
   }
 }
 

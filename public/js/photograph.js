@@ -111,15 +111,11 @@ const showHeaderMain = async () => {
                 }).join(" ")
 
                 /* Creation du button contact */
-                const myDivContact = document.createElement("div");
-                myDivContact.id = "contact-me";
-                myArticleHeader.appendChild(myDivContact);
-
                 const myBtnContact = document.createElement("button");
-                myBtnContact.classList.add("btn-contact-me");
+                myBtnContact.id = "contact-me";
                 myBtnContact.textContent = "Contactez-moi";
                 myBtnContact.onclick = contactMe;
-                myDivContact.appendChild(myBtnContact);
+                myArticleHeader.appendChild(myBtnContact);
 
                 /* Création du formulaire de contact */
                 const myFormContain = document.createElement("div");
