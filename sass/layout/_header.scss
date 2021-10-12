@@ -1,7 +1,7 @@
 /*Button pour passer au contenu */
 .scroll-hide {
   // version desktop
-  @media (min-width: 427px) {
+  @media (min-width: 769px) {
     display: none;
     position: fixed;
     justify-content: center;
@@ -21,6 +21,7 @@
     font-size: 18px;
     line-height: 23px;
     text-align: center;
+    align-items: center;
 
     color: #000000;
 
@@ -38,7 +39,7 @@
   margin-top: 8%;
 
   // version desktop
-  @media (min-width: 427px) {
+  @media (min-width: 769px) {
     align-items: center;
     justify-content: space-around;
     flex-wrap: nowrap;
@@ -59,7 +60,7 @@
     width: 84%;
 
     // version desktop
-    @media (min-width: 427px) {
+    @media (min-width: 769px) {
       order: 2;
       width: 48%;
     }
@@ -68,7 +69,7 @@
   &_logo {
     height: 37.5px;
     // version desktop
-    @media (min-width: 427px) {
+    @media (min-width: 769px) {
       height: 50px;
     }
   }
@@ -91,7 +92,7 @@
     color: $bgc-red-primary;
 
     // version desktop
-    @media (min-width: 427px) {
+    @media (min-width: 769px) {
       font-size: 36px;
       line-height: 47px;
       order: 3;
@@ -134,7 +135,7 @@
   border-radius: 50%;
 
   // version desktop
-  @media (min-width: 427px) {
+  @media (min-width: 769px) {
     height: 200px;
     width: 200px;
     image-rendering: auto;
@@ -149,7 +150,7 @@
   margin: 10%;
 
   // version desktop
-  @media (min-width: 427px) {
+  @media (min-width: 769px) {
     height: 200px;
     width: 200px;
     image-rendering: auto;

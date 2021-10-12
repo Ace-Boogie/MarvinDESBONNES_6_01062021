@@ -1,6 +1,14 @@
 #photographer-page {
   > main {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
     margin: auto;
+    width: 335px;
+    @media (min-width: 769px) {
+      width: 86%;
+      //margin: 0 auto;
+    }
   }
 }
 
@@ -9,9 +17,10 @@
   display: flex;
   justify-content: flex-start;
   margin: auto;
-  @media (min-width: 427px) {
-    width: 86%;
-    margin: 0 auto;
+  margin-top: 3%;
+  @media (min-width: 769px) {
+    width: 81%;
+    //margin: 0 auto;
   }
 }
 
@@ -20,8 +29,8 @@
   width: 100%;
 
   //version desktop
-  @media (min-width: 427px) {
-    width: 90%;
+  @media (min-width: 769px) {
+    width: 94%;
     height: 313px;
     background: #fafafa;
     border-radius: 5px;
@@ -35,7 +44,7 @@
     align-items: center;
 
     //version desktop
-    @media (min-width: 427px) {
+    @media (min-width: 769px) {
       height: 313px;
       justify-content: space-around;
     }
@@ -49,7 +58,7 @@
       > h2 {
         @include h2-propriete;
         //version desktop
-        @media (min-width: 427px) {
+        @media (min-width: 769px) {
           font-size: 64px;
           line-height: 83px;
         }
@@ -58,7 +67,7 @@
       &_from {
         @include infoPhotographer-from;
         //version desktop
-        @media (min-width: 427px) {
+        @media (min-width: 769px) {
           font-size: 24px;
           line-height: 31px;
         }
@@ -67,7 +76,7 @@
       &_tagline {
         @include infoPhotographer-tagline;
         //version desktop
-        @media (min-width: 427px) {
+        @media (min-width: 769px) {
           font-size: 18px;
           line-height: 23px;
         }
@@ -117,7 +126,7 @@
   }
 
   //version desktop
-  @media (min-width: 427px) {
+  @media (min-width: 769px) {
     width: 100%;
   }
 }
@@ -126,7 +135,7 @@
   display: none;
 
   //version desktop
-  @media (min-width: 427px) {
+  @media (min-width: 769px) {
     display: flex;
     justify-content: space-around;
     position: fixed;
@@ -136,6 +145,7 @@
     height: 9%;
     background-color: #db8876;
     font-size: large;
+    max-width: 375px;
     > p {
       font-family: $fontDM;
       font-style: normal;
@@ -150,11 +160,11 @@
 /* Affichage desktop du Tri par */
 #trierPar {
   display: none;
-  @media (min-width: 427px) {
+  @media (min-width: 769px) {
     display: flex;
-    width: 86%;
+    width: 94%;
     align-items: center;
-    margin: 0 auto;
+    margin: 2% auto;
 
     > label {
       width: 74px;
@@ -180,6 +190,7 @@
   position: relative;
   display: flex;
   overflow: hidden;
+  text-align: center;
 
   font-family: $fontDM;
   font-style: normal;
@@ -190,6 +201,7 @@
   color: #FFFFFF;
   background: #911C1C;
   border-radius: 5px;
+  border: none;
 
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 
@@ -200,13 +212,19 @@
     border: none;
     border-bottom: 1px white solid;
     width: 20px;
+
+    font-family: $fontDM;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 23px;
   }
 
   &::after {
     position: absolute;
     content: "\f106";
     font-family: 'Font Awesome 5 Free', serif;
-    font-weight: 600;
+    font-weight: 900;
     //margin-left: 15%;
     color: white;
     top: 0;
@@ -299,9 +317,10 @@
   //margin: 0 auto;
 
   //version desktop
-  @media (min-width: 427px) {
+  @media (min-width: 769px) {
     flex-direction: row;
     margin: 0 auto;
+    justify-content: center;
     text-align: center;
   }
 
@@ -310,7 +329,7 @@
 
 
     //version desktop
-    @media (min-width: 427px) {
+    @media (min-width: 769px) {
       width: 33%;
     }
 
@@ -328,7 +347,7 @@
         border-radius: 5px;
 
         //version desktop
-        @media (min-width: 427px) {
+        @media (min-width: 769px) {
           width: 89%;
           height: 300px;
         }
@@ -342,7 +361,7 @@
         object-fit: cover;
 
         //version desktop
-        @media (min-width: 427px) {
+        @media (min-width: 769px) {
           width: 89%;
           height: 300px;
           background: #C4C4C4;
@@ -350,8 +369,8 @@
       }
 
       > figcaption {
-        @media (min-width: 427px) {
-          width: 70%;
+        @media (min-width: 769px) {
+          width: 80%;
           margin: auto;
         }
       }

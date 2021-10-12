@@ -40,7 +40,6 @@ let spanNavsX = [
 
 /* Affichage du header de la page */
 const showHeaderPage = async () => {
-    console.log(window.innerWidth);
     /* Création du bouton Passer au contenu si la window est supérieur à 434px */
     const goToContent = document.createElement("a");
     goToContent.textContent = "Passer au contenu";
@@ -51,7 +50,7 @@ const showHeaderPage = async () => {
 
     /* Apparition du bouton lorsque l'on scroll */
     window.addEventListener('scroll', function () {
-        if (window.innerWidth > 434){
+        if (window.innerWidth > 769){
             headerAccueil.appendChild(goToContent);
         } else {
             headerAccueil.removeChild(goToContent);
@@ -71,10 +70,9 @@ const showHeaderPage = async () => {
     headerAccueil.appendChild(myA);
     myA.href = "index.html";
     myA.tabIndex = 0;
-    myA.classList.add("tabIndex");
-    console.log(myA.tabIndex);
-    const myLogo = document.createElement("img");
+    myA.classList.add("homePage");
 
+    const myLogo = document.createElement("img");
     myLogo.classList.add("header_photographers_logo");
     myA.appendChild(myLogo);
 
@@ -94,15 +92,15 @@ const showHeaderPage = async () => {
 
         myLogo.src = "public/img/" + getValue.logo;
         myLogo.alt = getValue.altLogo;
-        getValue.tags.map((tag, index) => {
+        getValue.tags.map((tag) => {
             const mySpanHeader = document.createElement("span");
             myNav.appendChild(mySpanHeader);
-            mySpanHeader.classList.add("spanTagHeader", "beforeTag", "tabIndex");
+            mySpanHeader.classList.add("spanTagHeader", "beforeTag");
             mySpanHeader.textContent = tag;
+            mySpanHeader.setAttribute("aria-label", tag);
             mySpanHeader.href = "#"+tag;
             mySpanHeader.onclick = searchTag;
-            mySpanHeader.tabIndex = index + 1;
-            console.log(mySpanHeader.tabIndex);
+            mySpanHeader.tabIndex = 0;
         }).join(" ");
     }).join(" ")
 
@@ -116,14 +114,14 @@ const showPhotographers = async () => {
     // await fetchPhotographers();
 
     showData = dataJson["photographers"];
-    showData.map((photograph, index) => {
+    showData.map((photograph) => {
 
         /* Création des balises HTML pour afficher les photographers */
         const articlePhotograph = document.createElement("article");
-        articlePhotograph.classList.add("main_photographers", "tabIndex");
-        console.log(articlePhotograph.tabIndex);
+        articlePhotograph.classList.add("main_photographers");
         const figurePhotograph = document.createElement("figure");
-        figurePhotograph.tabIndex = index + 9;
+        figurePhotograph.tabIndex = 0;
+        figurePhotograph.classList.add("figureTab");
         const imgPhotograph = document.createElement("img");
         const figcaptionPhotograph = document.createElement("figcaption");
         const h2Photograph = document.createElement("h2");
@@ -171,9 +169,11 @@ const showPhotographers = async () => {
         photograph.tags.map((tag) => {
             const spanTags = document.createElement("span");
             spanTags.classList.add("spanTag");
-            // spanTags.onclick = addTagUrl;
             spanTags.onclick = searchTag;
             spanTags.textContent = tag;
+            spanTags.setAttribute("aria-label", tag);
+            spanTags.href = "#"+tag;
+            spanTags.tabIndex = 0;
             divTags.appendChild(spanTags);
         }).join(" ");
     }).join(" ")
@@ -190,24 +190,22 @@ const redirectionPhotograph = (idProfil) => {
 /* Filtre en fonction du tag du header choisi */
 const searchTag = async (tagContent) => {
     await fetchPhotographers();
-    console.log(tagContent.target);
     if (location.hash){
         location.hash = "";
     }
-    // tagContent.target.classList.add("spanTagFocus");
     location.hash = "#"+tagContent.target.textContent;
 
     mainAccueil.innerHTML = "";
     showData
         .filter(photograph => photograph.tags.includes(tagContent.target.textContent))
-        .map((photograph, index) => {
+        .map((photograph) => {
 
             /* Création des balises HTML pour afficher les photographers */
             const articlePhotograph = document.createElement("article");
-            articlePhotograph.classList.add("main_photographers", "tabIndex");
-            console.log(articlePhotograph.tabIndex);
+            articlePhotograph.classList.add("main_photographers");
             const figurePhotograph = document.createElement("figure");
-            figurePhotograph.tabIndex = index + 9;
+            figurePhotograph.tabIndex = 0;
+            figurePhotograph.classList.add("figureTab");
             const imgPhotograph = document.createElement("img");
             const figcaptionPhotograph = document.createElement("figcaption");
             const h2Photograph = document.createElement("h2");
@@ -254,56 +252,65 @@ const searchTag = async (tagContent) => {
             photograph.tags.map((tag) => {
                 const spanTags = document.createElement("span");
                 spanTags.classList.add("spanTag");
-                spanTags.onclick = searchTag;
                 spanTags.textContent = tag;
+                spanTags.setAttribute("aria-label", tag);
+                spanTags.onclick = searchTag;
+                spanTags.href = "#"+tag;
+                spanTags.tabIndex = 0;
                 divTags.appendChild(spanTags);
             }).join(" ");
         }).join(" ")
-    // console.log(tagContent.target.textContent);
 }
 
 
 /* Touche accessibilité */
+const keydown = () => {
+    window.addEventListener("keydown", function (event) {
+        if (event.defaultPrevented) {
+            return; // Ne devrait rien faire si l'événement de la touche était déjà consommé.
+        }
 
+        switch (event.key) {
+            case "ArrowLeft":
+                // console.log(event.key);
+                // if (event.target.tabIndex < 0){
+                //     console.log("-1 "+event.target.tabIndex);
+                //     return event.target.tabIndex - 1;
+                // }
+                // if ()
+                // Faire quelque chose pour la touche "left arrow" pressée.
+                break;
+            case "ArrowRight":
+                event.target.tabIndex
+                console.log(event.target.tabIndex.length);
+                // console.log(event.key);
+                // if (event.target.tabIndex > 0){
+                //     console.log("+1 "+event.target.tabIndex);
+                //     return event.target.tabIndex + 1;
+                // }
+                // Faire quelque chose pour la touche "right arrow" pressée.
+                break;
+            case "Enter":
+                // Faire quelque chose pour les touches "enter" ou "return" pressées.
+                if (event.target.tabIndex === 0) {
+                    if (event.target.classList.contains("homePage")) {
+                        return event.target.href;
+                    }
+                    if (event.target.classList.contains("spanTagHeader") || event.target.classList.contains("spanTag")) {
+                        searchTag(event);
+                    }
+                    if (event.target.classList.contains("figureTab")) {
+                        redirectionPhotograph(event);
+                    }
+                }
+                break;
+            default:
+                return; // Quitter lorsque cela ne gère pas l'événement touche.
+        }
 
-// window.addEventListener("keydown", function (event) {
-//     if (event.defaultPrevented) {
-//         return; // Ne devrait rien faire si l'événement de la touche était déjà consommé.
-//     }
-//
-//     switch (event.key) {
-//         case "ArrowLeft":
-//             console.log(event.key);
-//             if (event.target.tabIndex < 0){
-//                 console.log("-1 "+event.target.tabIndex);
-//                 return event.target.tabIndex - 1;
-//             }
-//             // if ()
-//             // Faire quelque chose pour la touche "left arrow" pressée.
-//             break;
-//         case "ArrowRight":
-//             console.log(event.key);
-//             if (event.target.tabIndex > 0){
-//                 console.log("+1 "+event.target.tabIndex);
-//                 return event.target.tabIndex + 1;
-//             }
-//             // Faire quelque chose pour la touche "right arrow" pressée.
-//             break;
-//         case "Enter":
-//             // Faire quelque chose pour les touches "enter" ou "return" pressées.
-//             if (event.target.tabIndex == 0){
-//                 return event.target.href = "index.html";
-//             }
-//             if (event.target.tabIndex > 0){
-//                 console.log("spanTag");
-//             }
-//             break;
-//         default:
-//             return; // Quitter lorsque cela ne gère pas l'événement touche.
-//     }
-//
-//     // Annuler l'action par défaut pour éviter qu'elle ne soit traitée deux fois.
-//     event.preventDefault();
-// }, true);
-
+        // Annuler l'action par défaut pour éviter qu'elle ne soit traitée deux fois.
+        event.preventDefault();
+    }, true);
+}
+keydown();
 showHeaderPage();

@@ -3,7 +3,7 @@
   flex-direction: column;
   flex-wrap: wrap;
   // version desktop
-  @media screen and (min-width: 427px) {
+  @media screen and (min-width: 769px) {
     flex-direction: row;
     //width: 100%;
   }
