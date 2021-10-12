@@ -239,8 +239,8 @@ const searchTag = async (tagContent) => {
             figurePhotograph.id = photograph.id;
             figurePhotograph.onclick = redirectionPhotograph;
 
-            imgPhotograph.classList.add("photographer_img");
             imgPhotograph.id = photograph.id;
+            imgPhotograph.classList.add("photographer_img");
             imgPhotograph.src = "./public/img/Photographers_ID_Photos/" + photograph.portrait;
             imgPhotograph.alt = "portrait de " + photograph.name;
 
