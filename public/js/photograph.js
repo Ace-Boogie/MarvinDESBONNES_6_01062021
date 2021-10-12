@@ -72,7 +72,7 @@ const showHeaderMain = async () => {
     showData = dataJson["photographers"];
     headerPage.classList.add("header_photograph");
     showData
-        .filter((photograph, index, array) => {
+        .filter((photograph) => {
             if (photograph.id == urlId) {
                 console.log("c'est filtré");
                 /* Création de l'article du header page */
@@ -635,6 +635,7 @@ const lightBox = (val) => {
     if (isVideo) {
         overlay.appendChild(divPrevBtn);
         overlay.appendChild(videoOverlay);
+        videoOverlay.controls = true;
         videoOverlay.setAttribute("data-slide-to", indexMedia);
         //TODO voir comment le placer en dessous de l'image voir peut être div
         overlay.appendChild(h2Overlay);
