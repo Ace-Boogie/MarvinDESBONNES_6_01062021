@@ -240,6 +240,7 @@ const searchTag = async (tagContent) => {
             figurePhotograph.onclick = redirectionPhotograph;
 
             imgPhotograph.classList.add("photographer_img");
+            imgPhotograph.id = photograph.id;
             imgPhotograph.src = "./public/img/Photographers_ID_Photos/" + photograph.portrait;
             imgPhotograph.alt = "portrait de " + photograph.name;
 
