@@ -56,10 +56,13 @@ const showHeaderlogo = () => {
     const myA = document.createElement("a");
     headerLogo.appendChild(myA);
     myA.href = "index.html";
+    myA.tabIndex = 0;
+    myA.classList.add("homePage");
+
     const myLogo = document.createElement("img");
     myLogo.classList.add("header_photographers_logo");
     myA.appendChild(myLogo);
-    myLogo.src = "public/img/Logo_Fisheye.png";
+    myLogo.src = "public/img/Logo_Fisheye.jpg";
     myLogo.alt = "Fisheye Home page";
 }
 
@@ -115,6 +118,7 @@ const showHeaderMain = async () => {
                 myBtnContact.id = "contact-me";
                 myBtnContact.textContent = "Contactez-moi";
                 myBtnContact.onclick = contactMe;
+                myBtnContact.tabIndex = 0;
                 myArticleHeader.appendChild(myBtnContact);
 
                 /* Création du formulaire de contact */
@@ -132,6 +136,7 @@ const showHeaderMain = async () => {
                 iMyCloseModal.classList.add("fa", "fa-times");
                 myCloseModal.id = "closeModal";
                 myCloseModal.classList.add("close");
+                myCloseModal.tabIndex = 0;
                 myCloseModal.onclick = closeModal;
                 myContentModalBody.appendChild(myCloseModal);
 
@@ -253,6 +258,7 @@ const showSelect = () => {
     const mySelect = document.createElement("select");
     mySelect.id = "chooseBy";
     mySelect.name = "tri";
+    mySelect.tabIndex = 0;
     trierPar.appendChild(mySelect);
 
     const myOptionLike = document.createElement("option");
@@ -314,6 +320,8 @@ const showMediaOfPhotograph = async () => {
             imgMedia.id = media.id;
             imgMedia.classList.add("nbMedia");
             imgMedia.setAttribute("data-slide-to", index);
+            imgMedia.tabIndex = 0;
+            imgMedia.classList.add("figureTab");
             imgMedia.onclick = lightBox;
             imgMedia.alt = media.image;
             imgMedia.title = media.title;
@@ -376,6 +384,8 @@ const showMediaOfPhotograph = async () => {
                     const imgMedia = document.createElement("img");
                     imgMedia.id = media.id;
                     imgMedia.setAttribute("value", index);
+                    imgMedia.tabIndex = 0;
+                    imgMedia.classList.add("figureTab");
                     imgMedia.onclick = lightBox;
                     imgMedia.alt = media.image;
 
@@ -434,6 +444,8 @@ const showMediaOfPhotograph = async () => {
                     const imgMedia = document.createElement("img");
                     imgMedia.id = media.id;
                     imgMedia.setAttribute("value", index);
+                    imgMedia.tabIndex = 0;
+                    imgMedia.classList.add("figureTab");
                     imgMedia.onclick = lightBox;
                     imgMedia.alt = media.image;
 
@@ -492,6 +504,8 @@ const showMediaOfPhotograph = async () => {
                     const imgMedia = document.createElement("img");
                     imgMedia.id = media.id;
                     imgMedia.setAttribute("value", index);
+                    imgMedia.tabIndex = 0;
+                    imgMedia.classList.add("figureTab");
                     imgMedia.onclick = lightBox;
                     imgMedia.alt = media.image;
 
@@ -588,11 +602,13 @@ const closeModal = () => {
     launchContactMe.style.display = "none";
 }
 
+
 /* Création de la lightBox */
 const lightBox = (val) => {
 
     const nbMedia = document.querySelectorAll(".nbMedia");
     let indexMedia = val.target.getAttribute("data-slide-to");
+    console.log(indexMedia);
 
     overlay.id = "overlay";
     overlay.style.display = "flex";
@@ -616,8 +632,6 @@ const lightBox = (val) => {
     divNextBtn.appendChild(iNext);
     divNextBtn.addEventListener("click", nextMediaLightBox);
 
-    //TODO divNextBtn.addEventListener("keypress", nextMediaLightBox);
-
     divExitBtn.id = "exitButton";
 
     iExit.classList.add("fa", "fa-times");
@@ -625,11 +639,160 @@ const lightBox = (val) => {
     divExitBtn.appendChild(iExit);
     divExitBtn.addEventListener("click", closeLightBox);
 
+
     h2Overlay.textContent = val.target.title;
     h2Overlay.id = "titleOverlay";
 
+    // console.log(val.target.parentElement);
+    window.addEventListener("keydown", function (access) {
+        let recuperationNextButton = document.getElementById("nextButton");
+        let recuperationPrevButton = document.getElementById("prevButton");
+        let nbDataSlide = parseInt(recuperationNextButton.getAttribute("data-slide-to"));
+
+        if (access.key === "ArrowLeft") {
+            if (nbDataSlide === 0){
+
+            }
+            if (nbDataSlide > 0) {
+                if (recuperationPrevButton.parentElement.parentNode.childNodes[1].src.endsWith(".mp4")) {
+                    if (nbMedia[nbDataSlide - 1].src.endsWith(".mp4")) {
+                        overlay.appendChild(divPrevBtn);
+                        overlay.appendChild(videoOverlay);
+                        videoOverlay.setAttribute("data-slide-to", nbDataSlide - 1);
+                        overlay.appendChild(h2Overlay);
+                        if (overlay.appendChild(imgOverlay)) {
+                            overlay.removeChild(imgOverlay);
+                        }
+                        overlay.appendChild(divNextBtn);
+                        overlay.appendChild(divExitBtn);
+                        divNextBtn.setAttribute("data-slide-to", nbDataSlide - 1);
+                        divPrevBtn.setAttribute("data-slide-to", nbDataSlide - 1);
+                        h2Overlay.textContent = nbMedia[nbDataSlide - 1].title
+                        return videoOverlay.src = nbMedia[nbDataSlide - 1].src;
+                    } else {
+                        overlay.appendChild(divPrevBtn);
+                        overlay.appendChild(imgOverlay);
+                        imgOverlay.setAttribute("data-slide-to", nbDataSlide - 1);
+                        overlay.appendChild(h2Overlay);
+                        if (overlay.appendChild(videoOverlay)) {
+                            overlay.removeChild(videoOverlay);
+                        }
+                        overlay.appendChild(divNextBtn);
+                        overlay.appendChild(divExitBtn);
+                        divNextBtn.setAttribute("data-slide-to", nbDataSlide - 1);
+                        divPrevBtn.setAttribute("data-slide-to", nbDataSlide - 1);
+                        h2Overlay.textContent = nbMedia[nbDataSlide - 1].title
+                        return imgOverlay.src = nbMedia[nbDataSlide - 1].src;
+                    }
+                } else {
+                    if (nbMedia[nbDataSlide - 1].src.endsWith(".mp4")) {
+                        overlay.appendChild(divPrevBtn);
+                        overlay.appendChild(videoOverlay);
+                        videoOverlay.setAttribute("data-slide-to", nbDataSlide - 1);
+                        overlay.appendChild(h2Overlay);
+                        if (overlay.appendChild(imgOverlay)) {
+                            overlay.removeChild(imgOverlay);
+                        }
+                        overlay.appendChild(divNextBtn);
+                        overlay.appendChild(divExitBtn);
+                        divNextBtn.setAttribute("data-slide-to", nbDataSlide - 1);
+                        divPrevBtn.setAttribute("data-slide-to", nbDataSlide - 1);
+                        h2Overlay.textContent = nbMedia[nbDataSlide - 1].title
+                        return videoOverlay.src = nbMedia[nbDataSlide - 1].src;
+                    } else {
+                        overlay.appendChild(divPrevBtn);
+                        overlay.appendChild(imgOverlay);
+                        imgOverlay.setAttribute("data-slide-to", nbDataSlide - 1);
+                        overlay.appendChild(h2Overlay);
+                        if (overlay.appendChild(videoOverlay)) {
+                            overlay.removeChild(videoOverlay);
+                        }
+                        overlay.appendChild(divNextBtn);
+                        overlay.appendChild(divExitBtn);
+                        divNextBtn.setAttribute("data-slide-to", nbDataSlide - 1);
+                        divPrevBtn.setAttribute("data-slide-to", nbDataSlide - 1);
+                        h2Overlay.textContent = nbMedia[nbDataSlide - 1].title
+                        return imgOverlay.src = nbMedia[nbDataSlide - 1].src;
+                    }
+                }
+            }
+        }
+        if (access.key === "ArrowRight") {
+            if (nbDataSlide < nbMedia.length) {
+                if (recuperationNextButton.parentElement.parentNode.childNodes[1].src.endsWith(".mp4")) {
+                    console.log(!nbMedia[nbDataSlide + 1].src.endsWith(".mp4"));
+                    if (nbMedia[nbDataSlide + 1].src.endsWith(".mp4")) {
+                        overlay.appendChild(divPrevBtn);
+                        overlay.appendChild(videoOverlay);
+                        videoOverlay.setAttribute("data-slide-to", nbDataSlide + 1);
+                        overlay.appendChild(h2Overlay);
+                        if (overlay.appendChild(imgOverlay)) {
+                            overlay.removeChild(imgOverlay);
+                        }
+                        overlay.appendChild(divNextBtn);
+                        overlay.appendChild(divExitBtn);
+                        divNextBtn.setAttribute("data-slide-to", nbDataSlide + 1);
+                        divPrevBtn.setAttribute("data-slide-to", nbDataSlide + 1);
+                        h2Overlay.textContent = nbMedia[nbDataSlide + 1].title
+                        return videoOverlay.src = nbMedia[nbDataSlide + 1].src;
+                    } else {
+                        overlay.appendChild(divPrevBtn);
+                        overlay.appendChild(imgOverlay);
+                        imgOverlay.setAttribute("data-slide-to", nbDataSlide + 1);
+                        overlay.appendChild(h2Overlay);
+                        if (overlay.appendChild(videoOverlay)) {
+                            overlay.removeChild(videoOverlay);
+                        }
+                        overlay.appendChild(divNextBtn);
+                        overlay.appendChild(divExitBtn);
+                        divNextBtn.setAttribute("data-slide-to", nbDataSlide + 1);
+                        divPrevBtn.setAttribute("data-slide-to", nbDataSlide + 1);
+                        h2Overlay.textContent = nbMedia[nbDataSlide + 1].title
+                        return imgOverlay.src = nbMedia[nbDataSlide + 1].src;
+                    }
+                } else {
+                    if (!nbMedia[nbDataSlide + 1].src.endsWith(".mp4")) {
+                        overlay.appendChild(divPrevBtn);
+                        overlay.appendChild(imgOverlay);
+                        imgOverlay.setAttribute("data-slide-to", nbDataSlide + 1);
+                        overlay.appendChild(h2Overlay);
+                        if (overlay.appendChild(videoOverlay)) {
+                            overlay.removeChild(videoOverlay);
+                        }
+                        overlay.appendChild(divNextBtn);
+                        overlay.appendChild(divExitBtn);
+                        divNextBtn.setAttribute("data-slide-to", nbDataSlide + 1);
+                        divPrevBtn.setAttribute("data-slide-to", nbDataSlide + 1);
+                        h2Overlay.textContent = nbMedia[nbDataSlide + 1].title
+                        return imgOverlay.src = nbMedia[nbDataSlide + 1].src;
+
+                    } else {
+                        overlay.appendChild(divPrevBtn);
+                        overlay.appendChild(videoOverlay);
+                        videoOverlay.setAttribute("data-slide-to", nbDataSlide + 1);
+                        overlay.appendChild(h2Overlay);
+                        if (overlay.appendChild(imgOverlay)) {
+                            overlay.removeChild(imgOverlay);
+                        }
+                        overlay.appendChild(divNextBtn);
+                        overlay.appendChild(divExitBtn);
+                        divNextBtn.setAttribute("data-slide-to", nbDataSlide + 1);
+                        divPrevBtn.setAttribute("data-slide-to", nbDataSlide + 1);
+                        h2Overlay.textContent = nbMedia[nbDataSlide + 1].title
+                        return videoOverlay.src = nbMedia[nbDataSlide + 1].src;
+                    }
+                }
+            }
+        }
+        if (access.key === "Escape") {
+            console.log("ça clique");
+            overlay.style.display = "none";
+        }
+
+    })
 
     let resultVideo = val.target.src;
+    console.log(resultVideo);
     console.log(resultVideo.endsWith(".mp4"));
     let isVideo = resultVideo.endsWith(".mp4");
     if (isVideo) {
@@ -637,7 +800,6 @@ const lightBox = (val) => {
         overlay.appendChild(videoOverlay);
         videoOverlay.controls = true;
         videoOverlay.setAttribute("data-slide-to", indexMedia);
-        //TODO voir comment le placer en dessous de l'image voir peut être div
         overlay.appendChild(h2Overlay);
         overlay.appendChild(divNextBtn);
         overlay.appendChild(divExitBtn);
@@ -658,9 +820,11 @@ const lightBox = (val) => {
         return imgOverlay.src = val.target.src;
     }
 
-    /* Au clic sur la flèche droite sur la lightBox */
+
+    /* Au clic ou keydown sur la flèche droite sur la lightBox */
     function nextMediaLightBox(valueIndex) {
         let nbDataSlide = parseInt(valueIndex.target.parentElement.getAttribute("data-slide-to"));
+        console.log(valueIndex.target.parentElement);
         // console.log(valueIndex.target.parentElement.getAttribute("data-slide-to"));
         // console.log(valueIndex.target.parentElement.parentNode.childNodes[1].src);
         if (nbDataSlide < nbMedia.length) {
@@ -730,10 +894,10 @@ const lightBox = (val) => {
         }
     }
 
+
     /* Au clic sur la flèche gauche de la lightBox */
     function prevMediaLightBox(valueIndex) {
         let nbDataSlide = parseInt(valueIndex.target.parentElement.getAttribute("data-slide-to"));
-        // console.log(valueIndex.target.parentElement.parentNode.childNodes[1].src.endsWith(".mp4"));
         if (nbDataSlide > 0) {
             if (valueIndex.target.parentElement.parentNode.childNodes[1].src.endsWith(".mp4")) {
                 console.log(!nbMedia[nbDataSlide - 1].src.endsWith(".mp4"));
@@ -805,9 +969,50 @@ const lightBox = (val) => {
         console.log("ça clique");
         overlay.style.display = "none";
     }
+
+
+}
+
+/* Touche accessibilité */
+const accessibilityProfil = () => {
+
+    window.addEventListener("keydown", function (event) {
+        if (event.defaultPrevented) {
+            return; // Ne devrait rien faire si l'événement de la touche était déjà consommé.
+        }
+
+        switch (event.key) {
+            case "Enter":
+                // Faire quelque chose pour les touches "enter" ou "return" pressées.
+                if (event.target.tabIndex === 0) {
+                    if (event.target.classList.contains("homePage")) {
+                        return event.target.href;
+                    }
+                    if (event.target.classList.contains("contain-modal-body")) {
+                        contactMe();
+                    }
+                    if (event.target.classList.contains("figureTab")) {
+                        lightBox(event);
+                    }
+                }
+                break;
+            case "Escape":
+                // Faire quelque chose pour la touche "esc" pressée.
+                if (event.target.classList.contains("contain-modal-body")) {
+                    closeModal();
+                }
+                break;
+            default:
+                return; // Quitter lorsque cela ne gère pas l'événement touche.
+        }
+
+        // Annuler l'action par défaut pour éviter qu'elle ne soit traitée deux fois.
+        event.preventDefault();
+    }, true);
 }
 
 showHeaderlogo();
 showHeaderMain();
 showSelect();
 showMediaOfPhotograph();
+accessibilityProfil();

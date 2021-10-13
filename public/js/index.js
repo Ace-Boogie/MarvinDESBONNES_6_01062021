@@ -32,7 +32,7 @@ const fetchPhotographers = async () => {
 /* Array tagsline pour le header */
 let spanNavsX = [
     {
-        "logo": "Logo_Fisheye.png",
+        "logo": "Logo_Fisheye.jpg",
         "altLogo": "Fisheye Home page",
         "tags": ["portrait", "art", "fashion", "architecture", "travel", "sport", "animals", "events"]
     }];
@@ -265,32 +265,13 @@ const searchTag = async (tagContent) => {
 
 
 /* Touche accessibilité */
-const keydown = () => {
+const accessibilityIndex = () => {
     window.addEventListener("keydown", function (event) {
         if (event.defaultPrevented) {
             return; // Ne devrait rien faire si l'événement de la touche était déjà consommé.
         }
 
         switch (event.key) {
-            case "ArrowLeft":
-                // console.log(event.key);
-                // if (event.target.tabIndex < 0){
-                //     console.log("-1 "+event.target.tabIndex);
-                //     return event.target.tabIndex - 1;
-                // }
-                // if ()
-                // Faire quelque chose pour la touche "left arrow" pressée.
-                break;
-            case "ArrowRight":
-                event.target.tabIndex
-                console.log(event.target.tabIndex.length);
-                // console.log(event.key);
-                // if (event.target.tabIndex > 0){
-                //     console.log("+1 "+event.target.tabIndex);
-                //     return event.target.tabIndex + 1;
-                // }
-                // Faire quelque chose pour la touche "right arrow" pressée.
-                break;
             case "Enter":
                 // Faire quelque chose pour les touches "enter" ou "return" pressées.
                 if (event.target.tabIndex === 0) {
@@ -313,5 +294,5 @@ const keydown = () => {
         event.preventDefault();
     }, true);
 }
-keydown();
+accessibilityIndex();
 showHeaderPage();
