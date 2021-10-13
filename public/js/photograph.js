@@ -77,7 +77,6 @@ const showHeaderMain = async () => {
     showData
         .filter((photograph) => {
             if (photograph.id == urlId) {
-                console.log("c'est filtré");
                 /* Création de l'article du header page */
                 const myArticleHeader = document.createElement("article");
                 myArticleHeader.classList.add("header_photograph_article");
@@ -225,7 +224,6 @@ const showHeaderMain = async () => {
                 myInputBtnPostData.type = "submit";
                 myInputBtnPostData.value = "Envoyer";
                 myInputBtnPostData.textContent = "Envoyer";
-                // myDivBtnPostData.appendChild(myInputBtnPostData);
                 myForm.appendChild(myInputBtnPostData);
 
                 /* Affichage de la photo du profil */
@@ -289,7 +287,6 @@ const showMediaOfPhotograph = async () => {
     let namePhotograph;
     dataJson["photographers"].map((photograh) => {
         if (photograh.id == urlId) {
-            console.log(photograh.name)
             return namePhotograph = photograh.name;
         }
     });
@@ -330,6 +327,8 @@ const showMediaOfPhotograph = async () => {
             videoMedia.id = media.id;
             videoMedia.classList.add("nbMedia");
             videoMedia.setAttribute("data-slide-to", index);
+            videoMedia.tabIndex = 0;
+            videoMedia.classList.add("figureTab");
             videoMedia.onclick = lightBox;
             videoMedia.title = media.title;
 
@@ -392,6 +391,8 @@ const showMediaOfPhotograph = async () => {
                     const videoMedia = document.createElement("video");
                     videoMedia.id = media.id;
                     videoMedia.setAttribute("value", index);
+                    videoMedia.tabIndex = 0;
+                    videoMedia.classList.add("figureTab");
                     videoMedia.onclick = lightBox;
 
                     const figcaptionMedia = document.createElement("figcaption");
@@ -452,6 +453,8 @@ const showMediaOfPhotograph = async () => {
                     const videoMedia = document.createElement("video");
                     videoMedia.id = media.id;
                     videoMedia.setAttribute("value", index);
+                    videoMedia.tabIndex = 0;
+                    videoMedia.classList.add("figureTab");
                     videoMedia.onclick = lightBox;
 
                     const figcaptionMedia = document.createElement("figcaption");
@@ -512,6 +515,8 @@ const showMediaOfPhotograph = async () => {
                     const videoMedia = document.createElement("video");
                     videoMedia.id = media.id;
                     videoMedia.setAttribute("value", index);
+                    videoMedia.tabIndex = 0;
+                    videoMedia.classList.add("figureTab");
                     videoMedia.onclick = lightBox;
 
                     const figcaptionMedia = document.createElement("figcaption");
@@ -608,7 +613,6 @@ const lightBox = (val) => {
 
     const nbMedia = document.querySelectorAll(".nbMedia");
     let indexMedia = val.target.getAttribute("data-slide-to");
-    console.log(indexMedia);
 
     overlay.id = "overlay";
     overlay.style.display = "flex";
@@ -643,16 +647,13 @@ const lightBox = (val) => {
     h2Overlay.textContent = val.target.title;
     h2Overlay.id = "titleOverlay";
 
-    // console.log(val.target.parentElement);
+    /* accessibility sur la lightBox via les touches */
     window.addEventListener("keydown", function (access) {
         let recuperationNextButton = document.getElementById("nextButton");
         let recuperationPrevButton = document.getElementById("prevButton");
         let nbDataSlide = parseInt(recuperationNextButton.getAttribute("data-slide-to"));
 
         if (access.key === "ArrowLeft") {
-            if (nbDataSlide === 0){
-
-            }
             if (nbDataSlide > 0) {
                 if (recuperationPrevButton.parentElement.parentNode.childNodes[1].src.endsWith(".mp4")) {
                     if (nbMedia[nbDataSlide - 1].src.endsWith(".mp4")) {
@@ -668,6 +669,7 @@ const lightBox = (val) => {
                         divNextBtn.setAttribute("data-slide-to", nbDataSlide - 1);
                         divPrevBtn.setAttribute("data-slide-to", nbDataSlide - 1);
                         h2Overlay.textContent = nbMedia[nbDataSlide - 1].title
+                        videoOverlay.controls = true;
                         return videoOverlay.src = nbMedia[nbDataSlide - 1].src;
                     } else {
                         overlay.appendChild(divPrevBtn);
@@ -720,7 +722,6 @@ const lightBox = (val) => {
         if (access.key === "ArrowRight") {
             if (nbDataSlide < nbMedia.length) {
                 if (recuperationNextButton.parentElement.parentNode.childNodes[1].src.endsWith(".mp4")) {
-                    console.log(!nbMedia[nbDataSlide + 1].src.endsWith(".mp4"));
                     if (nbMedia[nbDataSlide + 1].src.endsWith(".mp4")) {
                         overlay.appendChild(divPrevBtn);
                         overlay.appendChild(videoOverlay);
@@ -734,6 +735,7 @@ const lightBox = (val) => {
                         divNextBtn.setAttribute("data-slide-to", nbDataSlide + 1);
                         divPrevBtn.setAttribute("data-slide-to", nbDataSlide + 1);
                         h2Overlay.textContent = nbMedia[nbDataSlide + 1].title
+                        videoOverlay.controls = true;
                         return videoOverlay.src = nbMedia[nbDataSlide + 1].src;
                     } else {
                         overlay.appendChild(divPrevBtn);
@@ -785,20 +787,16 @@ const lightBox = (val) => {
             }
         }
         if (access.key === "Escape") {
-            console.log("ça clique");
             overlay.style.display = "none";
         }
 
     })
 
     let resultVideo = val.target.src;
-    console.log(resultVideo);
-    console.log(resultVideo.endsWith(".mp4"));
     let isVideo = resultVideo.endsWith(".mp4");
     if (isVideo) {
         overlay.appendChild(divPrevBtn);
         overlay.appendChild(videoOverlay);
-        videoOverlay.controls = true;
         videoOverlay.setAttribute("data-slide-to", indexMedia);
         overlay.appendChild(h2Overlay);
         overlay.appendChild(divNextBtn);
@@ -806,6 +804,7 @@ const lightBox = (val) => {
         if (overlay.appendChild(imgOverlay)) {
             overlay.removeChild(imgOverlay);
         }
+        videoOverlay.controls = true;
         return videoOverlay.src = val.target.src;
     } else {
         overlay.appendChild(divPrevBtn);
@@ -824,12 +823,8 @@ const lightBox = (val) => {
     /* Au clic ou keydown sur la flèche droite sur la lightBox */
     function nextMediaLightBox(valueIndex) {
         let nbDataSlide = parseInt(valueIndex.target.parentElement.getAttribute("data-slide-to"));
-        console.log(valueIndex.target.parentElement);
-        // console.log(valueIndex.target.parentElement.getAttribute("data-slide-to"));
-        // console.log(valueIndex.target.parentElement.parentNode.childNodes[1].src);
         if (nbDataSlide < nbMedia.length) {
             if (valueIndex.target.parentElement.parentNode.childNodes[1].src.endsWith(".mp4")) {
-                console.log(!nbMedia[nbDataSlide + 1].src.endsWith(".mp4"));
                 if (nbMedia[nbDataSlide + 1].src.endsWith(".mp4")) {
                     overlay.appendChild(divPrevBtn);
                     overlay.appendChild(videoOverlay);
@@ -843,6 +838,7 @@ const lightBox = (val) => {
                     divNextBtn.setAttribute("data-slide-to", nbDataSlide + 1);
                     divPrevBtn.setAttribute("data-slide-to", nbDataSlide + 1);
                     h2Overlay.textContent = nbMedia[nbDataSlide + 1].title
+                    videoOverlay.controls = true;
                     return videoOverlay.src = nbMedia[nbDataSlide + 1].src;
                 } else {
                     overlay.appendChild(divPrevBtn);
@@ -914,6 +910,7 @@ const lightBox = (val) => {
                     divNextBtn.setAttribute("data-slide-to", nbDataSlide - 1);
                     divPrevBtn.setAttribute("data-slide-to", nbDataSlide - 1);
                     h2Overlay.textContent = nbMedia[nbDataSlide - 1].title
+                    videoOverlay.controls = true;
                     return videoOverlay.src = nbMedia[nbDataSlide - 1].src;
                 } else {
                     overlay.appendChild(divPrevBtn);
@@ -966,7 +963,6 @@ const lightBox = (val) => {
 
     /* fermeture de la lightBox */
     function closeLightBox() {
-        console.log("ça clique");
         overlay.style.display = "none";
     }
 

@@ -7,7 +7,6 @@
     width: 335px;
     @media (min-width: 769px) {
       width: 86%;
-      //margin: 0 auto;
     }
   }
 }
@@ -20,7 +19,6 @@
   margin-top: 3%;
   @media (min-width: 769px) {
     width: 81%;
-    //margin: 0 auto;
   }
 }
 
@@ -40,7 +38,6 @@
   &_article {
     display: flex;
     flex-wrap: wrap;
-    //justify-content: space-around;
     align-items: center;
 
     //version desktop
@@ -54,7 +51,6 @@
       flex-direction: column;
       justify-content: flex-start;
       width: 70%;
-      //margin-left: 5%;
       @media (min-width: 769px) {
         width: 36%;
       }
@@ -94,7 +90,6 @@
 
       &_tags {
         display: flex;
-        //flex-wrap: wrap;
       }
     }
   }
@@ -187,7 +182,6 @@
 /* Tri par -> select avec option */
 #chooseBy {
   cursor: pointer;
-  //display: inline-block;
   width: 170px;
   height: 56px;
 
@@ -223,92 +217,6 @@
     font-size: 18px;
     line-height: 23px;
   }
-
-  &::after {
-    position: absolute;
-    content: "\f106";
-    font-family: 'Font Awesome 5 Free', serif;
-    font-weight: 900;
-    //margin-left: 15%;
-    color: white;
-    top: 0;
-    right: 0;
-    padding: 1em;
-    background-color: #911C1C;
-    transition: .25s all ease;
-    pointer-events: none;
-  }
-
-  .select {
-    cursor: pointer;
-    display: inline-block;
-    position: relative;
-    font-size: 16px;
-    //color: $select-color;
-    //width: $select-width;
-    //height: $select-height;
-  }
-
-  .select-styled {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    //background-color: $select-background;
-    padding: 8px 15px;
-    //@include transition(all 0.2s ease-in);
-    &:after {
-      content: "";
-      width: 0;
-      height: 0;
-      border: 7px solid transparent;
-      //border-color: $select-color transparent transparent transparent;
-      position: absolute;
-      top: 16px;
-      right: 10px;
-    }
-
-    &:hover {
-      //background-color: darken($select-background, 2);
-    }
-
-    &:active, &.active {
-      //background-color: darken($select-background, 5);
-      &:after {
-        top: 9px;
-        //border-color: transparent transparent $select-color transparent;
-      }
-    }
-  }
-
-  .select-options {
-    display: none;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    left: 0;
-    z-index: 999;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    //background-color: darken($select-background, 5);
-    li {
-      margin: 0;
-      padding: 12px 0;
-      text-indent: 15px;
-      //border-top: 1px solid darken($select-background, 10);
-      //@include transition(all 0.15s ease-in);
-      &:hover {
-        //color: $select-background;
-        //background: $select-color;
-      }
-
-      &[rel="hide"] {
-        display: none;
-      }
-    }
-  }
 }
 
 //Photo et vidéo photographer-page.html
@@ -316,9 +224,6 @@
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  //width: 94%;
-  //max-width: 1240px;
-  //margin: 0 auto;
 
   //version desktop
   @media (min-width: 769px) {
@@ -328,7 +233,6 @@
   }
 
   > article {
-    //text-align: center;
 
 
     //version desktop
@@ -345,7 +249,6 @@
         max-width: 335px;
         height: 190px;
         object-fit: cover;
-        //image-rendering: auto;
         background: #C4C4C4;
         border-radius: 5px;
 
