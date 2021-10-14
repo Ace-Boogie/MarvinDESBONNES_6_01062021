@@ -342,6 +342,7 @@ const showMediaOfPhotograph = async () => {
             const pLikeHeartMedia = document.createElement("p");
             pLikeHeartMedia.id = media.likes;
             pLikeHeartMedia.classList.add("likes_heart");
+            pLikeHeartMedia.tabIndex = 0;
             pLikeHeartMedia.onclick = addLike;
             pLikeHeartMedia.textContent = media.likes;
             figcaptionMedia.appendChild(pLikeHeartMedia);
@@ -405,6 +406,7 @@ const showMediaOfPhotograph = async () => {
                     const pLikeHeartMedia = document.createElement("p");
                     pLikeHeartMedia.id = media.likes;
                     pLikeHeartMedia.classList.add("likes_heart");
+                    pLikeHeartMedia.tabIndex = 0;
                     pLikeHeartMedia.onclick = addLike;
                     pLikeHeartMedia.textContent = media.likes;
                     figcaptionMedia.appendChild(pLikeHeartMedia);
@@ -467,6 +469,7 @@ const showMediaOfPhotograph = async () => {
                     const pLikeHeartMedia = document.createElement("p");
                     pLikeHeartMedia.id = media.likes;
                     pLikeHeartMedia.classList.add("likes_heart");
+                    pLikeHeartMedia.tabIndex = 0;
                     pLikeHeartMedia.onclick = addLike;
                     pLikeHeartMedia.textContent = media.likes;
                     figcaptionMedia.appendChild(pLikeHeartMedia);
@@ -529,6 +532,7 @@ const showMediaOfPhotograph = async () => {
                     const pLikeHeartMedia = document.createElement("p");
                     pLikeHeartMedia.id = media.likes;
                     pLikeHeartMedia.classList.add("likes_heart");
+                    pLikeHeartMedia.tabIndex = 0;
                     pLikeHeartMedia.onclick = addLike;
                     pLikeHeartMedia.textContent = media.likes;
                     figcaptionMedia.appendChild(pLikeHeartMedia);
@@ -984,17 +988,26 @@ const accessibilityProfil = () => {
                     if (event.target.classList.contains("homePage")) {
                         return event.target.href;
                     }
-                    if (event.target.classList.contains("contain-modal-body")) {
-                        contactMe();
-                    }
                     if (event.target.classList.contains("figureTab")) {
                         lightBox(event);
+                    }
+                    if (event.target.id === "contact-me"){
+                        contactMe();
+                    }
+                    if (event.target.id === "closeModal") {
+                        closeModal();
+                    }
+                    if (event.target.id === "btnPostData"){
+                        return ;
+                    }
+                    if (event.target.classList.contains("likes_heart")){
+                        addLike(event);
                     }
                 }
                 break;
             case "Escape":
                 // Faire quelque chose pour la touche "esc" pressée.
-                if (event.target.classList.contains("contain-modal-body")) {
+                if (event.target.id === "closeModal") {
                     closeModal();
                 }
                 break;
