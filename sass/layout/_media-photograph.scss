@@ -120,6 +120,7 @@
     font-size: 14px;
     line-height: 18px;
     text-align: right;
+    cursor: pointer;
 
 
   }
@@ -251,6 +252,7 @@
         object-fit: cover;
         background: #C4C4C4;
         border-radius: 5px;
+        cursor: pointer;
 
         //version desktop
         @media (min-width: 769px) {
@@ -265,6 +267,7 @@
         height: 190px;
         border-radius: 5px;
         object-fit: cover;
+        cursor: pointer;
 
         //version desktop
         @media (min-width: 769px) {

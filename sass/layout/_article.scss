@@ -12,6 +12,7 @@
 
   > figure {
     margin-bottom: 0;
+    cursor: pointer;
     &:focus {
       outline: 1px solid grey;
     }
