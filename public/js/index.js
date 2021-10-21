@@ -1,6 +1,3 @@
-// import * as  from '/public/js/accesibility.js';
-
-
 /* Création des balises HTML pour le body, le header et le main */
 const bodyAccueil = document.querySelector("body");
 const headerAccueil = document.createElement("header");
@@ -16,256 +13,286 @@ bodyAccueil.appendChild(mainAccueil);
 mainAccueil.id = "mainAccueil";
 headerAccueil.classList.add("header_photographers");
 
-/* Création des variables dataJson */
-let dataJson;
-let showData;
-
 /* API request */
 const fetchPhotographers = async () => {
-    dataJson = await fetch('./photographers.json')
+    return await fetch('./photographers.json')
         .then(res => (res.json())
             .catch(err => {
                 console.log('Fetch problem: ' + err.message)
             }));
 }
-
-/* Array tagsline pour le header */
-let spanNavsX = [
+/* Array contenant les tags de la navigation */
+const spanNavsX = [
     {
-        "logo": "Logo_Fisheye.jpg",
-        "altLogo": "Fisheye Home page",
         "tags": ["portrait", "art", "fashion", "architecture", "travel", "sport", "animals", "events"]
     }];
 
+class HeaderPhotographers {
+    // constructor(rawData, targetNode) {
+    constructor(targetNode) {
+        // this.rawData = rawData;
+        this.targetNode = targetNode;
 
-/* Affichage du header de la page */
-const showHeaderPage = async () => {
-    /* Création du bouton Passer au contenu si la window est supérieur à 434px */
-    const goToContent = document.createElement("a");
-    goToContent.textContent = "Passer au contenu";
-    goToContent.classList.add("scroll-hide");
-    goToContent.style.display = "none";
-    /* Renvoi au main du contenu lorsque l'on clique dessus */
-    goToContent.href="#mainAccueil";
+        this.init();
+    }
 
-    /* Apparition du bouton lorsque l'on scroll */
-    window.addEventListener('scroll', function () {
-        if (window.innerWidth > 769){
-            headerAccueil.appendChild(goToContent);
-        } else {
-            headerAccueil.removeChild(goToContent);
+    init() {
+        this.buildLogo();
+        this.buildAndGetTagsHeader();
+        this.buildAndSettingPasserAuContenu();
+        this.buildTitle()
+        if (this.targetNode) {
+            this.append(this.targetNode);
         }
-        if (window.scrollY >= 30) {
-            goToContent.style.display = "flex";
-        } else {
-            goToContent.style.display = "none";
+    }
+
+    /* Création du href du logo et logo */
+    buildLogo() {
+
+        /* Href du logo */
+        this.linkLogo = document.createElement("a");
+        this.linkLogo.id = "aImg";
+        this.linkLogo.href = "index.html";
+        this.linkLogo.tabIndex = 0;
+        this.linkLogo.classList.add("homePage");
+
+        /* Logo */
+        this.logo = document.createElement("img");
+        this.logo.classList.add("header_photographers_logo");
+        this.logo.src = "./public/img/Logo_Fisheye.jpg"
+        this.logo.alt = "Fisheye Home page";
+
+    }
+
+    /* Création d'un array tags dans une nav, récupération et affichage des tags */
+    buildAndGetTagsHeader() {
+        /* Navigation */
+        this.nav = document.createElement("nav");
+        this.nav.role = "navigation";
+        this.nav.setAttribute("aria-label", "photographer categories");
+
+        /* Tags */
+        spanNavsX.map((getValue) => {
+            getValue.tags.map((tag) => {
+                this.spanTags = document.createElement("span");
+                this.spanTags.classList.add("spanTagHeader", "beforeTag");
+                this.spanTags.textContent = tag;
+                this.spanTags.setAttribute("aria-label", tag);
+                this.spanTags.href = "#" + tag;
+                this.spanTags.onclick = searchTag;
+                this.spanTags.tabIndex = 0;
+                this.nav.append(this.spanTags);
+            }).join(" ");
+        }).join(" ")
+    }
+
+    /* Création du titre de la page */
+    buildTitle() {
+        this.h1 = document.createElement("h1");
+        this.h1.id = "titlePhotographers";
+        this.h1.textContent = "Nos Photographes";
+
+    }
+
+    /* Création et setting du bouton Passer au contenu si la window est supérieur à 434px */
+    buildAndSettingPasserAuContenu() {
+        this.goToContent = document.createElement("a");
+        this.goToContent.textContent = "Passer au contenu";
+        this.goToContent.classList.add("scroll-hide");
+
+        /* Renvoi au main du contenu lorsque l'on clique dessus */
+        this.goToContent.href = "#mainAccueil";
+
+        /* Apparition du bouton lorsque l'on scroll */
+        window.addEventListener("scroll", () => {
+            if (window.scrollY >= 200 && window.innerWidth > 769) {
+
+                this.goToContent.style.display = "flex";
+            } else {
+                this.goToContent.style.display = "none";
+            }
+        })
+    }
+
+
+    append(domNode) {
+        this.linkLogo.append(this.logo);
+
+        domNode.append(this.goToContent);
+        domNode.append(this.linkLogo);
+        domNode.append(this.nav);
+        domNode.append(this.h1);
+    }
+
+}
+
+class AllPhotographers {
+    constructor(rawData, targetNode) {
+        this.rawData = rawData;
+        this.targetNode = targetNode;
+
+        this.init();
+    }
+
+    init() {
+        this.buildArticle();
+        this.buildFigure();
+        this.buildImage();
+        this.buildFigcaption();
+        this.buildInformations();
+        this.buildTags();
+
+        if (this.targetNode) {
+            this.append(this.targetNode);
         }
-    });
+    }
 
+    /* Création de l'article qui contiendra buildFigure */
+    buildArticle() {
+        this.article = document.createElement("article");
 
+        this.article.classList.add("main_photographers");
 
+    }
 
-    const myA = document.createElement("a");
-    myA.id = "aImg";
-    headerAccueil.appendChild(myA);
-    myA.href = "index.html";
-    myA.tabIndex = 0;
-    myA.classList.add("homePage");
+    /* Récupère buildImage et buildFigcaption */
+    buildFigure() {
+        this.figure = document.createElement("figure");
+        this.figure.id = this.rawData.id;
+        this.figure.classList.add("figureTab");
+        this.figure.tabIndex = 0;
+        this.figure.onclick = redirectionPagePhotograph;
+    }
 
-    const myLogo = document.createElement("img");
-    myLogo.classList.add("header_photographers_logo");
-    myA.appendChild(myLogo);
+    /* Récupère la photo de profil du photographe */
+    buildImage() {
+        this.img = document.createElement("img");
 
-    const myNav = document.createElement("nav");
-    headerAccueil.appendChild(myNav);
-    // a voir comment ajouter le role et le aria-label
-    myNav.role = "navigation";
-    myNav.arialabel = "photographer categories";
-    // mettre les tags onclick="showFilterTag(this)">${tag}
+        this.img.id = this.rawData.id
+        this.img.classList.add("photographer_img")
+        this.img.src = "./public/img/Photographers_ID_Photos/" + this.rawData.portrait;
+        this.img.alt = "portrait de " + this.rawData.name;
+    }
 
-    const myH1 = document.createElement("h1");
-    headerAccueil.appendChild(myH1)
-    myH1.id = "titlePhotographers";
-    myH1.textContent = "Nos Photographes";
+    /* Récupère le nom du photographe */
+    buildFigcaption() {
+        this.figcaption = document.createElement("figcaption");
+        /* nom du photographe */
+        this.h2figcaption = document.createElement("h2");
+        this.h2figcaption.textContent = this.rawData.name;
+    }
 
-    spanNavsX.map((getValue) => {
+    /* Récupère les informations concernant le photographe */
+    buildInformations() {
+        /* Création d'un div pour contenir les informations */
+        this.divInformations = document.createElement("div");
+        this.divInformations.classList.add("infoPhotographer");
 
-        myLogo.src = "public/img/" + getValue.logo;
-        myLogo.alt = getValue.altLogo;
-        getValue.tags.map((tag) => {
-            const mySpanHeader = document.createElement("span");
-            myNav.appendChild(mySpanHeader);
-            mySpanHeader.classList.add("spanTagHeader", "beforeTag");
-            mySpanHeader.textContent = tag;
-            mySpanHeader.setAttribute("aria-label", tag);
-            mySpanHeader.href = "#"+tag;
-            mySpanHeader.onclick = searchTag;
-            mySpanHeader.tabIndex = 0;
-        }).join(" ");
-    }).join(" ")
+        /* Provenance du photographe */
+        this.pFrom = document.createElement("p");
+        this.pFrom.classList.add("infoPhotographer_from");
+        this.pFrom.textContent = this.rawData.city + ", " + this.rawData.country;
 
-    await fetchPhotographers();
-    showPhotographers();
+        /* Tagline du photographe */
+        this.pTagline = document.createElement("p");
+        this.pTagline.classList.add("infoPhotographer_tagline");
+        this.pTagline.textContent = this.rawData.tagline;
+
+        /* Prix en € par jour du photographe */
+        this.pPrice = document.createElement("p");
+        this.pPrice.classList.add("infoPhotographer_price");
+        this.pPrice.textContent = this.rawData.price + "€ / jour";
+
+    }
+
+    /* Récupère les #tags du photographe */
+    buildTags() {
+        /* Creation de la div content les #tags du photographe */
+        this.divTags = document.createElement("div");
+
+        /* Récupération de chaque tag dans le Array tags */
+        this.rawData.tags.map((tag) => {
+            this.spanTags = document.createElement("span");
+            this.spanTags.classList.add("spanTag");
+            this.spanTags.onclick = searchTag;
+            this.spanTags.textContent = tag;
+            this.spanTags.setAttribute("aria-label", tag);
+            this.spanTags.href = "#" + tag;
+            this.spanTags.tabIndex = 0;
+
+            this.divTags.append(this.spanTags);
+        }).join("")
+
+    }
+
+    append(domNode) {
+        this.article.append(this.figure);
+        this.figure.append(this.img);
+
+        this.figcaption.append(this.h2figcaption);
+        this.figure.append(this.figcaption);
+
+        this.divInformations.append(this.pFrom);
+        this.divInformations.append(this.pTagline);
+        this.divInformations.append(this.pPrice);
+        this.article.append(this.divInformations);
+
+        this.article.append(this.divTags);
+        domNode.append(this.article);
+
+    }
 }
 
+const indexPhotographers = async () => {
+    try {
+        const dataJson = await fetchPhotographers();
 
-/* Affichage des photographers */
-const showPhotographers = async () => {
-    // await fetchPhotographers();
+        new HeaderPhotographers(headerAccueil);
 
-    showData = dataJson["photographers"];
-    showData.map((photograph) => {
-
-        /* Création des balises HTML pour afficher les photographers */
-        const articlePhotograph = document.createElement("article");
-        articlePhotograph.classList.add("main_photographers");
-        const figurePhotograph = document.createElement("figure");
-        figurePhotograph.tabIndex = 0;
-        figurePhotograph.classList.add("figureTab");
-        const imgPhotograph = document.createElement("img");
-        const figcaptionPhotograph = document.createElement("figcaption");
-        const h2Photograph = document.createElement("h2");
-        const divPhotograph = document.createElement("div");
-        divPhotograph.classList.add("infoPhotographer");
-        const pInfoPhotographerFrom = document.createElement("p");
-        pInfoPhotographerFrom.classList.add("infoPhotographer_from");
-        const pInfoPhotographerTagline = document.createElement("p");
-        pInfoPhotographerTagline.classList.add("infoPhotographer_tagline");
-        const pInfoPhotographerPrice = document.createElement("p");
-        pInfoPhotographerPrice.classList.add("infoPhotographer_price");
-        const divTags = document.createElement("div");
-
-        //Ajout de appenchild
-        mainAccueil.appendChild(articlePhotograph);
-
-        articlePhotograph.appendChild(figurePhotograph);
-        figurePhotograph.appendChild(imgPhotograph);
-        figurePhotograph.appendChild(figcaptionPhotograph);
-        figcaptionPhotograph.appendChild(h2Photograph);
-
-        articlePhotograph.appendChild(divPhotograph);
-        divPhotograph.appendChild(pInfoPhotographerFrom);
-        divPhotograph.appendChild(pInfoPhotographerTagline);
-        divPhotograph.appendChild(pInfoPhotographerPrice);
-
-        articlePhotograph.appendChild(divTags);
-
-
-        /* Ajout des classes et d'Id */
-        figurePhotograph.id = photograph.id;
-        figurePhotograph.onclick = redirectionPhotograph;
-
-        imgPhotograph.id = photograph.id;
-        imgPhotograph.classList.add("photographer_img");
-        imgPhotograph.src = "./public/img/Photographers_ID_Photos/" + photograph.portrait;
-        imgPhotograph.alt = "portrait de " + photograph.name;
-
-        h2Photograph.textContent = photograph.name;
-        pInfoPhotographerFrom.textContent = photograph.city + ", " + photograph.country;
-        pInfoPhotographerTagline.textContent = photograph.tagline;
-        pInfoPhotographerPrice.textContent = photograph.price + "€ / jour";
-
-
-        photograph.tags.map((tag) => {
-            const spanTags = document.createElement("span");
-            spanTags.classList.add("spanTag");
-            spanTags.onclick = searchTag;
-            spanTags.textContent = tag;
-            spanTags.setAttribute("aria-label", tag);
-            spanTags.href = "#"+tag;
-            spanTags.tabIndex = 0;
-            divTags.appendChild(spanTags);
-        }).join(" ");
-    }).join(" ")
+        const showData = dataJson["photographers"];
+        showData.map((photograph) => {
+            new AllPhotographers(photograph, mainAccueil);
+        })
+    } catch {
+        const errorMessage = document.createElement("div")
+        errorMessage.textContent = "Error"
+        errorMessage.style = "color: red;";
+        mainAccueil.appendChild(errorMessage)
+    }
 }
-
-/* Redirect url profil photograph page with ID */
-const redirectionPhotograph = (idProfil) => {
-    console.log(idProfil.target.id);
-    location.assign("photographer-page.html?id=" + idProfil.target.id);
-
-}
-
 
 /* Filtre en fonction du tag du header choisi */
 const searchTag = async (tagContent) => {
-    await fetchPhotographers();
-    if (location.hash){
-        location.hash = "";
+    try {
+        if (location.hash) {
+            location.hash = "";
+        }
+        location.hash = "#" + tagContent.target.textContent;
+
+        mainAccueil.innerHTML = "";
+        const dataJson = await fetchPhotographers();
+        const showData = dataJson["photographers"];
+        showData.filter(photograph => photograph.tags.includes(tagContent.target.textContent))
+            .map((photograph) => {
+                new AllPhotographers(photograph, mainAccueil);
+            })
+
+    } catch {
+        const errorMessage = document.createElement("div")
+        errorMessage.textContent = "Error"
+        errorMessage.style = "color: red;";
+        mainAccueil.appendChild(errorMessage)
     }
-    location.hash = "#"+tagContent.target.textContent;
-
-    mainAccueil.innerHTML = "";
-    showData
-        .filter(photograph => photograph.tags.includes(tagContent.target.textContent))
-        .map((photograph) => {
-
-            /* Création des balises HTML pour afficher les photographers */
-            const articlePhotograph = document.createElement("article");
-            articlePhotograph.classList.add("main_photographers");
-            const figurePhotograph = document.createElement("figure");
-            figurePhotograph.tabIndex = 0;
-            figurePhotograph.classList.add("figureTab");
-            const imgPhotograph = document.createElement("img");
-            const figcaptionPhotograph = document.createElement("figcaption");
-            const h2Photograph = document.createElement("h2");
-            const divPhotograph = document.createElement("div");
-            divPhotograph.classList.add("infoPhotographer");
-            const pInfoPhotographerFrom = document.createElement("p");
-            pInfoPhotographerFrom.classList.add("infoPhotographer_from");
-            const pInfoPhotographerTagline = document.createElement("p");
-            pInfoPhotographerTagline.classList.add("infoPhotographer_tagline");
-            const pInfoPhotographerPrice = document.createElement("p");
-            pInfoPhotographerPrice.classList.add("infoPhotographer_price");
-            const divTags = document.createElement("div");
-
-            //Ajout de appenchild
-            mainAccueil.appendChild(articlePhotograph);
-
-            articlePhotograph.appendChild(figurePhotograph);
-            figurePhotograph.appendChild(imgPhotograph);
-            figurePhotograph.appendChild(figcaptionPhotograph);
-            figcaptionPhotograph.appendChild(h2Photograph);
-
-            articlePhotograph.appendChild(divPhotograph);
-            divPhotograph.appendChild(pInfoPhotographerFrom);
-            divPhotograph.appendChild(pInfoPhotographerTagline);
-            divPhotograph.appendChild(pInfoPhotographerPrice);
-
-            articlePhotograph.appendChild(divTags);
-
-
-            /* Ajout des classes et d'Id */
-            figurePhotograph.id = photograph.id;
-            figurePhotograph.onclick = redirectionPhotograph;
-
-            imgPhotograph.id = photograph.id;
-            imgPhotograph.classList.add("photographer_img");
-            imgPhotograph.src = "./public/img/Photographers_ID_Photos/" + photograph.portrait;
-            imgPhotograph.alt = "portrait de " + photograph.name;
-
-            h2Photograph.textContent = photograph.name;
-            pInfoPhotographerFrom.textContent = photograph.city + ", " + photograph.country;
-            pInfoPhotographerTagline.textContent = photograph.tagline;
-            pInfoPhotographerPrice.textContent = photograph.price + "€ / jour";
-
-
-            photograph.tags.map((tag) => {
-                const spanTags = document.createElement("span");
-                spanTags.classList.add("spanTag");
-                spanTags.textContent = tag;
-                spanTags.setAttribute("aria-label", tag);
-                spanTags.onclick = searchTag;
-                spanTags.href = "#"+tag;
-                spanTags.tabIndex = 0;
-                divTags.appendChild(spanTags);
-            }).join(" ");
-        }).join(" ")
 }
 
+/* Redirect url profil photograph page with ID */
+const redirectionPagePhotograph = (idProfil) => {
+    console.log(idProfil.target.id);
+    location.assign("photographer-page.html?id=" + idProfil.target.id);
+}
 
 /* Touche accessibilité */
-const accessibilityIndex = () => {
+const accessibilityIndex = async () => {
     window.addEventListener("keydown", function (event) {
         if (event.defaultPrevented) {
             return; // Ne devrait rien faire si l'événement de la touche était déjà consommé.
@@ -282,7 +309,7 @@ const accessibilityIndex = () => {
                         searchTag(event);
                     }
                     if (event.target.classList.contains("figureTab")) {
-                        redirectionPhotograph(event);
+                        redirectionPagePhotograph(event);
                     }
                 }
                 break;
@@ -294,5 +321,6 @@ const accessibilityIndex = () => {
         event.preventDefault();
     }, true);
 }
+
 accessibilityIndex();
-showHeaderPage();
+indexPhotographers();

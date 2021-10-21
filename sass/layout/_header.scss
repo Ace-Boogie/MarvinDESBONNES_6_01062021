@@ -31,6 +31,7 @@
   }
 }
 
+/*Header de la page index.html */
 .header_photographers {
   display: flex;
   flex-wrap: wrap;
@@ -99,49 +100,10 @@
     }
 
   }
-
-  &_article {
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    text-align: center;
-    background-color: $fc-grey-secondary;
-
-    &_info {
-      > h2 {
-        color: $fc-light-red-primary;
-      }
-
-      &_from {
-        color: $fc-red-secondary;
-        line-height: 0;
-      }
-
-      &_tagline {
-        // vide pour le moment
-      }
-    }
-  }
-
-  &_article_img {
-  }
 }
 
-//Photo profil photographers
-.photographer_img {
-  height: 200px;
-  width: 200px;
-  object-fit: cover;
-  border-radius: 50%;
 
-  // version desktop
-  @media (min-width: 769px) {
-    height: 200px;
-    width: 200px;
-    image-rendering: auto;
-  }
-}
-
+/* Photo du profil du photographe dans le header du main de la page photographer-page.html */
 .photographer_img_page_header {
   height: 100px;
   width: 100px;
@@ -155,4 +117,70 @@
     width: 200px;
     image-rendering: auto;
   }
+}
+
+/* Header du main de la page photographer-page.html */
+.header_page_photograph {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  .section_photo_profil {
+    //version desktop
+    @media (min-width: 769px) {
+      width: 25%;
+    }
+  }
+
+  .header_photograph_article {
+
+    &_info {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      width: 70%;
+      //version desktop
+      @media (min-width: 769px) {
+        width: 33%;
+      }
+
+      > h2 {
+        @include h2-propriete;
+        //version desktop
+        @media (min-width: 769px) {
+          font-size: 64px;
+          line-height: 83px;
+        }
+      }
+
+      &_from {
+        @include infoPhotographer-from;
+        //version desktop
+        @media (min-width: 769px) {
+          font-size: 24px;
+          line-height: 31px;
+        }
+      }
+
+      &_tagline {
+        @include infoPhotographer-tagline;
+        //version desktop
+        @media (min-width: 769px) {
+          font-size: 18px;
+          line-height: 23px;
+        }
+      }
+
+      >h2, &_from, &_tagline {
+        text-align: left;
+        margin-top: 1%;
+        margin-bottom: 1%;
+      }
+    }
+  }
+}
+
+/*Alignement de la div contenant les tags */
+.divTags {
+  display: flex;
 }

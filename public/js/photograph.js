@@ -3,586 +3,1040 @@ const bodyPhotograph = document.querySelector("#photographer-page");
 const headerLogo = document.createElement("header");
 const mainPhotographPage = document.createElement("main");
 const headerPage = document.createElement("header");
-const trierPar = document.createElement("section");
-const sectionProfil = document.createElement("section");
-const footerLikePage = document.createElement("div");
+const sectionTrierPar = document.createElement("section");
+const sectionMedia = document.createElement("section");
+const footer = document.createElement("div");
+const resultHearts = document.createElement("p");
 
-/* Creation des balises pour la lightBox */
-const overlay = document.createElement("div");
-const imgOverlay = document.createElement("img");
-const videoOverlay = document.createElement("video");
-const divPrevBtn = document.createElement("div");
-const iLeft = document.createElement("i");
-const divNextBtn = document.createElement("div");
-const iNext = document.createElement("i");
-const divExitBtn = document.createElement("div");
-const iExit = document.createElement("i");
-const h2Overlay = document.createElement("h2");
-const numberOfImages = document.querySelectorAll(".lightBoxMedia").length;
 
 /*Lier les HTML via appendChild */
 bodyPhotograph.appendChild(headerLogo);
 bodyPhotograph.appendChild(mainPhotographPage);
 mainPhotographPage.appendChild(headerPage);
-mainPhotographPage.appendChild(trierPar);
-mainPhotographPage.appendChild(sectionProfil);
-mainPhotographPage.appendChild(footerLikePage);
+mainPhotographPage.appendChild(sectionTrierPar);
+mainPhotographPage.appendChild(sectionMedia);
+mainPhotographPage.appendChild(footer);
+footer.appendChild(resultHearts);
 
-sectionProfil.id = "sectionPhotograph";
 
-/* Création variable dataJson */
-let dataJson;
-let showData;
-let mediaOfPhotograph;
-let likesResults;
-let result;
-let optionnelle;
-
+/* Ajout des classes et d'Id */
+headerLogo.classList.add("header-logo-profil");
+headerPage.classList.add("header_page_photograph");
+sectionTrierPar.id = "trierPar";
+sectionTrierPar.classList.add("trierPar");
+sectionMedia.id = "sectionPhotograph";
+footer.classList.add("footer_like_page");
+resultHearts.classList.add("result_heart");
 
 /* API request */
 const fetchPhotographers = async () => {
-    dataJson = await fetch('./photographers.json')
+    return await fetch('./photographers.json')
         .then(res => (res.json())
             .catch(err => {
                 console.log('Fetch problem: ' + err.message)
             }));
-
 }
 
-/* Creation du header du logo */
-const showHeaderlogo = () => {
-
-    headerLogo.classList.add("header-logo-profil");
-    const myA = document.createElement("a");
-    headerLogo.appendChild(myA);
-    myA.href = "index.html";
-    myA.tabIndex = 0;
-    myA.classList.add("homePage");
-
-    const myLogo = document.createElement("img");
-    myLogo.classList.add("header_photographers_logo");
-    myA.appendChild(myLogo);
-    myLogo.src = "public/img/Logo_Fisheye.jpg";
-    myLogo.alt = "Fisheye Home page";
-}
-
-/* Affichage du header du main */
-const showHeaderMain = async () => {
-
-    await fetchPhotographers();
-    let urlId = location.href.substring(location.href.lastIndexOf("?") + 4);
-
-    showData = dataJson["photographers"];
-    headerPage.classList.add("header_photograph");
-    showData
-        .filter((photograph) => {
-            if (photograph.id == urlId) {
-                /* Création de l'article du header page */
-                const myArticleHeader = document.createElement("article");
-                myArticleHeader.classList.add("header_photograph_article");
-                headerPage.appendChild(myArticleHeader);
-
-                const myArticleDivInfo = document.createElement("div");
-                myArticleDivInfo.classList.add("header_photograph_article_info");
-                myArticleHeader.appendChild(myArticleDivInfo);
-
-                const myArticleH2 = document.createElement("h2");
-                myArticleH2.textContent = photograph.name;
-                myArticleDivInfo.appendChild(myArticleH2)
-
-                const myArticleInfoFrom = document.createElement("p");
-                myArticleInfoFrom.classList.add("header_photograph_article_info_from");
-                myArticleInfoFrom.textContent = photograph.city + ", " + photograph.country;
-                myArticleDivInfo.appendChild(myArticleInfoFrom);
-
-                const myArticleInfoTagline = document.createElement("p");
-                myArticleInfoTagline.classList.add("header_photograph_article_info_tagline");
-                myArticleInfoTagline.textContent = photograph.tagline;
-                myArticleDivInfo.appendChild(myArticleInfoTagline);
-
-                const myArticleDivInfoTags = document.createElement("div");
-                myArticleDivInfoTags.classList.add("header_photograph_article_info_tags");
-                myArticleDivInfo.appendChild(myArticleDivInfoTags);
-
-                photograph.tags.map((tag) => {
-
-                    const myArticleInfoTags = document.createElement("span");
-                    myArticleInfoTags.classList.add("spanTagHeader");
-                    myArticleInfoTags.textContent = tag;
-                    myArticleDivInfoTags.appendChild(myArticleInfoTags);
-                }).join(" ")
-
-                /* Creation du button contact */
-                const myBtnContact = document.createElement("button");
-                myBtnContact.id = "contact-me";
-                myBtnContact.textContent = "Contactez-moi";
-                myBtnContact.onclick = contactMe;
-                myBtnContact.tabIndex = 0;
-                myArticleHeader.appendChild(myBtnContact);
-
-                /* Création du formulaire de contact */
-                const myFormContain = document.createElement("div");
-                myFormContain.classList.add("contain-modal-body");
-                myArticleHeader.appendChild(myFormContain);
-
-                const myContentModalBody = document.createElement("div");
-                myContentModalBody.classList.add("content-modal-body");
-                myFormContain.appendChild(myContentModalBody);
-
-                const myCloseModal = document.createElement("span");
-                const iMyCloseModal = document.createElement("i");
-                myCloseModal.appendChild(iMyCloseModal);
-                iMyCloseModal.classList.add("fa", "fa-times");
-                myCloseModal.id = "closeModal";
-                myCloseModal.classList.add("close");
-                myCloseModal.tabIndex = 0;
-                myCloseModal.onclick = closeModal;
-                myContentModalBody.appendChild(myCloseModal);
-
-                const myModalBody = document.createElement("div");
-                myModalBody.classList.add("modal-body");
-                myContentModalBody.appendChild(myModalBody);
-
-                const myForm = document.createElement("form");
-                myForm.setAttribute("name", "reserve");
-                myForm.setAttribute("action", "index.html");
-                myForm.setAttribute("method", "get");
-                myForm.setAttribute("onsubmit", "return validate()");
-                myModalBody.appendChild(myForm);
-
-                const myFormDataH1 = document.createElement("h1");
-                myFormDataH1.id = "contact-modal-h1";
-                myFormDataH1.innerHTML = "Contactez-moi <br/> " + photograph.name;
-                myForm.appendChild(myFormDataH1);
-
-                const myFormDataFirstName = document.createElement("div");
-                myFormDataFirstName.classList.add("formData");
-                myForm.appendChild(myFormDataFirstName);
-                const myLabelFirst = document.createElement("label");
-                myLabelFirst.textContent = "Prénom";
-                myLabelFirst.setAttribute("for", "first");
-                myFormDataFirstName.appendChild(myLabelFirst);
-                const myInputFirst = document.createElement("input");
-                myInputFirst.id = "first";
-                myInputFirst.classList.add("text-control");
-                myInputFirst.type = "text";
-                myInputFirst.setAttribute("name", "first");
-                myInputFirst.setAttribute("minlength", "2");
-                myInputFirst.required = true;
-                myFormDataFirstName.appendChild(myInputFirst);
-
-                const myFormDataLastName = document.createElement("div");
-                myFormDataLastName.classList.add("formData");
-                myForm.appendChild(myFormDataLastName);
-                const myLabelLast = document.createElement("label");
-                myLabelLast.textContent = "Nom";
-                myLabelLast.setAttribute("for", "last");
-                myFormDataLastName.appendChild(myLabelLast);
-                const myInputLast = document.createElement("input");
-                myInputLast.id = "last";
-                myInputLast.classList.add("text-control");
-                myInputLast.type = "text";
-                myInputLast.setAttribute("name", "last");
-                myInputLast.setAttribute("minlength", "2");
-                myInputLast.required = true;
-                myFormDataLastName.appendChild(myInputLast);
-
-                const myFormDataEmail = document.createElement("div");
-                myFormDataEmail.classList.add("formData");
-                myForm.appendChild(myFormDataEmail);
-                const myLabelEmail = document.createElement("label");
-                myLabelEmail.textContent = "E-mail";
-                myLabelEmail.setAttribute("for", "email");
-                myFormDataEmail.appendChild(myLabelEmail);
-                const myInputEmail = document.createElement("input");
-                myInputEmail.id = "email";
-                myInputEmail.classList.add("text-control");
-                myInputEmail.type = "text";
-                myInputEmail.setAttribute("name", "email");
-                myInputEmail.required = true;
-                myFormDataEmail.appendChild(myInputEmail);
-
-                const myFormDataMessage = document.createElement("div");
-                myFormDataMessage.classList.add("formData");
-                myForm.appendChild(myFormDataMessage);
-                const myLabelMessage = document.createElement("label");
-                myLabelMessage.textContent = "Votre message";
-                myLabelMessage.setAttribute("for", "message");
-                myFormDataMessage.appendChild(myLabelMessage);
-                const myTextareaMessage = document.createElement("textarea");
-                myTextareaMessage.id = "message";
-                myTextareaMessage.classList.add("text-control", "text-area");
-                myTextareaMessage.setAttribute("name", "message");
-                myTextareaMessage.setAttribute("row", "5");
-                myTextareaMessage.setAttribute("cols", "30");
-                myTextareaMessage.required = true;
-                myFormDataMessage.appendChild(myTextareaMessage);
-
-                const myInputBtnPostData = document.createElement("button");
-                myInputBtnPostData.id = "btnPostData";
-                myInputBtnPostData.classList.add("btn-submit", "button");
-                myInputBtnPostData.type = "submit";
-                myInputBtnPostData.value = "Envoyer";
-                myInputBtnPostData.textContent = "Envoyer";
-                myForm.appendChild(myInputBtnPostData);
-
-                /* Affichage de la photo du profil */
-                const myDivPhotoProfil = document.createElement("div");
-                myDivPhotoProfil.classList.add("header_photograph_article_img");
-                myArticleHeader.appendChild(myDivPhotoProfil);
-
-                const myImgPhotoProfil = document.createElement("img");
-                myImgPhotoProfil.classList.add("photographer_img_page_header");
-                myImgPhotoProfil.src = "./public/img/Photographers_ID_Photos/" + photograph.portrait;
-                myImgPhotoProfil.alt = "portrait de " + photograph.name;
-                myDivPhotoProfil.appendChild(myImgPhotoProfil);
-            }
-        })
-        .join(" ")
-
-
-}
-
-/* Affichage du select : popularité, date, titre */
-const showSelect = () => {
-    trierPar.id = "trierPar";
-    trierPar.classList.add("trierPar");
-
-    const myLabelSelect = document.createElement("label");
-    myLabelSelect.textContent = "Trier par";
-    myLabelSelect.setAttribute("for", "chooseBy");
-    trierPar.appendChild(myLabelSelect);
-
-    const mySelect = document.createElement("select");
-    mySelect.id = "chooseBy";
-    mySelect.name = "tri";
-    mySelect.tabIndex = 0;
-    trierPar.appendChild(mySelect);
-
-    const myOptionLike = document.createElement("option");
-    myOptionLike.value = "likes";
-    myOptionLike.selected = true;
-    myOptionLike.textContent = "Popularité";
-    mySelect.appendChild(myOptionLike);
-
-    const myOptionDate = document.createElement("option");
-    myOptionDate.value = "date";
-    myOptionDate.textContent = "Date";
-    mySelect.appendChild(myOptionDate);
-
-    const myOptionTitle = document.createElement("option");
-    myOptionTitle.value = "title";
-    myOptionTitle.textContent = "Titre";
-    mySelect.appendChild(myOptionTitle);
-
-}
-
-
-/* Affichage du profil et de ses medias */
-const showMediaOfPhotograph = async () => {
-    await fetchPhotographers();
-    /* Récupération de l'id du la page html */
-    let urlId = location.href.substring(location.href.lastIndexOf("?") + 4);
-    /* Récupéaration du name de l'id */
-    let namePhotograph;
-    dataJson["photographers"].map((photograh) => {
-        if (photograh.id == urlId) {
-            return namePhotograph = photograh.name;
-        }
-    });
-
-    /* Affichage des medias en fonction de l'option */
-    const selectElem = document.querySelector('#chooseBy');
-    selectElem.addEventListener('change', comparaison);
-
-
-    /* Création des medias */
-    mediaOfPhotograph = dataJson["media"];
-    mediaOfPhotograph
-        .filter(media => media.photographerId == urlId)
-        .sort((a, b) => {
-            return a.likes < b.likes ? 1 : -1;
-        })
-        .map((media, index) => {
-
-            /* Création des balises HTML pour afficher les medias */
-            const articleMedia = document.createElement("article");
-            sectionProfil.appendChild(articleMedia);
-
-            const figureMedia = document.createElement("figure");
-            figureMedia.id = media.id;
-            articleMedia.appendChild(figureMedia);
-
-            const imgMedia = document.createElement("img");
-            imgMedia.id = media.id;
-            imgMedia.classList.add("nbMedia");
-            imgMedia.setAttribute("data-slide-to", index);
-            imgMedia.tabIndex = 0;
-            imgMedia.classList.add("figureTab");
-            imgMedia.onclick = lightBox;
-            imgMedia.alt = media.image;
-            imgMedia.title = media.title;
-
-            const videoMedia = document.createElement("video");
-            videoMedia.id = media.id;
-            videoMedia.classList.add("nbMedia");
-            videoMedia.setAttribute("data-slide-to", index);
-            videoMedia.tabIndex = 0;
-            videoMedia.classList.add("figureTab");
-            videoMedia.onclick = lightBox;
-            videoMedia.title = media.title;
-
-            const figcaptionMedia = document.createElement("figcaption");
-            figcaptionMedia.classList.add("media_figcaption");
-
-            const h2Media = document.createElement("h2");
-            h2Media.textContent = media.title;
-            figcaptionMedia.appendChild(h2Media);
-
-            const pLikeHeartMedia = document.createElement("p");
-            pLikeHeartMedia.id = media.likes;
-            pLikeHeartMedia.classList.add("likes_heart");
-            pLikeHeartMedia.tabIndex = 0;
-            pLikeHeartMedia.onclick = addLike;
-            pLikeHeartMedia.textContent = media.likes;
-            figcaptionMedia.appendChild(pLikeHeartMedia);
-
-            let resultVideo = Object.values(media);
-            let isVideo = resultVideo[3].endsWith(".mp4");
-            if (isVideo) {
-                figureMedia.appendChild(videoMedia);
-                figureMedia.appendChild(figcaptionMedia);
-                return videoMedia.src = "./public/img/" + namePhotograph.replace(" ", "_") + "/" + media.video;
-            } else {
-                figureMedia.appendChild(imgMedia);
-                figureMedia.appendChild(figcaptionMedia);
-                return imgMedia.src = "./public/img/" + namePhotograph.replace(" ", "_") + "/" + media.image;
-            }
-
-        })
-        .join(" ")
-
-    /* Function de tri des medias par  */
-    function comparaison(e) {
-        if (e.target.value === "likes") {
-            sectionProfil.innerHTML = "";
-            mediaOfPhotograph
-                .filter(media => media.photographerId == urlId)
-                .sort((a, b) => {
-                    return a.likes < b.likes ? 1 : -1;
-                })
-                .map((media, index) => {
-
-                    /* Création des balises HTML pour afficher les medias */
-                    const articleMedia = document.createElement("article");
-                    sectionProfil.appendChild(articleMedia);
-
-                    const figureMedia = document.createElement("figure");
-                    figureMedia.id = media.id;
-                    articleMedia.appendChild(figureMedia);
-
-                    const imgMedia = document.createElement("img");
-                    imgMedia.id = media.id;
-                    imgMedia.setAttribute("value", index);
-                    imgMedia.tabIndex = 0;
-                    imgMedia.classList.add("figureTab");
-                    imgMedia.onclick = lightBox;
-                    imgMedia.alt = media.image;
-
-                    const videoMedia = document.createElement("video");
-                    videoMedia.id = media.id;
-                    videoMedia.setAttribute("value", index);
-                    videoMedia.tabIndex = 0;
-                    videoMedia.classList.add("figureTab");
-                    videoMedia.onclick = lightBox;
-
-                    const figcaptionMedia = document.createElement("figcaption");
-                    figcaptionMedia.classList.add("media_figcaption");
-
-                    const h2Media = document.createElement("h2");
-                    h2Media.textContent = media.title;
-                    figcaptionMedia.appendChild(h2Media);
-
-                    const pLikeHeartMedia = document.createElement("p");
-                    pLikeHeartMedia.id = media.likes;
-                    pLikeHeartMedia.classList.add("likes_heart");
-                    pLikeHeartMedia.tabIndex = 0;
-                    pLikeHeartMedia.onclick = addLike;
-                    pLikeHeartMedia.textContent = media.likes;
-                    figcaptionMedia.appendChild(pLikeHeartMedia);
-
-                    let resultVideo = Object.values(media);
-                    let isVideo = resultVideo[3].endsWith(".mp4");
-                    if (isVideo) {
-                        figureMedia.appendChild(videoMedia);
-                        figureMedia.appendChild(figcaptionMedia);
-                        return videoMedia.src = "./public/img/" + namePhotograph.replace(" ", "_") + "/" + media.video;
-                    } else {
-                        figureMedia.appendChild(imgMedia);
-                        figureMedia.appendChild(figcaptionMedia);
-                        return imgMedia.src = "./public/img/" + namePhotograph.replace(" ", "_") + "/" + media.image;
-                    }
-
-                })
-                .join(" ")
-        }
-
-        if (e.target.value === "date") {
-            sectionProfil.innerHTML = "";
-            mediaOfPhotograph
-                .filter(media => media.photographerId == urlId)
-                .sort((a, b) => {
-                    return a.date > b.date ? 1 : -1;
-                })
-                .map((media, index) => {
-
-                    /* Création des balises HTML pour afficher les medias */
-                    const articleMedia = document.createElement("article");
-                    sectionProfil.appendChild(articleMedia);
-
-                    const figureMedia = document.createElement("figure");
-                    figureMedia.id = media.id;
-                    articleMedia.appendChild(figureMedia);
-
-                    const imgMedia = document.createElement("img");
-                    imgMedia.id = media.id;
-                    imgMedia.setAttribute("value", index);
-                    imgMedia.tabIndex = 0;
-                    imgMedia.classList.add("figureTab");
-                    imgMedia.onclick = lightBox;
-                    imgMedia.alt = media.image;
-
-                    const videoMedia = document.createElement("video");
-                    videoMedia.id = media.id;
-                    videoMedia.setAttribute("value", index);
-                    videoMedia.tabIndex = 0;
-                    videoMedia.classList.add("figureTab");
-                    videoMedia.onclick = lightBox;
-
-                    const figcaptionMedia = document.createElement("figcaption");
-                    figcaptionMedia.classList.add("media_figcaption");
-
-                    const h2Media = document.createElement("h2");
-                    h2Media.textContent = media.title;
-                    figcaptionMedia.appendChild(h2Media);
-
-                    const pLikeHeartMedia = document.createElement("p");
-                    pLikeHeartMedia.id = media.likes;
-                    pLikeHeartMedia.classList.add("likes_heart");
-                    pLikeHeartMedia.tabIndex = 0;
-                    pLikeHeartMedia.onclick = addLike;
-                    pLikeHeartMedia.textContent = media.likes;
-                    figcaptionMedia.appendChild(pLikeHeartMedia);
-
-                    let resultVideo = Object.values(media);
-                    let isVideo = resultVideo[3].endsWith(".mp4");
-                    if (isVideo) {
-                        figureMedia.appendChild(videoMedia);
-                        figureMedia.appendChild(figcaptionMedia);
-                        return videoMedia.src = "./public/img/" + namePhotograph.replace(" ", "_") + "/" + media.video;
-                    } else {
-                        figureMedia.appendChild(imgMedia);
-                        figureMedia.appendChild(figcaptionMedia);
-                        return imgMedia.src = "./public/img/" + namePhotograph.replace(" ", "_") + "/" + media.image;
-                    }
-
-                })
-                .join(" ")
-        }
-
-        if (e.target.value === "title") {
-            sectionProfil.innerHTML = "";
-            mediaOfPhotograph
-                .filter(media => media.photographerId == urlId)
-                .sort((a, b) => {
-                    return a.title > b.title ? 1 : -1;
-                })
-                .map((media, index) => {
-
-                    /* Création des balises HTML pour afficher les medias */
-                    const articleMedia = document.createElement("article");
-                    sectionProfil.appendChild(articleMedia);
-
-                    const figureMedia = document.createElement("figure");
-                    figureMedia.id = media.id;
-                    articleMedia.appendChild(figureMedia);
-
-                    const imgMedia = document.createElement("img");
-                    imgMedia.id = media.id;
-                    imgMedia.setAttribute("value", index);
-                    imgMedia.tabIndex = 0;
-                    imgMedia.classList.add("figureTab");
-                    imgMedia.onclick = lightBox;
-                    imgMedia.alt = media.image;
-
-                    const videoMedia = document.createElement("video");
-                    videoMedia.id = media.id;
-                    videoMedia.setAttribute("value", index);
-                    videoMedia.tabIndex = 0;
-                    videoMedia.classList.add("figureTab");
-                    videoMedia.onclick = lightBox;
-
-                    const figcaptionMedia = document.createElement("figcaption");
-                    figcaptionMedia.classList.add("media_figcaption");
-
-                    const h2Media = document.createElement("h2");
-                    h2Media.textContent = media.title;
-                    figcaptionMedia.appendChild(h2Media);
-
-                    const pLikeHeartMedia = document.createElement("p");
-                    pLikeHeartMedia.id = media.likes;
-                    pLikeHeartMedia.classList.add("likes_heart");
-                    pLikeHeartMedia.tabIndex = 0;
-                    pLikeHeartMedia.onclick = addLike;
-                    pLikeHeartMedia.textContent = media.likes;
-                    figcaptionMedia.appendChild(pLikeHeartMedia);
-
-                    let resultVideo = Object.values(media);
-                    let isVideo = resultVideo[3].endsWith(".mp4");
-                    if (isVideo) {
-                        figureMedia.appendChild(videoMedia);
-                        figureMedia.appendChild(figcaptionMedia);
-                        return videoMedia.src = "./public/img/" + namePhotograph.replace(" ", "_") + "/" + media.video;
-                    } else {
-                        figureMedia.appendChild(imgMedia);
-                        figureMedia.appendChild(figcaptionMedia);
-                        return imgMedia.src = "./public/img/" + namePhotograph.replace(" ", "_") + "/" + media.image;
-                    }
-
-                })
-                .join(" ")
+/* Récupération de l'id du la page idex.html */
+const urlId = parseInt(location.href.substring(location.href.lastIndexOf("?") + 4));
+
+class HeaderLogo {
+    constructor(targetNode) {
+        this.targetNode = targetNode;
+
+        this.init();
+    }
+
+    init() {
+        this.buildLogo();
+        if (this.targetNode) {
+            this.append(this.targetNode);
         }
     }
 
-    showLikePrice();
+    /* Création du href du logo et logo */
+    buildLogo() {
+
+        /* Href du logo */
+        this.linkLogo = document.createElement("a");
+        this.linkLogo.id = "aImg";
+        this.linkLogo.href = "index.html";
+        this.linkLogo.tabIndex = 0;
+        this.linkLogo.classList.add("homePage");
+
+        /* Logo */
+        this.logo = document.createElement("img");
+        this.logo.classList.add("header_photographers_logo");
+        this.logo.src = "./public/img/Logo_Fisheye.jpg"
+        this.logo.alt = "Fisheye Home page";
+
+    }
+
+    append(domNode) {
+        this.linkLogo.append(this.logo);
+
+        domNode.append(this.linkLogo);
+    }
+
+}
+
+class HeaderMain {
+    constructor(rawData, targetNode) {
+        this.rawData = rawData;
+        this.targetNode = targetNode;
+
+        this.init();
+    }
+
+    init() {
+        this.buildSectionInformation();
+        this.buildTags();
+        this.buildSectionContact();
+        this.buildForm();
+        this.buildAndShowPhotoProfil();
+
+        if (this.targetNode) {
+            this.append(this.targetNode);
+        }
+    }
+
+    /* Création de la section contenant les informations du photographe */
+    buildSectionInformation() {
+        this.sectionInformations = document.createElement("section");
+        this.sectionInformations.classList.add("header_photograph_article_info", "section_informations");
+
+        /* Nom du photographe */
+        this.h2NamePhotograph = document.createElement("h2");
+        this.h2NamePhotograph.textContent = this.rawData.name;
+
+        /* Provenance du photographe */
+        this.pFrom = document.createElement("p");
+        this.pFrom.classList.add("header_photograph_article_info_from", "section_informations_from");
+        this.pFrom.textContent = this.rawData.city + ", " + this.rawData.country;
+
+        /* Tagline du photographe */
+        this.pTagline = document.createElement("p");
+        this.pTagline.classList.add("header_photograph_article_info_tagline", "section_informations_tagline");
+        this.pTagline.textContent = this.rawData.tagline;
+
+    }
+
+    /* Création des tags du photographe contenu dans buildSectionInformation() */
+    buildTags() {
+        /* Creation de la div content les #tags du photographe */
+        this.divTags = document.createElement("div");
+        this.divTags.classList.add("divTags");
+
+        /* Récupération de chaque tag dans le Array tags */
+        this.rawData.tags.map((tag) => {
+            this.spanTags = document.createElement("span");
+            this.spanTags.classList.add("spanTagHeader");
+            this.spanTags.onclick = filterTagMedia;
+            this.spanTags.textContent = tag;
+            this.spanTags.setAttribute("aria-label", tag);
+
+            this.divTags.append(this.spanTags);
+        }).join("")
+
+    }
+
+    /* Création de la section contenant le bouton contactez-moi */
+    buildSectionContact() {
+        this.sectionContact = document.createElement("section");
+        this.sectionContact.classList.add("section_btn");
+
+        this.btnContact = document.createElement("button");
+        this.btnContact.id = "contact-me";
+        this.btnContact.textContent = "Contactez-moi";
+        this.btnContact.onclick = contactMe;
+        this.btnContact.tabIndex = 0;
+    }
+
+    /* Création du formulaire contactez-moi contenu dans buildSectionContact() */
+    buildForm() {
+        this.myFormContain = document.createElement("div");
+        this.myFormContain.classList.add("contain-modal-body");
+
+        this.myFormContent = document.createElement("div");
+        this.myFormContent.classList.add("content-modal-body");
+
+        /* Création de l'icone afin de close le formulaire */
+        this.myFormCloseContent = document.createElement("span");
+        this.myFormCloseContent.id = "closeModal";
+        this.myFormCloseContent.classList.add("close");
+        this.myFormCloseContent.tabIndex = 0;
+        this.myFormCloseContent.onclick = closeModal;
+
+        this.myFormCloseIcone = document.createElement("i");
+        this.myFormCloseIcone.classList.add("fa", "fa-times");
+
+        /* Création de la div qui contient les datas du formulaire */
+        this.myFormBody = document.createElement("div");
+        this.myFormBody.classList.add("modal-body");
+
+        /* Création du form */
+        this.myForm = document.createElement("form");
+        this.myForm.setAttribute("name", "reserve");
+
+        /* Titre du formulaire */
+        this.myFormH1 = document.createElement("h1");
+        this.myFormH1.id = "contact-modal-h1";
+        this.myFormH1.innerHTML = "Contactez-moi <br/> " + this.rawData.name;
+
+        /*Création de la div, du label et du input pour le prénom */
+        this.myFormDataFirstName = document.createElement("div");
+        this.myFormDataFirstName.classList.add("formData");
+
+        this.myLabelFirst = document.createElement("label");
+        this.myLabelFirst.textContent = "Prénom";
+        this.myLabelFirst.setAttribute("for", "first");
+
+        this.myInputFirst = document.createElement("input");
+        this.myInputFirst.id = "first";
+        this.myInputFirst.classList.add("text-control");
+        this.myInputFirst.type = "text";
+        this.myInputFirst.setAttribute("name", "first");
+        this.myInputFirst.setAttribute("minlength", "2");
+        this.myInputFirst.required = true;
+
+        /*Création de la div, du label et du input pour le nom */
+        this.myFormDataLastName = document.createElement("div");
+        this.myFormDataLastName.classList.add("formData");
+
+        this.myLabelLast = document.createElement("label");
+        this.myLabelLast.textContent = "Nom";
+        this.myLabelLast.setAttribute("for", "last");
+
+        this.myInputLast = document.createElement("input");
+        this.myInputLast.id = "last";
+        this.myInputLast.classList.add("text-control");
+        this.myInputLast.type = "text";
+        this.myInputLast.setAttribute("name", "last");
+        this.myInputLast.setAttribute("minlength", "2");
+        this.myInputLast.required = true;
+
+        /*Création de la div, du label et du input pour l'email */
+        this.myFormDataEmail = document.createElement("div");
+        this.myFormDataEmail.classList.add("formData");
+
+        this.myLabelEmail = document.createElement("label");
+        this.myLabelEmail.textContent = "E-mail";
+        this.myLabelEmail.setAttribute("for", "email");
+
+        this.myInputEmail = document.createElement("input");
+        this.myInputEmail.id = "email";
+        this.myInputEmail.classList.add("text-control");
+        this.myInputEmail.type = "text";
+        this.myInputEmail.setAttribute("name", "email");
+        this.myInputEmail.required = true;
+
+        /*Création de la div, du label et du input pour le message */
+        this.myFormDataMessage = document.createElement("div");
+        this.myFormDataMessage.classList.add("formData");
+
+        this.myLabelMessage = document.createElement("label");
+        this.myLabelMessage.textContent = "Votre message";
+        this.myLabelMessage.setAttribute("for", "message");
+
+        this.myTextareaMessage = document.createElement("textarea");
+        this.myTextareaMessage.id = "message";
+        this.myTextareaMessage.classList.add("text-control", "text-area");
+        this.myTextareaMessage.setAttribute("name", "message");
+        this.myTextareaMessage.setAttribute("row", "5");
+        this.myTextareaMessage.setAttribute("cols", "30");
+        this.myTextareaMessage.required = true;
+
+        /*Création du bouton pour l'envoi du formulaire */
+        this.myBtnPostData = document.createElement("button");
+        this.myBtnPostData.id = "btnPostData";
+        this.myBtnPostData.classList.add("btn-submit", "button");
+        this.myBtnPostData.type = "button";
+        this.myBtnPostData.onclick = recupData;
+        this.myBtnPostData.value = "Envoyer";
+        this.myBtnPostData.textContent = "Envoyer";
+
+    }
+
+    /* Création section contenant la photo profil du photographe */
+    buildAndShowPhotoProfil() {
+        this.sectionPhotoProfil = document.createElement("section");
+        this.sectionPhotoProfil.classList.add("section_photo_profil");
+
+        /* Photo de profil du photographe */
+        this.img = document.createElement("img");
+
+        this.img.id = this.rawData.id
+        this.img.classList.add("photographer_img_page_header")
+        this.img.src = "./public/img/Photographers_ID_Photos/" + this.rawData.portrait;
+        this.img.alt = "portrait de " + this.rawData.name;
+    }
+
+
+    append(domNode) {
+        this.sectionInformations.append(this.h2NamePhotograph);
+        this.sectionInformations.append(this.pFrom);
+        this.sectionInformations.append(this.pTagline);
+        this.sectionInformations.append(this.divTags);
+
+        /* append du formulaire */
+        this.sectionContact.append(this.btnContact);
+        this.sectionContact.append(this.myFormContain);
+
+        this.myFormContain.append(this.myFormContent);
+        this.myFormContent.append(this.myFormCloseContent)
+        this.myFormCloseContent.append(this.myFormCloseIcone);
+        this.myFormContent.append(this.myFormBody);
+
+        this.myFormBody.append(this.myForm);
+        this.myForm.append(this.myFormH1);
+        this.myForm.append(this.myFormDataFirstName);
+
+        this.myFormDataFirstName.append(this.myLabelFirst);
+        this.myFormDataFirstName.append(this.myInputFirst);
+
+        this.myForm.append(this.myFormDataLastName);
+
+        this.myFormDataLastName.append(this.myLabelLast);
+        this.myFormDataLastName.append(this.myInputLast);
+
+        this.myForm.append(this.myFormDataEmail);
+
+        this.myFormDataEmail.append(this.myLabelEmail);
+        this.myFormDataEmail.append(this.myInputEmail);
+
+        this.myForm.append(this.myFormDataMessage);
+
+        this.myFormDataMessage.append(this.myLabelMessage);
+        this.myFormDataMessage.append(this.myTextareaMessage);
+
+        this.myForm.append(this.myBtnPostData);
+
+        /* Photo de profil */
+        this.sectionPhotoProfil.append(this.img);
+
+        domNode.append(this.sectionInformations);
+        domNode.append(this.sectionContact);
+        domNode.append(this.sectionPhotoProfil);
+
+
+    }
+}
+
+class SelectTypeMedia {
+    constructor(targetNode) {
+
+        this.targetNode = targetNode;
+
+        this.init();
+    }
+
+    init() {
+        this.buildLabel();
+        this.buildSelect();
+        this.buildOption();
+
+        if (this.targetNode) {
+            this.append(this.targetNode);
+        }
+    }
+
+    /* Création du label */
+    buildLabel() {
+        this.label = document.createElement("label");
+        this.label.textContent = "Trier par";
+        this.label.setAttribute("for", "chooseBy");
+    }
+
+    /* Création du select */
+    buildSelect() {
+        this.select = document.createElement("select");
+        this.select.id = "chooseBy";
+        this.select.name = "tri";
+        this.select.tabIndex = 0;
+    }
+
+    /* Création des options du select */
+    buildOption() {
+
+        /* Option Likes */
+        this.optionSelectLikes = document.createElement("option");
+        this.optionSelectLikes.value = "likes";
+        this.optionSelectLikes.selected = true;
+        this.optionSelectLikes.textContent = "Popularité";
+
+        /* Option Date */
+        this.optionSelectDate = document.createElement("option");
+        this.optionSelectDate.value = "date";
+        this.optionSelectDate.textContent = "Date";
+
+        /* Option Title */
+        this.optionSelectTitle = document.createElement("option");
+        this.optionSelectTitle.value = "title";
+        this.optionSelectTitle.textContent = "Titre";
+
+    }
+
+    append(domNode) {
+        this.select.append(this.optionSelectLikes);
+        this.select.append(this.optionSelectDate);
+        this.select.append(this.optionSelectTitle);
+
+        domNode.append(this.label);
+        domNode.append(this.select);
+
+    }
+}
+
+class MediaPhotograph {
+    constructor(rawData, rawDataIndex, rawNamePhotograph, targetNode) {
+        this.rawData = rawData;
+        this.rawDataIndex = rawDataIndex;
+        this.rawNamePhotograph = rawNamePhotograph;
+        this.targetNode = targetNode;
+
+        this.init();
+    }
+
+    init() {
+        this.buildArticle();
+        this.buildFigure();
+        this.buildFigcaption();
+
+        if (this.targetNode) {
+            this.append(this.targetNode);
+        }
+    }
+
+    /* Création de l'article qui contiendra buildFigure */
+    buildArticle() {
+        this.article = document.createElement("article");
+
+
+    }
+
+    /* Récupère buildImage et buildFigcaption */
+    buildFigure() {
+        this.figure = document.createElement("figure");
+        this.figure.id = this.rawData.id;
+    }
+
+
+    /* Récupèration du nom et du like du media */
+    buildFigcaption() {
+        this.figcaption = document.createElement("figcaption");
+        this.figcaption.classList.add("media_figcaption");
+        /* nom du media */
+        this.h2figcaption = document.createElement("h2");
+        this.h2figcaption.textContent = this.rawData.title;
+
+        /* like du media */
+        this.likeMedia = document.createElement("p");
+        this.likeMedia.id = this.rawData.likes;
+        this.likeMedia.classList.add("likes_heart");
+        this.likeMedia.tabIndex = 0;
+        this.likeMedia.onclick = addLike;
+        this.likeMedia.textContent = this.rawData.likes;
+    }
+
+
+}
+
+class Image extends MediaPhotograph {
+
+
+    init() {
+        this.buildArticle();
+        this.buildFigure();
+        this.buildImage();
+        this.buildFigcaption();
+
+        if (this.targetNode) {
+            this.append(this.targetNode);
+        }
+    }
+
+    buildArticle() {
+        super.buildArticle();
+    }
+
+    /* Récupère les photos du photographe */
+    buildImage() {
+
+        this.img = document.createElement("img");
+
+        this.img.id = this.rawData.id
+        this.img.classList.add("nbMedia", "figureTab");
+        this.img.tabIndex = 0;
+        this.img.onclick = lightBox;
+        this.img.setAttribute("data-slide-to", this.rawDataIndex)
+        this.img.src = "./public/img/" + this.rawNamePhotograph.replace(" ", "_") + "/" + this.rawData.image;
+        this.img.alt = this.rawData.image;
+        this.img.title = this.rawData.title;
+        this.img.width = 200;
+        this.img.height = 200;
+    }
+
+    buildFigure() {
+        super.buildFigure();
+    }
+
+    buildFigcaption() {
+        super.buildFigcaption();
+    }
+
+
+    append(domNode) {
+        this.figure.append(this.img);
+        this.figure.append(this.figcaption);
+        this.figcaption.append(this.h2figcaption);
+        this.figcaption.append(this.likeMedia);
+
+        domNode.append(this.figure);
+
+    }
+}
+
+class Video extends MediaPhotograph {
+
+    init() {
+        this.buildArticle();
+        this.buildFigure();
+        this.buildVideo();
+        this.buildFigcaption();
+
+        if (this.targetNode) {
+            this.append(this.targetNode);
+        }
+    }
+
+
+    buildArticle() {
+        super.buildArticle();
+    }
+
+    /* Récupère les vidéos du photographe */
+    buildVideo() {
+
+        this.video = document.createElement("video");
+
+        this.video.id = this.rawData.id
+        this.video.classList.add("nbMedia", "figureTab");
+        this.video.tabIndex = 0;
+        this.video.onclick = lightBox;
+        this.video.setAttribute("data-slide-to", this.rawDataIndex);
+        this.video.src = "./public/img/" + this.rawNamePhotograph.replace(" ", "_") + "/" + this.rawData.video;
+        this.video.title = this.rawData.title;
+        this.video.width = 200;
+        this.video.height = 200;
+    }
+
+    buildFigure() {
+        super.buildFigure();
+    }
+
+    buildFigcaption() {
+        super.buildFigcaption();
+    }
+
+
+    append(domNode) {
+        this.figure.append(this.video);
+        this.figure.append(this.figcaption);
+        this.figcaption.append(this.h2figcaption);
+        this.figcaption.append(this.likeMedia);
+
+        domNode.append(this.figure);
+
+    }
+}
+
+class FooterPrice {
+    constructor(rawData, targetNode) {
+        this.rawData = rawData;
+        this.targetNode = targetNode;
+
+        this.init();
+    }
+
+    init() {
+        this.buildAndGetPrice();
+
+        if (this.targetNode) {
+            this.append(this.targetNode);
+        }
+    }
+
+    /* Récupération du prix du photographe par jour */
+    buildAndGetPrice() {
+        this.price = document.createElement("p");
+        this.price.textContent = this.rawData.price + "€ / jour";
+    }
+
+
+    append(domNode) {
+
+        domNode.append(this.price);
+
+    }
+}
+
+class LightBox {
+    constructor(rawValue, targetNode) {
+        this.rawValue = rawValue;
+        this.targetNode = targetNode;
+
+        this.init();
+    }
+
+    init() {
+        this.buildBaliseHtml();
+        this.buildPrev();
+        this.buildImageOrVideo();
+        this.buildTitleMedia();
+        this.buildNext();
+        this.buildExit();
+        this.nextMedia();
+        this.prevMedia();
+
+
+        if (this.targetNode) {
+            this.append(this.targetNode);
+        }
+    }
+
+    buildBaliseHtml() {
+        /* Creation des balises HTML contenues dans la lightBox */
+        this.overlay = document.createElement("div");
+        this.overlay.id = "overlay";
+        this.overlay.style.display = "flex";
+
+        /* Selectionner tous ceux qui ont la classe nbMedia */
+        this.nbMedia = document.querySelectorAll(".nbMedia");
+
+        /* Récupération de l'attribut data-slide-to du media cliqué*/
+        this.indexMedia = this.rawValue.target.getAttribute("data-slide-to");
+
+        /* Récupération de l'attribut data-slide-to du lightBox */
+        this.nbDataSlide = parseInt(this.rawValue.target.getAttribute("data-slide-to"));
+    }
+
+    buildPrev() {
+        this.divPrevBtn = document.createElement("div");
+        this.divPrevBtn.id = "prevButton";
+        this.divPrevBtn.setAttribute("data-slide-to", this.indexMedia);
+
+        this.iLeft = document.createElement("i");
+        this.iLeft.classList.add("fa", "fa-chevron-left");
+    }
+
+    buildImageOrVideo() {
+        this.imgOverlay = document.createElement("img");
+        this.imgOverlay.classList.add("lightBoxMedia");
+        this.imgOverlay.setAttribute("data-slide-to", this.indexMedia);
+        this.imgOverlay.src = this.rawValue.target.src;
+
+        this.videoOverlay = document.createElement("video");
+        this.videoOverlay.classList.add("lightBoxMedia");
+        this.videoOverlay.setAttribute("data-slide-to", this.indexMedia);
+        this.videoOverlay.src = this.rawValue.target.src;
+        this.videoOverlay.controls = true;
+    }
+
+    buildTitleMedia() {
+        this.h2Overlay = document.createElement("h2");
+        this.h2Overlay.id = "titleOverlay";
+        this.h2Overlay.textContent = this.rawValue.target.title;
+
+    }
+
+    buildNext() {
+        this.divNextBtn = document.createElement("div");
+        this.divNextBtn.id = "nextButton";
+        this.divNextBtn.setAttribute("data-slide-to", this.indexMedia);
+
+        this.iNext = document.createElement("i");
+        this.iNext.classList.add("fa", "fa-chevron-right");
+    }
+
+    buildExit() {
+        this.divExitBtn = document.createElement("div");
+        this.divExitBtn.id = "exitButton";
+
+        this.iExit = document.createElement("i");
+        this.iExit.classList.add("fa", "fa-times");
+        this.iExit.id = "iExitBtn";
+
+        /* Fermeture de la lightBox au click */
+        this.divExitBtn.addEventListener("click", () => {
+            this.overlay.style.display = "none";
+            this.overlay.parentElement.removeChild(this.overlay);
+        });
+    }
+
+    /* Clique sur la flèche pour avoir le media suivant de la lightBox */
+
+    nextMedia() {
+        this.divNextBtn.addEventListener("click", () => {
+            this.nbDivNextDataSlide = parseInt(this.divNextBtn.getAttribute("data-slide-to"));
+            if (this.nbDivNextDataSlide === this.nbMedia.length - 1) {
+                if (this.rawValue.target.src.endsWith(".jpg")) {
+                    if (this.nbMedia[0].src.endsWith(".mp4")) {
+                        this.overlay.replaceChild(this.videoOverlay, this.imgOverlay);
+                        this.videoOverlay.setAttribute("data-slide-to", 0);
+                        this.divNextBtn.setAttribute("data-slide-to", 0);
+                        this.divPrevBtn.setAttribute("data-slide-to", 0);
+                        this.h2Overlay.textContent = this.nbMedia[0].title
+                        this.videoOverlay.controls = true;
+                        return this.videoOverlay.src = this.nbMedia[0].src;
+                    } else if (this.nbMedia[0].src.endsWith(".jpg")) {
+                        this.imgOverlay.setAttribute("data-slide-to", 0);
+                        this.divNextBtn.setAttribute("data-slide-to", 0);
+                        this.divPrevBtn.setAttribute("data-slide-to", 0);
+                        this.h2Overlay.textContent = this.nbMedia[0].title
+                        return this.imgOverlay.src = this.nbMedia[0].src;
+                    }
+                } else if (this.rawValue.target.src.endsWith(".mp4")) {
+                    if (this.nbMedia[0].src.endsWith(".mp4")) {
+                        this.videoOverlay.setAttribute("data-slide-to", 0);
+                        this.divNextBtn.setAttribute("data-slide-to", 0);
+                        this.divPrevBtn.setAttribute("data-slide-to", 0);
+                        this.h2Overlay.textContent = this.nbMedia[0].title
+                        this.videoOverlay.controls = true;
+                        return this.videoOverlay.src = this.nbMedia[0].src;
+                    } else if (this.nbMedia[0].src.endsWith(".jpg")) {
+                        this.overlay.replaceChild(this.imgOverlay, this.videoOverlay);
+                        this.imgOverlay.setAttribute("data-slide-to", 0);
+                        this.divNextBtn.setAttribute("data-slide-to", 0);
+                        this.divPrevBtn.setAttribute("data-slide-to", 0);
+                        this.h2Overlay.textContent = this.nbMedia[0].title
+                        return this.imgOverlay.src = this.nbMedia[0].src;
+                    }
+                }
+            }
+            if (this.nbDivNextDataSlide < this.nbMedia.length - 1) {
+                if (this.nbMedia[this.nbDivNextDataSlide].src.endsWith(".jpg")) {
+                    if (this.nbMedia[this.nbDivNextDataSlide + 1].src.endsWith(".mp4")) {
+                        this.overlay.replaceChild(this.videoOverlay, this.imgOverlay);
+                        this.videoOverlay.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
+                        this.divNextBtn.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
+                        this.divPrevBtn.setAttribute("data-slide-to", this.nbDataSlide + 1);
+                        this.h2Overlay.textContent = this.nbMedia[this.nbDivNextDataSlide + 1].title
+                        this.videoOverlay.controls = true;
+                        this.videoOverlay.src = this.nbMedia[this.nbDivNextDataSlide + 1].src;
+                    }
+                    if (this.nbMedia[this.nbDivNextDataSlide + 1].src.endsWith(".jpg")) {
+                        this.imgOverlay.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
+                        this.divNextBtn.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
+                        this.divPrevBtn.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
+                        this.h2Overlay.textContent = this.nbMedia[this.nbDivNextDataSlide + 1].title
+                        this.imgOverlay.src = this.nbMedia[this.nbDivNextDataSlide + 1].src;
+                    }
+                } else if (this.nbMedia[this.nbDivNextDataSlide].src.endsWith(".mp4")) {
+                    if (this.nbMedia[this.nbDivNextDataSlide + 1].src.endsWith(".mp4")) {
+                        this.videoOverlay.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
+                        this.divNextBtn.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
+                        this.divPrevBtn.setAttribute("data-slide-to", this.nbDataSlide + 1);
+                        this.h2Overlay.textContent = this.nbMedia[this.nbDivNextDataSlide + 1].title
+                        this.videoOverlay.controls = true;
+                        this.videoOverlay.src = this.nbMedia[this.nbDivNextDataSlide + 1].src;
+                    }
+                    if (this.nbMedia[this.nbDivNextDataSlide + 1].src.endsWith(".jpg")) {
+                        this.overlay.replaceChild(this.imgOverlay, this.videoOverlay);
+                        this.imgOverlay.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
+                        this.divNextBtn.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
+                        this.divPrevBtn.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
+                        this.h2Overlay.textContent = this.nbMedia[this.nbDivNextDataSlide + 1].title
+                        this.imgOverlay.src = this.nbMedia[this.nbDivNextDataSlide + 1].src;
+                    }
+                }
+            }
+        })
+    }
+
+    /* Clique sur la flèche pour avoir le media précédent de la lightBox */
+    prevMedia() {
+        this.divPrevBtn.addEventListener("click", () => {
+            this.nbDivPrevDataSlide = parseInt(this.divPrevBtn.getAttribute("data-slide-to"));
+            if (this.nbDivPrevDataSlide === 0) {
+                if (this.nbMedia[0].src.endsWith(".jpg")) {
+                    if (this.nbMedia[this.nbMedia.length - 1].src.endsWith(".mp4")) {
+                        this.overlay.replaceChild(this.videoOverlay, this.imgOverlay);
+                        this.videoOverlay.setAttribute("data-slide-to", this.nbMedia.length - 1);
+                        this.divNextBtn.setAttribute("data-slide-to", this.nbMedia.length - 1);
+                        this.divPrevBtn.setAttribute("data-slide-to", this.nbMedia.length - 1);
+                        this.h2Overlay.textContent = this.nbMedia[this.nbMedia.length - 1].title
+                        this.videoOverlay.controls = true;
+                        return this.videoOverlay.src = this.nbMedia[this.nbMedia.length - 1].src;
+                    } else if (this.nbMedia[this.nbMedia.length - 1].src.endsWith(".jpg")) {
+                        this.imgOverlay.setAttribute("data-slide-to", this.nbMedia.length - 1);
+                        this.divNextBtn.setAttribute("data-slide-to", this.nbMedia.length - 1);
+                        this.divPrevBtn.setAttribute("data-slide-to", this.nbMedia.length - 1);
+                        this.h2Overlay.textContent = this.nbMedia[this.nbMedia.length - 1].title
+                        return this.imgOverlay.src = this.nbMedia[this.nbMedia.length - 1].src;
+                    }
+                } else if (this.nbMedia[0].src.endsWith(".mp4")) {
+                    if (this.nbMedia[this.nbMedia.length - 1].src.endsWith(".mp4")) {
+                        this.videoOverlay.setAttribute("data-slide-to", this.nbMedia.length - 1);
+                        this.divNextBtn.setAttribute("data-slide-to", this.nbMedia.length - 1);
+                        this.divPrevBtn.setAttribute("data-slide-to", this.nbMedia.length - 1);
+                        this.h2Overlay.textContent = this.nbMedia[this.nbMedia.length - 1].title
+                        this.videoOverlay.controls = true;
+                        return this.videoOverlay.src = this.nbMedia[this.nbMedia.length - 1].src;
+                    } else if (this.nbMedia[this.nbMedia.length - 1].src.endsWith(".jpg")) {
+                        this.overlay.replaceChild(this.imgOverlay, this.videoOverlay);
+                        this.imgOverlay.setAttribute("data-slide-to", this.nbMedia.length - 1);
+                        this.divNextBtn.setAttribute("data-slide-to", this.nbMedia.length - 1);
+                        this.divPrevBtn.setAttribute("data-slide-to", this.nbMedia.length - 1);
+                        this.h2Overlay.textContent = this.nbMedia[this.nbMedia.length - 1].title
+                        return this.imgOverlay.src = this.nbMedia[this.nbMedia.length - 1].src;
+                    }
+                }
+            }
+            if (this.nbDivPrevDataSlide > 0) {
+                if (this.nbMedia[this.nbDivPrevDataSlide].src.endsWith(".jpg")) {
+                    if (this.nbMedia[this.nbDivPrevDataSlide - 1].src.endsWith(".mp4")) {
+                        this.overlay.replaceChild(this.videoOverlay, this.imgOverlay);
+                        this.videoOverlay.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
+                        this.divNextBtn.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
+                        this.divPrevBtn.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
+                        this.h2Overlay.textContent = this.nbMedia[this.nbDivPrevDataSlide - 1].title
+                        this.videoOverlay.controls = true;
+                        this.videoOverlay.src = this.nbMedia[this.nbDivPrevDataSlide - 1].src;
+                    }
+                    if (this.nbMedia[this.nbDivPrevDataSlide - 1].src.endsWith(".jpg")) {
+                        this.imgOverlay.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
+                        this.divNextBtn.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
+                        this.divPrevBtn.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
+                        this.h2Overlay.textContent = this.nbMedia[this.nbDivPrevDataSlide - 1].title
+                        this.imgOverlay.src = this.nbMedia[this.nbDivPrevDataSlide - 1].src;
+                    }
+                } else if (this.nbMedia[this.nbDivPrevDataSlide].src.endsWith(".mp4")) {
+                    if (this.nbMedia[this.nbDivPrevDataSlide - 1].src.endsWith(".mp4")) {
+                        this.videoOverlay.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
+                        this.divNextBtn.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
+                        this.divPrevBtn.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
+                        this.h2Overlay.textContent = this.nbMedia[this.nbDivPrevDataSlide - 1].title
+                        this.videoOverlay.controls = true;
+                        this.videoOverlay.src = this.nbMedia[this.nbDivPrevDataSlide - 1].src;
+                    }
+                    if (this.nbMedia[this.nbDivPrevDataSlide - 1].src.endsWith(".jpg")) {
+                        console.log("c'est là")
+                        this.overlay.replaceChild(this.imgOverlay, this.videoOverlay);
+                        this.imgOverlay.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
+                        this.divNextBtn.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
+                        this.divPrevBtn.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
+                        this.h2Overlay.textContent = this.nbMedia[this.nbDivPrevDataSlide - 1].title
+                        this.imgOverlay.src = this.nbMedia[this.nbDivPrevDataSlide - 1].src;
+                    }
+                }
+            }
+        })
+    }
+
+    append(domNode) {
+        this.overlay.append(this.divPrevBtn);
+        this.divPrevBtn.append(this.iLeft);
+
+        if (this.rawValue.target.src.endsWith(".jpg")) {
+            this.overlay.append(this.imgOverlay);
+        } else if (this.rawValue.target.src.endsWith(".mp4")) {
+
+            this.overlay.append(this.videoOverlay);
+        }
+        this.overlay.append(this.h2Overlay);
+
+        this.overlay.append(this.divNextBtn);
+        this.divNextBtn.append(this.iNext);
+
+        this.overlay.append(this.divExitBtn);
+        this.divExitBtn.append(this.iExit)
+
+        domNode.append(this.overlay);
+
+    }
 }
 
 
-/* Affichage de la somme des like et du prix par jour */
-const resultHearts = document.createElement("p");
-const showLikePrice = async () => {
-    await fetchPhotographers();
-    /* Récupération de l'id du la page html */
-    let urlId = location.href.substring(location.href.lastIndexOf("?") + 4);
-    /* Récupération de la somme des likes */
-    likesResults = mediaOfPhotograph
-        .filter(media => media.photographerId == urlId)
-        .map(media => media.likes)
-        .reduce((a, b) => a + b, 0)
+/* Affichage de la page photographer-page.html */
+const photographerPage = async () => {
+    try {
+        const dataJson = await fetchPhotographers();
 
-    /* Récupération du prix */
-    pricePhotograph = showData
-        .filter(photograph => photograph.id == urlId)
-        .map(photograph => photograph.price)
+        /* Affichage du HeaderLogo */
+        new HeaderLogo(headerLogo);
 
-    footerLikePage.classList.add("footer_like_page");
-    resultHearts.classList.add("result_heart");
-    resultHearts.textContent = likesResults;
-    footerLikePage.appendChild(resultHearts);
+        let namePhotograph;
 
-    const resultPrice = document.createElement("p");
-    resultPrice.textContent = pricePhotograph + "€ / jour";
-    footerLikePage.appendChild(resultPrice);
+        /* Affichage du HeaderMain */
+        const showData = dataJson["photographers"];
+        showData.filter((photograph) => {
+            if (photograph.id === urlId) {
+                new HeaderMain(photograph, headerPage);
+                namePhotograph = photograph.name;
+                new FooterPrice(photograph, footer)
+            }
+        }).join("")
+
+        /* Affichage des medias du photographe */
+        const showMedia = dataJson["media"];
+
+        /* Affichage des medias par selection */
+        new SelectTypeMedia(sectionTrierPar);
+        const selectElem = document.querySelector('#chooseBy');
+        selectElem.addEventListener('change', (event) => {
+            switch (event.target.value) {
+                case "likes" :
+                    sectionMedia.innerHTML = "";
+                    showMedia
+                        .filter((media) => media.photographerId === urlId)
+                        .sort((a, b) => {
+                            return a.likes < b.likes ? 1 : -1;
+                        })
+                        .map((media, index) => {
+                            if (media.image) {
+                                return new Image(media, index, namePhotograph, sectionMedia);
+                            }
+
+                            if (media.video) {
+                                return new Video(media, index, namePhotograph, sectionMedia);
+                            }
+                        }).join("")
+                    break;
+                case "date" :
+                    sectionMedia.innerHTML = "";
+                    showMedia
+                        .filter((media) => media.photographerId === urlId)
+                        .sort((a, b) => {
+                            return a.date > b.date ? 1 : -1;
+                        })
+                        .map((media, index) => {
+                            if (media.image) {
+                                return new Image(media, index, namePhotograph, sectionMedia);
+                            }
+
+                            if (media.video) {
+                                return new Video(media, index, namePhotograph, sectionMedia);
+                            }
+                        }).join("")
+                    break;
+                case "title" :
+                    sectionMedia.innerHTML = "";
+                    showMedia
+                        .filter((media) => media.photographerId === urlId)
+                        .sort((a, b) => {
+                            return a.title > b.title ? 1 : -1;
+                        })
+                        .map((media, index) => {
+                            if (media.image) {
+                                return new Image(media, index, namePhotograph, sectionMedia);
+                            }
+
+                            if (media.video) {
+                                return new Video(media, index, namePhotograph, sectionMedia);
+                            }
+                        }).join("")
+                    break;
+            }
+        });
+
+        /* Affichage des medias par défault */
+        showMedia
+            .filter((media) => media.photographerId === urlId)
+            .sort((a, b) => {
+                return a.likes < b.likes ? 1 : -1;
+            })
+            .map((media, index) => {
+                if (media.image) {
+                    return new Image(media, index, namePhotograph, sectionMedia);
+                }
+
+                if (media.video) {
+                    return new Video(media, index, namePhotograph, sectionMedia);
+                }
+            }).join("")
+
+        resultHearts.textContent = showMedia
+            .filter(media => media.photographerId === urlId)
+            .map(media => media.likes)
+            .reduce((a, b) => a + b, 0)
+
+    } catch {
+        const errorMessage = document.createElement("div")
+        errorMessage.textContent = "Error"
+        errorMessage.style.color = "red;";
+        mainPhotographPage.appendChild(errorMessage)
+    }
+}
+
+/* Filtre en fonction du tag du header choisi */
+const filterTagMedia = async (tagContent) => {
+    try {
+        let namePhotograph;
+        if (location.hash) {
+            location.hash = "";
+        }
+        location.hash = "#" + tagContent.target.textContent;
+
+
+        const dataJson = await fetchPhotographers();
+        const showData = dataJson["photographers"];
+        showData.filter(photograph => {
+            if (photograph.id === urlId) {
+                namePhotograph = photograph.name;
+
+            }
+        })
+
+        console.log(tagContent.target)
+        console.log(tagContent.target.textContent);
+        sectionMedia.innerHTML = "";
+        const showMedia = dataJson["media"];
+        showMedia
+            .filter((media) => media.photographerId === urlId)
+            .map((media, index) => {
+                if (media.tags.includes(tagContent.target.textContent)) {
+                    console.log("on y est presque")
+                    if (media.image) {
+                        return new Image(media, index, namePhotograph, sectionMedia);
+                    }
+
+                    if (media.video) {
+                        return new Video(media, index, namePhotograph, sectionMedia);
+                    }
+                }
+            }).join("")
+
+    } catch {
+        const errorMessage = document.createElement("div")
+        errorMessage.textContent = "Error"
+        errorMessage.style.color = "red;";
+        mainPhotographPage.appendChild(errorMessage)
+    }
+}
+
+/* Affichage de la lightBox */
+const lightBox = (val) => {
+
+    const lightBox = new LightBox(val, bodyPhotograph);
+
+    /* accessibility sur la lightBox via les touches */
+    window.addEventListener("keydown", function (access) {
+        let recuperationNextButton = document.getElementById("nextButton");
+        let recuperationPrevButton = document.getElementById("prevButton");
+        let nbDataSlide = parseInt(recuperationNextButton.getAttribute("data-slide-to"));
+
+        if (access.key === "ArrowLeft") {
+            lightBox.prevMedia();
+        }
+        if (access.key === "ArrowRight") {
+            lightBox.nextMedia();
+        }
+        if (access.key === "Escape") {
+            lightBox.buildExit();
+        }
+
+    })
+
 }
 
 /* Ajouter ou Retirer un like */
@@ -597,383 +1051,37 @@ const addLike = (event) => {
     }
 }
 
-/* Affichage de la modal du contact */
+/* Affichage du formulaire de contact */
 const contactMe = () => {
 
     const launchContactMe = document.querySelector(".contain-modal-body");
     launchContactMe.style.display = "block";
 }
 
-/* Fermeture de la modal du contact ou de la lightBox */
+
+/* Fermeture de la modal du contact */
 const closeModal = () => {
 
     const launchContactMe = document.querySelector(".contain-modal-body");
     launchContactMe.style.display = "none";
 }
 
-
-/* Création de la lightBox */
-const lightBox = (val) => {
-
-    const nbMedia = document.querySelectorAll(".nbMedia");
-    let indexMedia = val.target.getAttribute("data-slide-to");
-
-    overlay.id = "overlay";
-    overlay.style.display = "flex";
-    bodyPhotograph.appendChild(overlay);
-
-    imgOverlay.classList.add("lightBoxMedia");
-    videoOverlay.classList.add("lightBoxMedia");
-
-    divPrevBtn.id = "prevButton";
-    divPrevBtn.setAttribute("data-slide-to", indexMedia);
-
-    iLeft.classList.add("fa", "fa-chevron-left");
-    divPrevBtn.appendChild(iLeft);
-    divPrevBtn.addEventListener("click", prevMediaLightBox);
-
-
-    divNextBtn.id = "nextButton";
-    divNextBtn.setAttribute("data-slide-to", indexMedia);
-
-    iNext.classList.add("fa", "fa-chevron-right");
-    divNextBtn.appendChild(iNext);
-    divNextBtn.addEventListener("click", nextMediaLightBox);
-
-    divExitBtn.id = "exitButton";
-
-    iExit.classList.add("fa", "fa-times");
-    iExit.id = "iExitBtn";
-    divExitBtn.appendChild(iExit);
-    divExitBtn.addEventListener("click", closeLightBox);
-
-
-    h2Overlay.textContent = val.target.title;
-    h2Overlay.id = "titleOverlay";
-
-    /* accessibility sur la lightBox via les touches */
-    window.addEventListener("keydown", function (access) {
-        let recuperationNextButton = document.getElementById("nextButton");
-        let recuperationPrevButton = document.getElementById("prevButton");
-        let nbDataSlide = parseInt(recuperationNextButton.getAttribute("data-slide-to"));
-
-        if (access.key === "ArrowLeft") {
-            if (nbDataSlide > 0) {
-                if (recuperationPrevButton.parentElement.parentNode.childNodes[1].src.endsWith(".mp4")) {
-                    if (nbMedia[nbDataSlide - 1].src.endsWith(".mp4")) {
-                        overlay.appendChild(divPrevBtn);
-                        overlay.appendChild(videoOverlay);
-                        videoOverlay.setAttribute("data-slide-to", nbDataSlide - 1);
-                        overlay.appendChild(h2Overlay);
-                        if (overlay.appendChild(imgOverlay)) {
-                            overlay.removeChild(imgOverlay);
-                        }
-                        overlay.appendChild(divNextBtn);
-                        overlay.appendChild(divExitBtn);
-                        divNextBtn.setAttribute("data-slide-to", nbDataSlide - 1);
-                        divPrevBtn.setAttribute("data-slide-to", nbDataSlide - 1);
-                        h2Overlay.textContent = nbMedia[nbDataSlide - 1].title
-                        videoOverlay.controls = true;
-                        return videoOverlay.src = nbMedia[nbDataSlide - 1].src;
-                    } else {
-                        overlay.appendChild(divPrevBtn);
-                        overlay.appendChild(imgOverlay);
-                        imgOverlay.setAttribute("data-slide-to", nbDataSlide - 1);
-                        overlay.appendChild(h2Overlay);
-                        if (overlay.appendChild(videoOverlay)) {
-                            overlay.removeChild(videoOverlay);
-                        }
-                        overlay.appendChild(divNextBtn);
-                        overlay.appendChild(divExitBtn);
-                        divNextBtn.setAttribute("data-slide-to", nbDataSlide - 1);
-                        divPrevBtn.setAttribute("data-slide-to", nbDataSlide - 1);
-                        h2Overlay.textContent = nbMedia[nbDataSlide - 1].title
-                        return imgOverlay.src = nbMedia[nbDataSlide - 1].src;
-                    }
-                } else {
-                    if (nbMedia[nbDataSlide - 1].src.endsWith(".mp4")) {
-                        overlay.appendChild(divPrevBtn);
-                        overlay.appendChild(videoOverlay);
-                        videoOverlay.setAttribute("data-slide-to", nbDataSlide - 1);
-                        overlay.appendChild(h2Overlay);
-                        if (overlay.appendChild(imgOverlay)) {
-                            overlay.removeChild(imgOverlay);
-                        }
-                        overlay.appendChild(divNextBtn);
-                        overlay.appendChild(divExitBtn);
-                        divNextBtn.setAttribute("data-slide-to", nbDataSlide - 1);
-                        divPrevBtn.setAttribute("data-slide-to", nbDataSlide - 1);
-                        h2Overlay.textContent = nbMedia[nbDataSlide - 1].title
-                        return videoOverlay.src = nbMedia[nbDataSlide - 1].src;
-                    } else {
-                        overlay.appendChild(divPrevBtn);
-                        overlay.appendChild(imgOverlay);
-                        imgOverlay.setAttribute("data-slide-to", nbDataSlide - 1);
-                        overlay.appendChild(h2Overlay);
-                        if (overlay.appendChild(videoOverlay)) {
-                            overlay.removeChild(videoOverlay);
-                        }
-                        overlay.appendChild(divNextBtn);
-                        overlay.appendChild(divExitBtn);
-                        divNextBtn.setAttribute("data-slide-to", nbDataSlide - 1);
-                        divPrevBtn.setAttribute("data-slide-to", nbDataSlide - 1);
-                        h2Overlay.textContent = nbMedia[nbDataSlide - 1].title
-                        return imgOverlay.src = nbMedia[nbDataSlide - 1].src;
-                    }
-                }
-            }
-        }
-        if (access.key === "ArrowRight") {
-            if (nbDataSlide < nbMedia.length) {
-                if (recuperationNextButton.parentElement.parentNode.childNodes[1].src.endsWith(".mp4")) {
-                    if (nbMedia[nbDataSlide + 1].src.endsWith(".mp4")) {
-                        overlay.appendChild(divPrevBtn);
-                        overlay.appendChild(videoOverlay);
-                        videoOverlay.setAttribute("data-slide-to", nbDataSlide + 1);
-                        overlay.appendChild(h2Overlay);
-                        if (overlay.appendChild(imgOverlay)) {
-                            overlay.removeChild(imgOverlay);
-                        }
-                        overlay.appendChild(divNextBtn);
-                        overlay.appendChild(divExitBtn);
-                        divNextBtn.setAttribute("data-slide-to", nbDataSlide + 1);
-                        divPrevBtn.setAttribute("data-slide-to", nbDataSlide + 1);
-                        h2Overlay.textContent = nbMedia[nbDataSlide + 1].title
-                        videoOverlay.controls = true;
-                        return videoOverlay.src = nbMedia[nbDataSlide + 1].src;
-                    } else {
-                        overlay.appendChild(divPrevBtn);
-                        overlay.appendChild(imgOverlay);
-                        imgOverlay.setAttribute("data-slide-to", nbDataSlide + 1);
-                        overlay.appendChild(h2Overlay);
-                        if (overlay.appendChild(videoOverlay)) {
-                            overlay.removeChild(videoOverlay);
-                        }
-                        overlay.appendChild(divNextBtn);
-                        overlay.appendChild(divExitBtn);
-                        divNextBtn.setAttribute("data-slide-to", nbDataSlide + 1);
-                        divPrevBtn.setAttribute("data-slide-to", nbDataSlide + 1);
-                        h2Overlay.textContent = nbMedia[nbDataSlide + 1].title
-                        return imgOverlay.src = nbMedia[nbDataSlide + 1].src;
-                    }
-                } else {
-                    if (!nbMedia[nbDataSlide + 1].src.endsWith(".mp4")) {
-                        overlay.appendChild(divPrevBtn);
-                        overlay.appendChild(imgOverlay);
-                        imgOverlay.setAttribute("data-slide-to", nbDataSlide + 1);
-                        overlay.appendChild(h2Overlay);
-                        if (overlay.appendChild(videoOverlay)) {
-                            overlay.removeChild(videoOverlay);
-                        }
-                        overlay.appendChild(divNextBtn);
-                        overlay.appendChild(divExitBtn);
-                        divNextBtn.setAttribute("data-slide-to", nbDataSlide + 1);
-                        divPrevBtn.setAttribute("data-slide-to", nbDataSlide + 1);
-                        h2Overlay.textContent = nbMedia[nbDataSlide + 1].title
-                        return imgOverlay.src = nbMedia[nbDataSlide + 1].src;
-
-                    } else {
-                        overlay.appendChild(divPrevBtn);
-                        overlay.appendChild(videoOverlay);
-                        videoOverlay.setAttribute("data-slide-to", nbDataSlide + 1);
-                        overlay.appendChild(h2Overlay);
-                        if (overlay.appendChild(imgOverlay)) {
-                            overlay.removeChild(imgOverlay);
-                        }
-                        overlay.appendChild(divNextBtn);
-                        overlay.appendChild(divExitBtn);
-                        divNextBtn.setAttribute("data-slide-to", nbDataSlide + 1);
-                        divPrevBtn.setAttribute("data-slide-to", nbDataSlide + 1);
-                        h2Overlay.textContent = nbMedia[nbDataSlide + 1].title
-                        return videoOverlay.src = nbMedia[nbDataSlide + 1].src;
-                    }
-                }
-            }
-        }
-        if (access.key === "Escape") {
-            overlay.style.display = "none";
-        }
-
-    })
-
-    let resultVideo = val.target.src;
-    let isVideo = resultVideo.endsWith(".mp4");
-    if (isVideo) {
-        overlay.appendChild(divPrevBtn);
-        overlay.appendChild(videoOverlay);
-        videoOverlay.setAttribute("data-slide-to", indexMedia);
-        overlay.appendChild(h2Overlay);
-        overlay.appendChild(divNextBtn);
-        overlay.appendChild(divExitBtn);
-        if (overlay.appendChild(imgOverlay)) {
-            overlay.removeChild(imgOverlay);
-        }
-        videoOverlay.controls = true;
-        return videoOverlay.src = val.target.src;
-    } else {
-        overlay.appendChild(divPrevBtn);
-        overlay.appendChild(imgOverlay);
-        imgOverlay.setAttribute("data-slide-to", indexMedia);
-        overlay.appendChild(h2Overlay);
-        overlay.appendChild(divNextBtn);
-        overlay.appendChild(divExitBtn);
-        if (overlay.appendChild(videoOverlay)) {
-            overlay.removeChild(videoOverlay);
-        }
-        return imgOverlay.src = val.target.src;
+/* Récupération du message envoyé */
+const recupData = (data) => {
+    data.preventDefault();
+    const inputRequireds = document.querySelectorAll("input[required]");
+    const textLabel = document.querySelector("#message");
+    for (const inputRequired of inputRequireds) {
+        console.log(inputRequired.id + " : " + inputRequired.value);
+        inputRequired.value = "";
     }
+    console.log("Message : " + textLabel.value);
+    textLabel.value = "";
 
-
-    /* Au clic ou keydown sur la flèche droite sur la lightBox */
-    function nextMediaLightBox(valueIndex) {
-        let nbDataSlide = parseInt(valueIndex.target.parentElement.getAttribute("data-slide-to"));
-        if (nbDataSlide < nbMedia.length) {
-            if (valueIndex.target.parentElement.parentNode.childNodes[1].src.endsWith(".mp4")) {
-                if (nbMedia[nbDataSlide + 1].src.endsWith(".mp4")) {
-                    overlay.appendChild(divPrevBtn);
-                    overlay.appendChild(videoOverlay);
-                    videoOverlay.setAttribute("data-slide-to", nbDataSlide + 1);
-                    overlay.appendChild(h2Overlay);
-                    if (overlay.appendChild(imgOverlay)) {
-                        overlay.removeChild(imgOverlay);
-                    }
-                    overlay.appendChild(divNextBtn);
-                    overlay.appendChild(divExitBtn);
-                    divNextBtn.setAttribute("data-slide-to", nbDataSlide + 1);
-                    divPrevBtn.setAttribute("data-slide-to", nbDataSlide + 1);
-                    h2Overlay.textContent = nbMedia[nbDataSlide + 1].title
-                    videoOverlay.controls = true;
-                    return videoOverlay.src = nbMedia[nbDataSlide + 1].src;
-                } else {
-                    overlay.appendChild(divPrevBtn);
-                    overlay.appendChild(imgOverlay);
-                    imgOverlay.setAttribute("data-slide-to", nbDataSlide + 1);
-                    overlay.appendChild(h2Overlay);
-                    if (overlay.appendChild(videoOverlay)) {
-                        overlay.removeChild(videoOverlay);
-                    }
-                    overlay.appendChild(divNextBtn);
-                    overlay.appendChild(divExitBtn);
-                    divNextBtn.setAttribute("data-slide-to", nbDataSlide + 1);
-                    divPrevBtn.setAttribute("data-slide-to", nbDataSlide + 1);
-                    h2Overlay.textContent = nbMedia[nbDataSlide + 1].title
-                    return imgOverlay.src = nbMedia[nbDataSlide + 1].src;
-                }
-            } else {
-                if (!nbMedia[nbDataSlide + 1].src.endsWith(".mp4")) {
-                    overlay.appendChild(divPrevBtn);
-                    overlay.appendChild(imgOverlay);
-                    imgOverlay.setAttribute("data-slide-to", nbDataSlide + 1);
-                    overlay.appendChild(h2Overlay);
-                    if (overlay.appendChild(videoOverlay)) {
-                        overlay.removeChild(videoOverlay);
-                    }
-                    overlay.appendChild(divNextBtn);
-                    overlay.appendChild(divExitBtn);
-                    divNextBtn.setAttribute("data-slide-to", nbDataSlide + 1);
-                    divPrevBtn.setAttribute("data-slide-to", nbDataSlide + 1);
-                    h2Overlay.textContent = nbMedia[nbDataSlide + 1].title
-                    return imgOverlay.src = nbMedia[nbDataSlide + 1].src;
-
-                } else {
-                    overlay.appendChild(divPrevBtn);
-                    overlay.appendChild(videoOverlay);
-                    videoOverlay.setAttribute("data-slide-to", nbDataSlide + 1);
-                    overlay.appendChild(h2Overlay);
-                    if (overlay.appendChild(imgOverlay)) {
-                        overlay.removeChild(imgOverlay);
-                    }
-                    overlay.appendChild(divNextBtn);
-                    overlay.appendChild(divExitBtn);
-                    divNextBtn.setAttribute("data-slide-to", nbDataSlide + 1);
-                    divPrevBtn.setAttribute("data-slide-to", nbDataSlide + 1);
-                    h2Overlay.textContent = nbMedia[nbDataSlide + 1].title
-                    return videoOverlay.src = nbMedia[nbDataSlide + 1].src;
-                }
-            }
-        }
-    }
-
-
-    /* Au clic sur la flèche gauche de la lightBox */
-    function prevMediaLightBox(valueIndex) {
-        let nbDataSlide = parseInt(valueIndex.target.parentElement.getAttribute("data-slide-to"));
-        if (nbDataSlide > 0) {
-            if (valueIndex.target.parentElement.parentNode.childNodes[1].src.endsWith(".mp4")) {
-                console.log(!nbMedia[nbDataSlide - 1].src.endsWith(".mp4"));
-                if (nbMedia[nbDataSlide - 1].src.endsWith(".mp4")) {
-                    overlay.appendChild(divPrevBtn);
-                    overlay.appendChild(videoOverlay);
-                    videoOverlay.setAttribute("data-slide-to", nbDataSlide - 1);
-                    overlay.appendChild(h2Overlay);
-                    if (overlay.appendChild(imgOverlay)) {
-                        overlay.removeChild(imgOverlay);
-                    }
-                    overlay.appendChild(divNextBtn);
-                    overlay.appendChild(divExitBtn);
-                    divNextBtn.setAttribute("data-slide-to", nbDataSlide - 1);
-                    divPrevBtn.setAttribute("data-slide-to", nbDataSlide - 1);
-                    h2Overlay.textContent = nbMedia[nbDataSlide - 1].title
-                    videoOverlay.controls = true;
-                    return videoOverlay.src = nbMedia[nbDataSlide - 1].src;
-                } else {
-                    overlay.appendChild(divPrevBtn);
-                    overlay.appendChild(imgOverlay);
-                    imgOverlay.setAttribute("data-slide-to", nbDataSlide - 1);
-                    overlay.appendChild(h2Overlay);
-                    if (overlay.appendChild(videoOverlay)) {
-                        overlay.removeChild(videoOverlay);
-                    }
-                    overlay.appendChild(divNextBtn);
-                    overlay.appendChild(divExitBtn);
-                    divNextBtn.setAttribute("data-slide-to", nbDataSlide - 1);
-                    divPrevBtn.setAttribute("data-slide-to", nbDataSlide - 1);
-                    h2Overlay.textContent = nbMedia[nbDataSlide - 1].title
-                    return imgOverlay.src = nbMedia[nbDataSlide - 1].src;
-                }
-            } else {
-                if (nbMedia[nbDataSlide - 1].src.endsWith(".mp4")) {
-                    overlay.appendChild(divPrevBtn);
-                    overlay.appendChild(videoOverlay);
-                    videoOverlay.setAttribute("data-slide-to", nbDataSlide - 1);
-                    overlay.appendChild(h2Overlay);
-                    if (overlay.appendChild(imgOverlay)) {
-                        overlay.removeChild(imgOverlay);
-                    }
-                    overlay.appendChild(divNextBtn);
-                    overlay.appendChild(divExitBtn);
-                    divNextBtn.setAttribute("data-slide-to", nbDataSlide - 1);
-                    divPrevBtn.setAttribute("data-slide-to", nbDataSlide - 1);
-                    h2Overlay.textContent = nbMedia[nbDataSlide - 1].title
-                    return videoOverlay.src = nbMedia[nbDataSlide - 1].src;
-                } else {
-                    overlay.appendChild(divPrevBtn);
-                    overlay.appendChild(imgOverlay);
-                    imgOverlay.setAttribute("data-slide-to", nbDataSlide - 1);
-                    overlay.appendChild(h2Overlay);
-                    if (overlay.appendChild(videoOverlay)) {
-                        overlay.removeChild(videoOverlay);
-                    }
-                    overlay.appendChild(divNextBtn);
-                    overlay.appendChild(divExitBtn);
-                    divNextBtn.setAttribute("data-slide-to", nbDataSlide - 1);
-                    divPrevBtn.setAttribute("data-slide-to", nbDataSlide - 1);
-                    h2Overlay.textContent = nbMedia[nbDataSlide - 1].title
-                    return imgOverlay.src = nbMedia[nbDataSlide - 1].src;
-                }
-            }
-        }
-    }
-
-    /* fermeture de la lightBox */
-    function closeLightBox() {
-        overlay.style.display = "none";
-    }
-
-
+    closeModal();
 }
 
-/* Touche accessibilité */
+/* Touche clavier accessibilité */
 const accessibilityProfil = () => {
 
     window.addEventListener("keydown", function (event) {
@@ -991,16 +1099,16 @@ const accessibilityProfil = () => {
                     if (event.target.classList.contains("figureTab")) {
                         lightBox(event);
                     }
-                    if (event.target.id === "contact-me"){
+                    if (event.target.id === "contact-me") {
                         contactMe();
                     }
                     if (event.target.id === "closeModal") {
                         closeModal();
                     }
-                    if (event.target.id === "btnPostData"){
-                        return ;
+                    if (event.target.id === "btnPostData") {
+                        return;
                     }
-                    if (event.target.classList.contains("likes_heart")){
+                    if (event.target.classList.contains("likes_heart")) {
                         addLike(event);
                     }
                 }
@@ -1020,8 +1128,5 @@ const accessibilityProfil = () => {
     }, true);
 }
 
-showHeaderlogo();
-showHeaderMain();
-showSelect();
-showMediaOfPhotograph();
+photographerPage();
 accessibilityProfil();

@@ -22,79 +22,7 @@
   }
 }
 
-// header du main
-.header_photograph {
-  width: 100%;
-
-  //version desktop
-  @media (min-width: 769px) {
-    width: 94%;
-    height: 313px;
-    background: #fafafa;
-    border-radius: 5px;
-    margin: auto;
-  }
-
-  &_article {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-
-    //version desktop
-    @media (min-width: 769px) {
-      height: 313px;
-      justify-content: space-around;
-    }
-
-    &_info {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      width: 70%;
-      @media (min-width: 769px) {
-        width: 36%;
-      }
-
-      > h2 {
-        @include h2-propriete;
-        //version desktop
-        @media (min-width: 769px) {
-          font-size: 64px;
-          line-height: 83px;
-        }
-      }
-
-      &_from {
-        @include infoPhotographer-from;
-        //version desktop
-        @media (min-width: 769px) {
-          font-size: 24px;
-          line-height: 31px;
-        }
-      }
-
-      &_tagline {
-        @include infoPhotographer-tagline;
-        //version desktop
-        @media (min-width: 769px) {
-          font-size: 18px;
-          line-height: 23px;
-        }
-      }
-
-      > h2, &_from, &_tagline {
-        text-align: left;
-        margin-top: 0;
-        margin-bottom: 0;
-      }
-
-      &_tags {
-        display: flex;
-      }
-    }
-  }
-}
-
+/* Nom et nombre de like situé en dessous du media */
 .media_figcaption {
   width: 335px;
   display: flex;
@@ -131,6 +59,7 @@
   }
 }
 
+/* Nombre de likes total et prix en euro par jour situé en bas de page droite */
 .footer_like_page {
   display: none;
 
@@ -233,55 +162,51 @@
     text-align: center;
   }
 
-  > article {
-
+  > figure {
+    margin-left: 0;
+    margin-right: 0;
 
     //version desktop
     @media (min-width: 769px) {
       width: 33%;
     }
 
-    > figure {
-      margin-left: 0;
-      margin-right: 0;
+    > img {
+      width: 100%;
+      max-width: 335px;
+      height: 190px;
+      object-fit: cover;
+      background: #C4C4C4;
+      border-radius: 5px;
+      cursor: pointer;
 
-      > img {
-        width: 100%;
-        max-width: 335px;
-        height: 190px;
-        object-fit: cover;
+      //version desktop
+      @media (min-width: 769px) {
+        width: 89%;
+        height: 300px;
+      }
+    }
+
+    > video {
+      width: 100%;
+      max-width: 335px;
+      height: 190px;
+      border-radius: 5px;
+      object-fit: cover;
+      cursor: pointer;
+
+      //version desktop
+      @media (min-width: 769px) {
+        width: 89%;
+        height: 300px;
         background: #C4C4C4;
-        border-radius: 5px;
-        cursor: pointer;
-
-        //version desktop
-        @media (min-width: 769px) {
-          width: 89%;
-          height: 300px;
-        }
       }
+    }
 
-      > video {
-        width: 100%;
-        max-width: 335px;
-        height: 190px;
-        border-radius: 5px;
-        object-fit: cover;
-        cursor: pointer;
-
-        //version desktop
-        @media (min-width: 769px) {
-          width: 89%;
-          height: 300px;
-          background: #C4C4C4;
-        }
-      }
-
-      > figcaption {
-        @media (min-width: 769px) {
-          width: 80%;
-          margin: auto;
-        }
+    > figcaption {
+      @media (min-width: 769px) {
+        width: 80%;
+        margin: auto;
       }
     }
   }

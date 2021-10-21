@@ -1,3 +1,18 @@
+/* Photo du profil des photographers page index.html */
+.photographer_img {
+  height: 200px;
+  width: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+
+  // version desktop
+  @media (min-width: 769px) {
+    height: 200px;
+    width: 200px;
+    image-rendering: auto;
+  }
+}
+/*Main de la page index.html */
 .main_photographers {
   display: flex;
   flex-direction: column;
