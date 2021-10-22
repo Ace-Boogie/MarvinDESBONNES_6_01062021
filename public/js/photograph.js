@@ -475,8 +475,6 @@ class Image extends MediaPhotograph {
         this.img.src = "./public/img/" + this.rawNamePhotograph.replace(" ", "_") + "/" + this.rawData.image;
         this.img.alt = this.rawData.image;
         this.img.title = this.rawData.title;
-        this.img.width = 200;
-        this.img.height = 200;
     }
 
     buildFigure() {
@@ -529,8 +527,6 @@ class Video extends MediaPhotograph {
         this.video.setAttribute("data-slide-to", this.rawDataIndex);
         this.video.src = "./public/img/" + this.rawNamePhotograph.replace(" ", "_") + "/" + this.rawData.video;
         this.video.title = this.rawData.title;
-        this.video.width = 200;
-        this.video.height = 200;
     }
 
     buildFigure() {
