@@ -67,15 +67,17 @@
   @media (min-width: 769px) {
     display: flex;
     justify-content: space-around;
+    align-items: center;
     position: fixed;
     bottom: 0;
     right: 3%;
     width: 26%;
-    height: 9%;
+    max-width: 375px;
+    max-height: 89px;
     background-color: #db8876;
     font-size: large;
-    max-width: 375px;
     > p {
+      display: flex;
       font-family: $fontDM;
       font-style: normal;
       font-weight: 500;
