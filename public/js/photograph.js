@@ -600,6 +600,7 @@ class LightBox {
         this.buildExit();
         this.clickNextMedia();
         this.clickPrevMedia();
+        // this.buildAccessibility();
 
 
         if (this.targetNode) {
@@ -669,11 +670,15 @@ class LightBox {
         this.iExit.classList.add("fa", "fa-times");
         this.iExit.id = "iExitBtn";
 
-        /* Fermeture de la lightBox au click */
+        /* Click fermeture de la lightBox au click */
         this.divExitBtn.addEventListener("click", () => {
-            this.overlay.style.display = "none";
-            this.overlay.parentElement.removeChild(this.overlay);
+            this.closeMedia();
         });
+    }
+
+    closeMedia(){
+        this.overlay.style.display = "none";
+        this.overlay.parentElement.removeChild(this.overlay);
     }
 
     /* Clique sur la flèche pour avoir le media suivant de la lightBox */
@@ -842,30 +847,6 @@ class LightBox {
                 }
             }
         }
-    }
-
-    buildAccessibility() {
-        // window.addEventListener("keydown", function (event) {
-        //     if (event.defaultPrevented) {
-        //         return; // Ne devrait rien faire si l'événement de la touche était déjà consommé.
-        //     }
-        //     switch (event) {
-        //
-        //         case "ArrowLeft" :
-        //             console.log("gauche");
-        //
-        //             break;
-        //         case "ArrowRight" :
-        //             console.log("droite");
-        //             flecheRight();
-        //             break;
-        //         default:
-        //             return; // Quitter lorsque cela ne gère pas l'événement touche.
-        //     }
-        //
-        //     // Annuler l'action par défaut pour éviter qu'elle ne soit traitée deux fois.
-        //     event.preventDefault();
-        // }, true);
     }
 
     append(domNode) {
@@ -1051,7 +1032,20 @@ const filterTagMedia = async (tagContent) => {
 
 /* Affichage de la lightBox */
 const lightBox = (val) => {
-    new LightBox(val, bodyPhotograph);
+    const lightBoxClass = new LightBox(val, bodyPhotograph);
+
+    window.addEventListener('keydown', (e) => {
+
+        if (e.key === "ArrowLeft"){
+            lightBoxClass.prevMedia();
+        }
+        if (e.key === "ArrowRight"){
+            lightBoxClass.nextMedia();
+        }
+        if (e.key === "Escape"){
+            lightBoxClass.closeMedia();
+        }
+    })
 }
 
 /* Ajouter ou Retirer un like */
@@ -1104,9 +1098,6 @@ const recupData = (data) => {
 const accessibilityProfil = () => {
 
     window.addEventListener("keydown", function (event) {
-        // const lightBox = new LightBox(event, bodyPhotograph);
-        // const flecheLeft = lightBox.prevMedia;
-        // const flecheRight = lightBox.nextMedia;
         if (event.defaultPrevented) {
             return; // Ne devrait rien faire si l'événement de la touche était déjà consommé.
         }
@@ -1151,4 +1142,4 @@ const accessibilityProfil = () => {
 }
 
 photographerPage();
-// accessibilityProfil();
+accessibilityProfil();
