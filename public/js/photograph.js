@@ -197,6 +197,7 @@ class HeaderMain {
         this.myInputFirst.type = "text";
         this.myInputFirst.setAttribute("name", "first");
         this.myInputFirst.setAttribute("minlength", "2");
+        this.myInputFirst.setAttribute("row", "5");
         this.myInputFirst.required = true;
 
         /*Création de la div, du label et du input pour le nom */
@@ -213,6 +214,7 @@ class HeaderMain {
         this.myInputLast.type = "text";
         this.myInputLast.setAttribute("name", "last");
         this.myInputLast.setAttribute("minlength", "2");
+        this.myInputLast.setAttribute("row", "5");
         this.myInputLast.required = true;
 
         /*Création de la div, du label et du input pour l'email */
@@ -228,6 +230,7 @@ class HeaderMain {
         this.myInputEmail.classList.add("text-control");
         this.myInputEmail.type = "text";
         this.myInputEmail.setAttribute("name", "email");
+        this.myInputEmail.setAttribute("row", "5");
         this.myInputEmail.required = true;
 
         /*Création de la div, du label et du input pour le message */
@@ -595,8 +598,8 @@ class LightBox {
         this.buildTitleMedia();
         this.buildNext();
         this.buildExit();
-        this.nextMedia();
-        this.prevMedia();
+        this.clickNextMedia();
+        this.clickPrevMedia();
 
 
         if (this.targetNode) {
@@ -674,163 +677,195 @@ class LightBox {
     }
 
     /* Clique sur la flèche pour avoir le media suivant de la lightBox */
-
-    nextMedia() {
+    clickNextMedia() {
         this.divNextBtn.addEventListener("click", () => {
-            this.nbDivNextDataSlide = parseInt(this.divNextBtn.getAttribute("data-slide-to"));
-            if (this.nbDivNextDataSlide === this.nbMedia.length - 1) {
-                if (this.rawValue.target.src.endsWith(".jpg")) {
-                    if (this.nbMedia[0].src.endsWith(".mp4")) {
-                        this.overlay.replaceChild(this.videoOverlay, this.imgOverlay);
-                        this.videoOverlay.setAttribute("data-slide-to", 0);
-                        this.divNextBtn.setAttribute("data-slide-to", 0);
-                        this.divPrevBtn.setAttribute("data-slide-to", 0);
-                        this.h2Overlay.textContent = this.nbMedia[0].title
-                        this.videoOverlay.controls = true;
-                        return this.videoOverlay.src = this.nbMedia[0].src;
-                    } else if (this.nbMedia[0].src.endsWith(".jpg")) {
-                        this.imgOverlay.setAttribute("data-slide-to", 0);
-                        this.divNextBtn.setAttribute("data-slide-to", 0);
-                        this.divPrevBtn.setAttribute("data-slide-to", 0);
-                        this.h2Overlay.textContent = this.nbMedia[0].title
-                        return this.imgOverlay.src = this.nbMedia[0].src;
-                    }
-                } else if (this.rawValue.target.src.endsWith(".mp4")) {
-                    if (this.nbMedia[0].src.endsWith(".mp4")) {
-                        this.videoOverlay.setAttribute("data-slide-to", 0);
-                        this.divNextBtn.setAttribute("data-slide-to", 0);
-                        this.divPrevBtn.setAttribute("data-slide-to", 0);
-                        this.h2Overlay.textContent = this.nbMedia[0].title
-                        this.videoOverlay.controls = true;
-                        return this.videoOverlay.src = this.nbMedia[0].src;
-                    } else if (this.nbMedia[0].src.endsWith(".jpg")) {
-                        this.overlay.replaceChild(this.imgOverlay, this.videoOverlay);
-                        this.imgOverlay.setAttribute("data-slide-to", 0);
-                        this.divNextBtn.setAttribute("data-slide-to", 0);
-                        this.divPrevBtn.setAttribute("data-slide-to", 0);
-                        this.h2Overlay.textContent = this.nbMedia[0].title
-                        return this.imgOverlay.src = this.nbMedia[0].src;
-                    }
-                }
-            }
-            if (this.nbDivNextDataSlide < this.nbMedia.length - 1) {
-                if (this.nbMedia[this.nbDivNextDataSlide].src.endsWith(".jpg")) {
-                    if (this.nbMedia[this.nbDivNextDataSlide + 1].src.endsWith(".mp4")) {
-                        this.overlay.replaceChild(this.videoOverlay, this.imgOverlay);
-                        this.videoOverlay.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
-                        this.divNextBtn.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
-                        this.divPrevBtn.setAttribute("data-slide-to", this.nbDataSlide + 1);
-                        this.h2Overlay.textContent = this.nbMedia[this.nbDivNextDataSlide + 1].title
-                        this.videoOverlay.controls = true;
-                        this.videoOverlay.src = this.nbMedia[this.nbDivNextDataSlide + 1].src;
-                    }
-                    if (this.nbMedia[this.nbDivNextDataSlide + 1].src.endsWith(".jpg")) {
-                        this.imgOverlay.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
-                        this.divNextBtn.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
-                        this.divPrevBtn.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
-                        this.h2Overlay.textContent = this.nbMedia[this.nbDivNextDataSlide + 1].title
-                        this.imgOverlay.src = this.nbMedia[this.nbDivNextDataSlide + 1].src;
-                    }
-                } else if (this.nbMedia[this.nbDivNextDataSlide].src.endsWith(".mp4")) {
-                    if (this.nbMedia[this.nbDivNextDataSlide + 1].src.endsWith(".mp4")) {
-                        this.videoOverlay.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
-                        this.divNextBtn.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
-                        this.divPrevBtn.setAttribute("data-slide-to", this.nbDataSlide + 1);
-                        this.h2Overlay.textContent = this.nbMedia[this.nbDivNextDataSlide + 1].title
-                        this.videoOverlay.controls = true;
-                        this.videoOverlay.src = this.nbMedia[this.nbDivNextDataSlide + 1].src;
-                    }
-                    if (this.nbMedia[this.nbDivNextDataSlide + 1].src.endsWith(".jpg")) {
-                        this.overlay.replaceChild(this.imgOverlay, this.videoOverlay);
-                        this.imgOverlay.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
-                        this.divNextBtn.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
-                        this.divPrevBtn.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
-                        this.h2Overlay.textContent = this.nbMedia[this.nbDivNextDataSlide + 1].title
-                        this.imgOverlay.src = this.nbMedia[this.nbDivNextDataSlide + 1].src;
-                    }
-                }
-            }
+            this.nextMedia();
         })
     }
 
+    nextMedia() {
+        this.nbDivNextDataSlide = parseInt(this.divNextBtn.getAttribute("data-slide-to"));
+        if (this.nbDivNextDataSlide === this.nbMedia.length - 1) {
+            if (this.rawValue.target.src.endsWith(".jpg")) {
+                if (this.nbMedia[0].src.endsWith(".mp4")) {
+                    this.overlay.replaceChild(this.videoOverlay, this.imgOverlay);
+                    this.videoOverlay.setAttribute("data-slide-to", 0);
+                    this.divNextBtn.setAttribute("data-slide-to", 0);
+                    this.divPrevBtn.setAttribute("data-slide-to", 0);
+                    this.h2Overlay.textContent = this.nbMedia[0].title
+                    this.videoOverlay.controls = true;
+                    return this.videoOverlay.src = this.nbMedia[0].src;
+                } else if (this.nbMedia[0].src.endsWith(".jpg")) {
+                    this.imgOverlay.setAttribute("data-slide-to", 0);
+                    this.divNextBtn.setAttribute("data-slide-to", 0);
+                    this.divPrevBtn.setAttribute("data-slide-to", 0);
+                    this.h2Overlay.textContent = this.nbMedia[0].title
+                    return this.imgOverlay.src = this.nbMedia[0].src;
+                }
+            } else if (this.rawValue.target.src.endsWith(".mp4")) {
+                if (this.nbMedia[0].src.endsWith(".mp4")) {
+                    this.videoOverlay.setAttribute("data-slide-to", 0);
+                    this.divNextBtn.setAttribute("data-slide-to", 0);
+                    this.divPrevBtn.setAttribute("data-slide-to", 0);
+                    this.h2Overlay.textContent = this.nbMedia[0].title
+                    this.videoOverlay.controls = true;
+                    return this.videoOverlay.src = this.nbMedia[0].src;
+                } else if (this.nbMedia[0].src.endsWith(".jpg")) {
+                    this.overlay.replaceChild(this.imgOverlay, this.videoOverlay);
+                    this.imgOverlay.setAttribute("data-slide-to", 0);
+                    this.divNextBtn.setAttribute("data-slide-to", 0);
+                    this.divPrevBtn.setAttribute("data-slide-to", 0);
+                    this.h2Overlay.textContent = this.nbMedia[0].title
+                    return this.imgOverlay.src = this.nbMedia[0].src;
+                }
+            }
+        }
+        if (this.nbDivNextDataSlide < this.nbMedia.length - 1) {
+            if (this.nbMedia[this.nbDivNextDataSlide].src.endsWith(".jpg")) {
+                if (this.nbMedia[this.nbDivNextDataSlide + 1].src.endsWith(".mp4")) {
+                    this.overlay.replaceChild(this.videoOverlay, this.imgOverlay);
+                    this.videoOverlay.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
+                    this.divNextBtn.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
+                    this.divPrevBtn.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
+                    this.h2Overlay.textContent = this.nbMedia[this.nbDivNextDataSlide + 1].title
+                    this.videoOverlay.controls = true;
+                    return this.videoOverlay.src = this.nbMedia[this.nbDivNextDataSlide + 1].src;
+                }
+                if (this.nbMedia[this.nbDivNextDataSlide + 1].src.endsWith(".jpg")) {
+                    this.imgOverlay.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
+                    this.divNextBtn.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
+                    this.divPrevBtn.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
+                    this.h2Overlay.textContent = this.nbMedia[this.nbDivNextDataSlide + 1].title
+                    return this.imgOverlay.src = this.nbMedia[this.nbDivNextDataSlide + 1].src;
+                }
+            } else if (this.nbMedia[this.nbDivNextDataSlide].src.endsWith(".mp4")) {
+                if (this.nbMedia[this.nbDivNextDataSlide + 1].src.endsWith(".mp4")) {
+                    this.videoOverlay.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
+                    this.divNextBtn.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
+                    this.divPrevBtn.setAttribute("data-slide-to", this.nbDataSlide + 1);
+                    this.h2Overlay.textContent = this.nbMedia[this.nbDivNextDataSlide + 1].title
+                    this.videoOverlay.controls = true;
+                    return this.videoOverlay.src = this.nbMedia[this.nbDivNextDataSlide + 1].src;
+                }
+                if (this.nbMedia[this.nbDivNextDataSlide + 1].src.endsWith(".jpg")) {
+                    this.overlay.replaceChild(this.imgOverlay, this.videoOverlay);
+                    this.imgOverlay.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
+                    this.divNextBtn.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
+                    this.divPrevBtn.setAttribute("data-slide-to", this.nbDivNextDataSlide + 1);
+                    this.h2Overlay.textContent = this.nbMedia[this.nbDivNextDataSlide + 1].title
+                    return this.imgOverlay.src = this.nbMedia[this.nbDivNextDataSlide + 1].src;
+                }
+            }
+        }
+    }
+
     /* Clique sur la flèche pour avoir le media précédent de la lightBox */
-    prevMedia() {
+    clickPrevMedia() {
         this.divPrevBtn.addEventListener("click", () => {
-            this.nbDivPrevDataSlide = parseInt(this.divPrevBtn.getAttribute("data-slide-to"));
-            if (this.nbDivPrevDataSlide === 0) {
-                if (this.nbMedia[0].src.endsWith(".jpg")) {
-                    if (this.nbMedia[this.nbMedia.length - 1].src.endsWith(".mp4")) {
-                        this.overlay.replaceChild(this.videoOverlay, this.imgOverlay);
-                        this.videoOverlay.setAttribute("data-slide-to", this.nbMedia.length - 1);
-                        this.divNextBtn.setAttribute("data-slide-to", this.nbMedia.length - 1);
-                        this.divPrevBtn.setAttribute("data-slide-to", this.nbMedia.length - 1);
-                        this.h2Overlay.textContent = this.nbMedia[this.nbMedia.length - 1].title
-                        this.videoOverlay.controls = true;
-                        return this.videoOverlay.src = this.nbMedia[this.nbMedia.length - 1].src;
-                    } else if (this.nbMedia[this.nbMedia.length - 1].src.endsWith(".jpg")) {
-                        this.imgOverlay.setAttribute("data-slide-to", this.nbMedia.length - 1);
-                        this.divNextBtn.setAttribute("data-slide-to", this.nbMedia.length - 1);
-                        this.divPrevBtn.setAttribute("data-slide-to", this.nbMedia.length - 1);
-                        this.h2Overlay.textContent = this.nbMedia[this.nbMedia.length - 1].title
-                        return this.imgOverlay.src = this.nbMedia[this.nbMedia.length - 1].src;
-                    }
-                } else if (this.nbMedia[0].src.endsWith(".mp4")) {
-                    if (this.nbMedia[this.nbMedia.length - 1].src.endsWith(".mp4")) {
-                        this.videoOverlay.setAttribute("data-slide-to", this.nbMedia.length - 1);
-                        this.divNextBtn.setAttribute("data-slide-to", this.nbMedia.length - 1);
-                        this.divPrevBtn.setAttribute("data-slide-to", this.nbMedia.length - 1);
-                        this.h2Overlay.textContent = this.nbMedia[this.nbMedia.length - 1].title
-                        this.videoOverlay.controls = true;
-                        return this.videoOverlay.src = this.nbMedia[this.nbMedia.length - 1].src;
-                    } else if (this.nbMedia[this.nbMedia.length - 1].src.endsWith(".jpg")) {
-                        this.overlay.replaceChild(this.imgOverlay, this.videoOverlay);
-                        this.imgOverlay.setAttribute("data-slide-to", this.nbMedia.length - 1);
-                        this.divNextBtn.setAttribute("data-slide-to", this.nbMedia.length - 1);
-                        this.divPrevBtn.setAttribute("data-slide-to", this.nbMedia.length - 1);
-                        this.h2Overlay.textContent = this.nbMedia[this.nbMedia.length - 1].title
-                        return this.imgOverlay.src = this.nbMedia[this.nbMedia.length - 1].src;
-                    }
-                }
-            }
-            if (this.nbDivPrevDataSlide > 0) {
-                if (this.nbMedia[this.nbDivPrevDataSlide].src.endsWith(".jpg")) {
-                    if (this.nbMedia[this.nbDivPrevDataSlide - 1].src.endsWith(".mp4")) {
-                        this.overlay.replaceChild(this.videoOverlay, this.imgOverlay);
-                        this.videoOverlay.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
-                        this.divNextBtn.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
-                        this.divPrevBtn.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
-                        this.h2Overlay.textContent = this.nbMedia[this.nbDivPrevDataSlide - 1].title
-                        this.videoOverlay.controls = true;
-                        this.videoOverlay.src = this.nbMedia[this.nbDivPrevDataSlide - 1].src;
-                    }
-                    if (this.nbMedia[this.nbDivPrevDataSlide - 1].src.endsWith(".jpg")) {
-                        this.imgOverlay.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
-                        this.divNextBtn.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
-                        this.divPrevBtn.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
-                        this.h2Overlay.textContent = this.nbMedia[this.nbDivPrevDataSlide - 1].title
-                        this.imgOverlay.src = this.nbMedia[this.nbDivPrevDataSlide - 1].src;
-                    }
-                } else if (this.nbMedia[this.nbDivPrevDataSlide].src.endsWith(".mp4")) {
-                    if (this.nbMedia[this.nbDivPrevDataSlide - 1].src.endsWith(".mp4")) {
-                        this.videoOverlay.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
-                        this.divNextBtn.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
-                        this.divPrevBtn.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
-                        this.h2Overlay.textContent = this.nbMedia[this.nbDivPrevDataSlide - 1].title
-                        this.videoOverlay.controls = true;
-                        this.videoOverlay.src = this.nbMedia[this.nbDivPrevDataSlide - 1].src;
-                    }
-                    if (this.nbMedia[this.nbDivPrevDataSlide - 1].src.endsWith(".jpg")) {
-                        console.log("c'est là")
-                        this.overlay.replaceChild(this.imgOverlay, this.videoOverlay);
-                        this.imgOverlay.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
-                        this.divNextBtn.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
-                        this.divPrevBtn.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
-                        this.h2Overlay.textContent = this.nbMedia[this.nbDivPrevDataSlide - 1].title
-                        this.imgOverlay.src = this.nbMedia[this.nbDivPrevDataSlide - 1].src;
-                    }
-                }
-            }
+            this.prevMedia();
         })
+    }
+
+    prevMedia() {
+
+        this.nbDivPrevDataSlide = parseInt(this.divPrevBtn.getAttribute("data-slide-to"));
+        if (this.nbDivPrevDataSlide === 0) {
+            if (this.nbMedia[0].src.endsWith(".jpg")) {
+                if (this.nbMedia[this.nbMedia.length - 1].src.endsWith(".mp4")) {
+                    this.overlay.replaceChild(this.videoOverlay, this.imgOverlay);
+                    this.videoOverlay.setAttribute("data-slide-to", this.nbMedia.length - 1);
+                    this.divNextBtn.setAttribute("data-slide-to", this.nbMedia.length - 1);
+                    this.divPrevBtn.setAttribute("data-slide-to", this.nbMedia.length - 1);
+                    this.h2Overlay.textContent = this.nbMedia[this.nbMedia.length - 1].title
+                    this.videoOverlay.controls = true;
+                    return this.videoOverlay.src = this.nbMedia[this.nbMedia.length - 1].src;
+                } else if (this.nbMedia[this.nbMedia.length - 1].src.endsWith(".jpg")) {
+                    this.imgOverlay.setAttribute("data-slide-to", this.nbMedia.length - 1);
+                    this.divNextBtn.setAttribute("data-slide-to", this.nbMedia.length - 1);
+                    this.divPrevBtn.setAttribute("data-slide-to", this.nbMedia.length - 1);
+                    this.h2Overlay.textContent = this.nbMedia[this.nbMedia.length - 1].title
+                    return this.imgOverlay.src = this.nbMedia[this.nbMedia.length - 1].src;
+                }
+            } else if (this.nbMedia[0].src.endsWith(".mp4")) {
+                if (this.nbMedia[this.nbMedia.length - 1].src.endsWith(".mp4")) {
+                    this.videoOverlay.setAttribute("data-slide-to", this.nbMedia.length - 1);
+                    this.divNextBtn.setAttribute("data-slide-to", this.nbMedia.length - 1);
+                    this.divPrevBtn.setAttribute("data-slide-to", this.nbMedia.length - 1);
+                    this.h2Overlay.textContent = this.nbMedia[this.nbMedia.length - 1].title
+                    this.videoOverlay.controls = true;
+                    return this.videoOverlay.src = this.nbMedia[this.nbMedia.length - 1].src;
+                } else if (this.nbMedia[this.nbMedia.length - 1].src.endsWith(".jpg")) {
+                    this.overlay.replaceChild(this.imgOverlay, this.videoOverlay);
+                    this.imgOverlay.setAttribute("data-slide-to", this.nbMedia.length - 1);
+                    this.divNextBtn.setAttribute("data-slide-to", this.nbMedia.length - 1);
+                    this.divPrevBtn.setAttribute("data-slide-to", this.nbMedia.length - 1);
+                    this.h2Overlay.textContent = this.nbMedia[this.nbMedia.length - 1].title
+                    return this.imgOverlay.src = this.nbMedia[this.nbMedia.length - 1].src;
+                }
+            }
+        }
+        if (this.nbDivPrevDataSlide > 0) {
+            if (this.nbMedia[this.nbDivPrevDataSlide].src.endsWith(".jpg")) {
+                if (this.nbMedia[this.nbDivPrevDataSlide - 1].src.endsWith(".mp4")) {
+                    this.overlay.replaceChild(this.videoOverlay, this.imgOverlay);
+                    this.videoOverlay.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
+                    this.divNextBtn.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
+                    this.divPrevBtn.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
+                    this.h2Overlay.textContent = this.nbMedia[this.nbDivPrevDataSlide - 1].title
+                    this.videoOverlay.controls = true;
+                    return this.videoOverlay.src = this.nbMedia[this.nbDivPrevDataSlide - 1].src;
+                }
+                if (this.nbMedia[this.nbDivPrevDataSlide - 1].src.endsWith(".jpg")) {
+                    this.imgOverlay.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
+                    this.divNextBtn.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
+                    this.divPrevBtn.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
+                    this.h2Overlay.textContent = this.nbMedia[this.nbDivPrevDataSlide - 1].title
+                    return this.imgOverlay.src = this.nbMedia[this.nbDivPrevDataSlide - 1].src;
+                }
+            } else if (this.nbMedia[this.nbDivPrevDataSlide].src.endsWith(".mp4")) {
+                if (this.nbMedia[this.nbDivPrevDataSlide - 1].src.endsWith(".mp4")) {
+                    this.videoOverlay.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
+                    this.divNextBtn.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
+                    this.divPrevBtn.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
+                    this.h2Overlay.textContent = this.nbMedia[this.nbDivPrevDataSlide - 1].title
+                    this.videoOverlay.controls = true;
+                    return this.videoOverlay.src = this.nbMedia[this.nbDivPrevDataSlide - 1].src;
+                }
+                if (this.nbMedia[this.nbDivPrevDataSlide - 1].src.endsWith(".jpg")) {
+                    console.log("c'est là")
+                    this.overlay.replaceChild(this.imgOverlay, this.videoOverlay);
+                    this.imgOverlay.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
+                    this.divNextBtn.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
+                    this.divPrevBtn.setAttribute("data-slide-to", this.nbDivPrevDataSlide - 1);
+                    this.h2Overlay.textContent = this.nbMedia[this.nbDivPrevDataSlide - 1].title
+                    return this.imgOverlay.src = this.nbMedia[this.nbDivPrevDataSlide - 1].src;
+                }
+            }
+        }
+    }
+
+    buildAccessibility() {
+        // window.addEventListener("keydown", function (event) {
+        //     if (event.defaultPrevented) {
+        //         return; // Ne devrait rien faire si l'événement de la touche était déjà consommé.
+        //     }
+        //     switch (event) {
+        //
+        //         case "ArrowLeft" :
+        //             console.log("gauche");
+        //
+        //             break;
+        //         case "ArrowRight" :
+        //             console.log("droite");
+        //             flecheRight();
+        //             break;
+        //         default:
+        //             return; // Quitter lorsque cela ne gère pas l'événement touche.
+        //     }
+        //
+        //     // Annuler l'action par défaut pour éviter qu'elle ne soit traitée deux fois.
+        //     event.preventDefault();
+        // }, true);
     }
 
     append(domNode) {
@@ -1016,27 +1051,7 @@ const filterTagMedia = async (tagContent) => {
 
 /* Affichage de la lightBox */
 const lightBox = (val) => {
-
-    const lightBox = new LightBox(val, bodyPhotograph);
-
-    /* accessibility sur la lightBox via les touches */
-    window.addEventListener("keydown", function (access) {
-        let recuperationNextButton = document.getElementById("nextButton");
-        let recuperationPrevButton = document.getElementById("prevButton");
-        let nbDataSlide = parseInt(recuperationNextButton.getAttribute("data-slide-to"));
-
-        if (access.key === "ArrowLeft") {
-            lightBox.prevMedia();
-        }
-        if (access.key === "ArrowRight") {
-            lightBox.nextMedia();
-        }
-        if (access.key === "Escape") {
-            lightBox.buildExit();
-        }
-
-    })
-
+    new LightBox(val, bodyPhotograph);
 }
 
 /* Ajouter ou Retirer un like */
@@ -1055,7 +1070,9 @@ const addLike = (event) => {
 const contactMe = () => {
 
     const launchContactMe = document.querySelector(".contain-modal-body");
+    const contactMe = document.querySelector("#contact-me");
     launchContactMe.style.display = "block";
+    contactMe.style.zIndex = 0;
 }
 
 
@@ -1063,7 +1080,9 @@ const contactMe = () => {
 const closeModal = () => {
 
     const launchContactMe = document.querySelector(".contain-modal-body");
+    const contactMe = document.querySelector("#contact-me");
     launchContactMe.style.display = "none";
+    contactMe.style.zIndex = 8;
 }
 
 /* Récupération du message envoyé */
@@ -1085,6 +1104,9 @@ const recupData = (data) => {
 const accessibilityProfil = () => {
 
     window.addEventListener("keydown", function (event) {
+        // const lightBox = new LightBox(event, bodyPhotograph);
+        // const flecheLeft = lightBox.prevMedia;
+        // const flecheRight = lightBox.nextMedia;
         if (event.defaultPrevented) {
             return; // Ne devrait rien faire si l'événement de la touche était déjà consommé.
         }
@@ -1106,7 +1128,7 @@ const accessibilityProfil = () => {
                         closeModal();
                     }
                     if (event.target.id === "btnPostData") {
-                        return;
+                        recupData(data);
                     }
                     if (event.target.classList.contains("likes_heart")) {
                         addLike(event);
@@ -1129,4 +1151,4 @@ const accessibilityProfil = () => {
 }
 
 photographerPage();
-accessibilityProfil();
+// accessibilityProfil();

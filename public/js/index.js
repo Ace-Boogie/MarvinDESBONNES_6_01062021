@@ -105,6 +105,7 @@ class HeaderPhotographers {
 
         /* Apparition du bouton lorsque l'on scroll */
         window.addEventListener("scroll", () => {
+            console.log(location.hash);
             if (window.scrollY >= 200 && window.innerWidth > 769) {
 
                 this.goToContent.style.display = "flex";

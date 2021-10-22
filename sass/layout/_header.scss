@@ -1,5 +1,6 @@
 /*Button pour passer au contenu */
 .scroll-hide {
+  display: none;
   // version desktop
   @media (min-width: 769px) {
     display: none;
@@ -51,6 +52,10 @@
   // mettre un order
   > #aImg {
     order: 1;
+    // version desktop
+    @media (min-width: 769px) {
+      margin-top: 2%;
+    }
   }
 
   > nav {
@@ -94,6 +99,8 @@
 
     // version desktop
     @media (min-width: 769px) {
+      margin-top: 1%;
+
       font-size: 36px;
       line-height: 47px;
       order: 3;
@@ -171,7 +178,7 @@
         }
       }
 
-      >h2, &_from, &_tagline {
+      > h2, &_from, &_tagline {
         text-align: left;
         margin-top: 1%;
         margin-bottom: 1%;
