@@ -984,7 +984,10 @@ const photographerPage = async () => {
 const filterTagMedia = async (tagContent) => {
     try {
         let namePhotograph;
-        if (location.hash) {
+        if (location.hash === "#" + tagContent.target.textContent){
+            location.href = "";
+
+        }else if (location.hash !== "#" + tagContent.target.textContent){
             location.hash = "";
         }
         location.hash = "#" + tagContent.target.textContent;
@@ -999,15 +1002,12 @@ const filterTagMedia = async (tagContent) => {
             }
         })
 
-        console.log(tagContent.target)
-        console.log(tagContent.target.textContent);
         sectionMedia.innerHTML = "";
         const showMedia = dataJson["media"];
         showMedia
             .filter((media) => media.photographerId === urlId)
             .map((media, index) => {
                 if (media.tags.includes(tagContent.target.textContent)) {
-                    console.log("on y est presque")
                     if (media.image) {
                         return new Image(media, index, namePhotograph, sectionMedia);
                     }

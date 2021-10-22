@@ -105,7 +105,6 @@ class HeaderPhotographers {
 
         /* Apparition du bouton lorsque l'on scroll */
         window.addEventListener("scroll", () => {
-            console.log(location.hash);
             if (window.scrollY >= 200 && window.innerWidth > 769) {
 
                 this.goToContent.style.display = "flex";
@@ -265,7 +264,10 @@ const indexPhotographers = async () => {
 /* Filtre en fonction du tag du header choisi */
 const searchTag = async (tagContent) => {
     try {
-        if (location.hash) {
+        if (location.hash === "#" + tagContent.target.textContent){
+            location.href = "";
+
+        }else if (location.hash !== "#" + tagContent.target.textContent){
             location.hash = "";
         }
         location.hash = "#" + tagContent.target.textContent;
@@ -322,6 +324,8 @@ const accessibilityIndex = async () => {
         event.preventDefault();
     }, true);
 }
-
+console.log(location.hash);
+console.log(location.hostname);
+console.log(location.href);
 accessibilityIndex();
 indexPhotographers();
