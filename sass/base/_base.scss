@@ -64,17 +64,13 @@ body {
     color: white;
     border: none;
   }
-
-  &:focus {
-    background-color: $bgc-red-primary;
-    color: white;
-    border: none;
-  }
 }
 
 .spanTagFocus {
   background-color: $bgc-red-primary;
   color: white;
+  cursor: pointer;
+  gap: 0.5rem;
 }
 
 //Ajout au tag du # et de la majuscule pour la première lettre
@@ -111,9 +107,9 @@ body {
   margin-top: 3%;
   margin-right: 1%;
 
-  &::before {
-    content: "#";
-  }
+  //&::before {
+  //  content: "#";
+  //}
 
   //version desktop
   @media (min-width: 769px) {
@@ -123,12 +119,6 @@ body {
 
 
   &:hover {
-    background-color: $bgc-red-primary;
-    color: white;
-    border: none;
-  }
-
-  &:focus {
     background-color: $bgc-red-primary;
     color: white;
     border: none;
