@@ -370,7 +370,7 @@
       "photographerId": 243,
       "title": "Wednesday Potrait",
       "image": "Portrait_Wednesday.jpg",
-      "tags": ["portait"],
+      "tags": ["portrait"],
       "likes": 34,
       "date": "2019-04-07",
       "price": 45
@@ -380,7 +380,7 @@
       "photographerId": 243,
       "title": "Nora Portrait",
       "image": "Portrait_Nora.jpg",
-      "tags": ["portait"],
+      "tags": ["portrait"],
       "likes": 63,
       "date": "2019-04-07",
       "price": 45
@@ -390,7 +390,7 @@
       "photographerId": 243,
       "title": "Raw Black Portrait",
       "image": "Portrait_Background.jpg",
-      "tags": ["portait"],
+      "tags": ["portrait"],
       "likes": 55,
       "date": "2019-06-20",
       "price": 45
