@@ -132,6 +132,7 @@ class HeaderMain {
             this.spanTags = document.createElement("span");
             this.spanTags.classList.add("spanTagHeader");
             this.spanTags.onclick = filterTagMedia;
+            this.spanTags.tabIndex = 0;
             this.spanTags.textContent = tag;
             this.spanTags.setAttribute("aria-label", tag);
 
@@ -672,7 +673,7 @@ class LightBox {
         });
     }
 
-    closeMedia(){
+    closeMedia() {
         this.overlay.style.display = "none";
         this.overlay.parentElement.removeChild(this.overlay);
     }
@@ -1032,13 +1033,13 @@ const lightBox = (val) => {
 
     window.addEventListener('keydown', (e) => {
 
-        if (e.key === "ArrowLeft"){
+        if (e.key === "ArrowLeft") {
             lightBoxClass.prevMedia();
         }
-        if (e.key === "ArrowRight"){
+        if (e.key === "ArrowRight") {
             lightBoxClass.nextMedia();
         }
-        if (e.key === "Escape"){
+        if (e.key === "Escape") {
             lightBoxClass.closeMedia();
         }
     })
